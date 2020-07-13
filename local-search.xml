@@ -4,26 +4,27 @@
   
   
   <entry>
-    <title>test</title>
-    <link href="/2020/07/12/test/"/>
-    <url>/2020/07/12/test/</url>
+    <title>Hexo博客搭建与部署</title>
+    <link href="/2020/07/13/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%83%A8%E7%BD%B2/"/>
+    <url>/2020/07/13/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%83%A8%E7%BD%B2/</url>
     
-    <content type="html"><![CDATA[<p>testtesttset</p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hexo搭建与发布过程</title>
-    <link href="/2020/07/12/Hexo%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/"/>
-    <url>/2020/07/12/Hexo%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
-    
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="Hexo博客搭建与部署"><a href="#Hexo博客搭建与部署" class="headerlink" title="Hexo博客搭建与部署"></a>Hexo博客搭建与部署</h1><h2 id="什么是Hexo"><a href="#什么是Hexo" class="headerlink" title="什么是Hexo"></a>什么是Hexo</h2><p>Hexo 是一个快速、简洁且高效的博客框架。</p><p>文档地址：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a></p><h2 id="如何搭建（参照Hexo文档）"><a href="#如何搭建（参照Hexo文档）" class="headerlink" title="如何搭建（参照Hexo文档）"></a>如何搭建（参照Hexo文档）</h2><p>安装前提：node.js和Git</p><p>node: <a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a></p><p>Git: <a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a></p><pre><code class="hljs avrasm">$ npm install -g hexo-<span class="hljs-keyword">cli</span></code></pre><pre><code class="hljs cmd">$ hexo init &lt;folder&gt;$ <span class="hljs-built_in">cd</span> &lt;folder&gt;$ npm install</code></pre><p>Hexo的安装过程比较简单，主要参照文档就行了。</p><h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><p>hexo项目结构安装好后，就可以选择一个合适的主题，官网有主题的选项，同时也可以去百度上看一下别人选择的主题做出来的效果，有看到喜欢的就用相同的主题。</p><p>我用的主题为：Fluid&emsp;&emsp;  <a href="https://hexo.fluid-dev.com/docs/" target="_blank" rel="noopener">https://hexo.fluid-dev.com/docs/</a></p><p>这个主题支持的插件基本还可以，界面还是简介大方。</p><p>那么我们只需要下载好相应的主题，按照Hexo官方文档（注意不是主题文档）修改_config.yml这个文件中的内容就可以了。</p><p>很多细小的配置在Fluid主题文档中都有，基本可以把文档看一遍，修改好你想要的设置。</p><h2 id="主题设置细节说明"><a href="#主题设置细节说明" class="headerlink" title="主题设置细节说明"></a>主题设置细节说明</h2><p>我的博客中使用了评论和统计插件。</p><p>评论-Valine <a href="https://valine.js.org/" target="_blank" rel="noopener">https://valine.js.org/</a></p><p>统计-leancloud <a href="https://www.leancloud.cn/" target="_blank" rel="noopener">https://www.leancloud.cn/</a></p><p>评论和计数的后台都可以通过lencloud的后台系统管理，而且比较稳定。</p><h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>重点说一下部署，因为Hexo部署上去的其实就是Public下面的html静态文件，所以可以把public下的文件放置在任何地方。</p><p>文档推荐的是放github下，但是你会发现如果你不翻墙的话，图片很难加载出来，gitee也可以，但是如果你想配置自定义域名的话，就必须要购买gitee自定义域名的产品。</p><h2 id="图床"><a href="#图床" class="headerlink" title="图床"></a>图床</h2><p>我使用的是PicGo+Gitee(码云)搭建自己的图床。</p><p>1.将PicGO下载下来，然后安装插件</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713133658.png" srcset="/img/loading.gif" alt="avatar"></p><p>2.配置Gitee<br>点击自己gitee头像-&gt;设置，左边有一个私人令牌，点击右上角生成新令牌，只选择projects,如下图：</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713150257.png" srcset="/img/loading.gif" alt="avatar"></p><p>注意：私人令牌token只会显示一次，如果没有复制成功只能删除后重新获取。</p><p>3.设置插件githubPlus</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713150827.png" srcset="/img/loading.gif" alt="avatar"></p><p>测试：记得修改PicGO中上传区中的图片上传改为:图片上床-githubLPlus这样就可以根据路径来访问你的图片了。</p>]]></content>
     
     
+    <categories>
+      
+      <category>Hexo</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Jenkins</tag>
+      
+      <tag>Hexo</tag>
+      
+    </tags>
     
   </entry>
   
