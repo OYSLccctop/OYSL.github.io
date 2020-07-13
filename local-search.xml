@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>阿里云全站加速HTTPS证书无法开启问题解决</title>
+    <link href="/2020/07/13/%E9%98%BF%E9%87%8C%E4%BA%91%E5%85%A8%E7%AB%99%E5%8A%A0%E9%80%9FHTTPS%E8%AF%81%E4%B9%A6%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <url>/2020/07/13/%E9%98%BF%E9%87%8C%E4%BA%91%E5%85%A8%E7%AB%99%E5%8A%A0%E9%80%9FHTTPS%E8%AF%81%E4%B9%A6%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+    
+    <content type="html"><![CDATA[<h1 id="阿里云全站加速HTTPS证书无法开启问题解决"><a href="#阿里云全站加速HTTPS证书无法开启问题解决" class="headerlink" title="阿里云全站加速HTTPS证书无法开启问题解决"></a>阿里云全站加速HTTPS证书无法开启问题解决</h1><p>全站加速（Dynamic Route for Content Delivery Network）是阿里云自主研发的融合了动态加速和静态加速技术的CDN产品。该产品一站式解决了页面动静态资源混杂、跨运营商、网络不稳定、单线源站、突发流量、网络拥塞等诸多因素导致的响应慢、丢包、服务不稳定的问题，提升全站性能和用户体验。</p><p>1.选择添加域名</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713160216.png" srcset="/img/loading.gif" alt="avatar"></p><p>2.添加域名 类型IP（IP就是你服务器IP）</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713160556.png" srcset="/img/loading.gif" alt="avatar"></p><p>3.HTTPS设置</p><p>我就是在这个地方出现问题的。</p><p>之前没有领取HTTPS证书，所以在这里想一起申请了，也就是选择</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713162446.png" srcset="/img/loading.gif" alt="avatar"></p><p>免费证书，点击确定后，弹窗显示了设置成功，但是HTTPS的设置一直都是未开启的状态。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713162917.png" srcset="/img/loading.gif" alt="avatar"></p><p>由于不知道问题出现在什么地方，所以找了一下客服。客服的回复如下：</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200713162759.png" srcset="/img/loading.gif" alt="avatar"></p><p>之后发现出现这个问题的原因是，我自己添加的域名为泛域名，也就是域名前我带了*，这样可能会导致无法颁发证书。</p><p>随后我将*去掉，配置为www或者直接解析域名@,再次去申请证书就可以了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>阿里云</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>阿里云</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>阿里云域名配置</title>
     <link href="/2020/07/13/%E9%98%BF%E9%87%8C%E4%BA%91%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/"/>
     <url>/2020/07/13/%E9%98%BF%E9%87%8C%E4%BA%91%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</url>
