@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Hexo消除中文路径</title>
+    <link href="/cxlittlecute/8ce042f1.html"/>
+    <url>/cxlittlecute/8ce042f1.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo消除中文路径"><a href="#Hexo消除中文路径" class="headerlink" title="Hexo消除中文路径"></a>Hexo消除中文路径</h1><p>我们博客中的文章标题，一般都会有中文出现，同时Hexo默认也是会把你的title放在路径访问的最后，也就是xxx.html。</p><p>由于路径中有中文的存在，如果你想根据URL进行操作的时候就会被浏览器编码，也就是URL code字符编码。</p><pre><code class="hljs llvm">https://ccctop.cn/<span class="hljs-number">2020</span>/<span class="hljs-number">07</span>/<span class="hljs-number">13</span>/Jenkins<span class="hljs-symbol">%E6</span><span class="hljs-symbol">%89</span><span class="hljs-symbol">%A7</span><span class="hljs-symbol">%E8</span><span class="hljs-symbol">%A1</span><span class="hljs-symbol">%8</span>Cshell<span class="hljs-symbol">%E5</span><span class="hljs-symbol">%91</span><span class="hljs-symbol">%BD</span><span class="hljs-symbol">%E4</span><span class="hljs-symbol">%BB</span><span class="hljs-symbol">%A4</span><span class="hljs-symbol">%EF</span><span class="hljs-symbol">%BC</span><span class="hljs-symbol">%8</span>C<span class="hljs-symbol">%E6</span><span class="hljs-symbol">%8</span>F<span class="hljs-symbol">%90</span><span class="hljs-symbol">%E7</span><span class="hljs-symbol">%A4</span><span class="hljs-symbol">%BAcommand-not-found</span><span class="hljs-symbol">%E8</span><span class="hljs-symbol">%A7</span><span class="hljs-symbol">%A3</span><span class="hljs-symbol">%E5</span><span class="hljs-symbol">%86</span><span class="hljs-symbol">%B3</span>/</code></pre><h2 id="这种中文URL的不缺点："><a href="#这种中文URL的不缺点：" class="headerlink" title="这种中文URL的不缺点："></a>这种中文URL的不缺点：</h2><ol><li><p>关键词被编译后，URL会变得很长，这是搜索引擎不建议的，但并非不能使用;也就是不利于SEO。</p></li><li><p>使用被引用，中文URL在转码后会变成形如：%E5%A9%9A%E7%BA%B1 的结构，一些编辑器支持的问题会造成错误链接地址或错误的URL识别、分割 ，甚至有些网站会产生状态为404的引用指向。</p></li></ol><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>一种是把中文路径变为拼音，另一种就是进行转换编码。在 Hexo 根目录下的 _config.yml 文件中，修改或新增配置项：</p><p>拼音：</p><pre><code class="hljs ada">npm i hexo-permalink-pinyin <span class="hljs-comment">--save</span></code></pre><pre><code class="hljs dts"><span class="hljs-symbol">permalink_pinyin:</span><span class="hljs-symbol">  enable:</span> true<span class="hljs-symbol">  separator:</span> <span class="hljs-string">'-'</span> <span class="hljs-meta"># default: <span class="hljs-string">'-'</span></span></code></pre><p>编码：</p><pre><code class="hljs sql">npm <span class="hljs-keyword">install</span> hexo-abbrlink <span class="hljs-comment">--save</span></code></pre><pre><code class="hljs dts"><span class="hljs-meta"># permalink: :title/</span><span class="hljs-symbol">permalink:</span> archives/:abbrlink.html<span class="hljs-symbol">abbrlink:</span><span class="hljs-symbol">  alg:</span> crc32  <span class="hljs-meta"># 算法：crc16(default) and crc32</span><span class="hljs-symbol">  rep:</span> hex    <span class="hljs-meta"># 进制：dec(default) and hex</span></code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Hexo</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Jenkins执行shell命令，提示command not found解决</title>
     <link href="/cxlittlecute/61702.html"/>
     <url>/cxlittlecute/61702.html</url>
