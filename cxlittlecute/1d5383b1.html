@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      326 字
+      630 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      8
        分钟
     </span>
   
@@ -236,7 +236,63 @@
 <p>查询阿里云文档可知错误原因：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200715174653.png" srcset="/img/loading.gif" alt="avator"></p>
 <p>原因是：服务器时间和前端时间不一致，前端时间比服务端快几分钟，所以服务端生成签名给到前端时，签名已过期。</p>
-<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>1.后台生成签名时，使用前端传递过来的当前时间。<br>2.生成签名时，官方代码中的参数expireTime默认是30秒，改为更大的时间。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><ol>
+<li>后台生成签名时，使用前端传递过来的当前时间。</li>
+<li>生成签名时，官方代码中的参数expireTime默认是30秒，改为更大的时间。</li>
+</ol>
+<h3 id="后端代码演示-第二种解决办法"><a href="#后端代码演示-第二种解决办法" class="headerlink" title="后端代码演示 第二种解决办法"></a>后端代码演示 第二种解决办法</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Osscontroller</span> </span>&#123;
+    <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.oss.endpoint&#125;"</span>)
+    <span class="hljs-keyword">private</span> String endpoint;
+    <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.oss.bucket&#125;"</span>)
+    <span class="hljs-keyword">private</span> String bucket;
+    <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.access-key&#125;"</span>)
+    <span class="hljs-keyword">private</span> String accessId;
+    <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.secret-key&#125;"</span>)
+    <span class="hljs-keyword">private</span> String accessKey;
+
+    <span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/oss/policy"</span>)
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">policy</span><span class="hljs-params">()</span> </span>&#123;
+
+        String host = <span class="hljs-string">"https://"</span> + bucket + <span class="hljs-string">"."</span> + endpoint; <span class="hljs-comment">// host的格式为 bucketname.endpoint</span>
+        <span class="hljs-comment">// callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。</span>
+        <span class="hljs-comment">//String callbackUrl = "http://88.88.88.88:8888";</span>
+        String format = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">"yyyy-MM-dd"</span>).format(<span class="hljs-keyword">new</span> Date());
+        String dir = format+<span class="hljs-string">"/"</span>; <span class="hljs-comment">// 用户上传文件时指定的前缀。</span>
+
+        <span class="hljs-comment">// 创建OSSClient实例。</span>
+        OSS ossClient = <span class="hljs-keyword">new</span> OSSClientBuilder().build(endpoint, accessId, accessKey);
+        Map&lt;String, String&gt; respMap = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-keyword">long</span> expireTime = <span class="hljs-number">60</span>; <span class="hljs-comment">//增大这里的时间</span>
+            <span class="hljs-keyword">long</span> expireEndTime = System.currentTimeMillis() + expireTime * <span class="hljs-number">1000</span>;
+            Date expiration = <span class="hljs-keyword">new</span> Date(expireEndTime);
+            <span class="hljs-comment">// PostObject请求最大可支持的文件大小为5 GB，即CONTENT_LENGTH_RANGE为5*1024*1024*1024。</span>
+            PolicyConditions policyConds = <span class="hljs-keyword">new</span> PolicyConditions();
+            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, <span class="hljs-number">0</span>, <span class="hljs-number">1048576000</span>);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+
+            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
+            <span class="hljs-keyword">byte</span>[] binaryData = postPolicy.getBytes(<span class="hljs-string">"utf-8"</span>);
+            String encodedPolicy = BinaryUtil.toBase64String(binaryData);
+            String postSignature = ossClient.calculatePostSignature(postPolicy);
+
+            respMap = <span class="hljs-keyword">new</span> LinkedHashMap&lt;String, String&gt;();
+            respMap.put(<span class="hljs-string">"accessid"</span>, accessId);
+            respMap.put(<span class="hljs-string">"policy"</span>, encodedPolicy);
+            respMap.put(<span class="hljs-string">"signature"</span>, postSignature);
+            respMap.put(<span class="hljs-string">"dir"</span>, dir);
+            respMap.put(<span class="hljs-string">"host"</span>, host);
+            respMap.put(<span class="hljs-string">"expire"</span>, String.valueOf(expireEndTime / <span class="hljs-number">1000</span>));
+
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            <span class="hljs-comment">// Assert.fail(e.getMessage());</span>
+            System.out.println(e.getMessage());
+        &#125; <span class="hljs-keyword">finally</span> &#123;
+            ossClient.shutdown();
+        &#125;
+        <span class="hljs-keyword">return</span> R.ok().put(<span class="hljs-string">"data"</span>,respMap);
+    &#125;</code></pre>
+
 
             </article>
             <hr>
@@ -246,7 +302,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
+                      <a class="hover-with-bg" href="/categories/%E9%98%BF%E9%87%8C%E4%BA%91/">+ 阿里云</a>
                     
                   </div>
                 
@@ -254,7 +310,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
+                      <a class="hover-with-bg" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">+ 阿里云</a>
                     
                   </div>
                 
