@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      630 字
+      558 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      7
        分钟
     </span>
   
@@ -235,12 +235,8 @@
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200715174130.png" srcset="/img/loading.gif" alt="avator"></p>
 <p>查询阿里云文档可知错误原因：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200715174653.png" srcset="/img/loading.gif" alt="avator"></p>
-<p>原因是：服务器时间和前端时间不一致，前端时间比服务端快几分钟，所以服务端生成签名给到前端时，签名已过期。</p>
-<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><ol>
-<li>后台生成签名时，使用前端传递过来的当前时间。</li>
-<li>生成签名时，官方代码中的参数expireTime默认是30秒，改为更大的时间。</li>
-</ol>
-<h3 id="后端代码演示-第二种解决办法"><a href="#后端代码演示-第二种解决办法" class="headerlink" title="后端代码演示 第二种解决办法"></a>后端代码演示 第二种解决办法</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Osscontroller</span> </span>&#123;
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p> 生成签名时，官方代码中的参数expireTime默认是30秒，改为更大的时间。</p>
+<h3 id="代码演示-解决办法"><a href="#代码演示-解决办法" class="headerlink" title="代码演示 解决办法"></a>代码演示 解决办法</h3><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Osscontroller</span> </span>&#123;
     <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.oss.endpoint&#125;"</span>)
     <span class="hljs-keyword">private</span> String endpoint;
     <span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.cloud.alicloud.oss.bucket&#125;"</span>)
