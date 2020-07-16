@@ -17,19 +17,10 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>GateWay网关访问服务出现503的问题解决 - OYSL&#39;s blog</title>
+  <title>分类 - GateWay - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
-  
-
-  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -51,7 +42,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -161,48 +152,6 @@
             </span>
 
             
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-16 12:11">
-      2020年7月16日 中午
-    </time>
-  </div>
-
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      908 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      9
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- LeanCloud 统计文章PV -->
-      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="leancloud-post-views"></span> 次
-      </span>
-    
-  
-</div>
-
-            
           </div>
 
           
@@ -213,154 +162,37 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <p class="h4">共计 1 篇文章</p>
+  <hr>
+  
+    
       
+      <p class="h5">2020</p>
+    
+    <a href="/cxlittlecute/674d8191.html" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">GateWay网关访问服务出现503的问题解决</span>
+      <span style="float: right;">07-16</span>
+    </a>
+  
+</div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <div class="post-content mx-auto" id="post">
-            
-            <article class="markdown-body">
-              <h1 id="GateWay网关访问服务出现503的问题解决"><a href="#GateWay网关访问服务出现503的问题解决" class="headerlink" title="GateWay网关访问服务出现503的问题解决"></a>GateWay网关访问服务出现503的问题解决</h1><p>对于这个问题也是困扰了自己很久，今天下定决定要把它干掉。这个问题很坑，建议使用IDEA的朋友都可以看一看。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在分布式服务中，使用GateWay网关进行服务请求路由的统一管理，它是系统对外的唯一入口。为了让网关能正常发送调用其他服务，我使用到了Nacos服务注册中心。</p>
-<p>正是这样出现了，我通过服务端口，能正常访问接口返回数据，通过网关访问有时可以有时不行的情况（也就是出现503的状态码反馈）。</p>
-<p>HTTP状态码503指的是web服务器不能处理HTTP请求。原因大致如下：</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200716131929.png" srcset="/img/loading.gif" alt="avator"></p>
-<p>那么根据上面这四个原因我还是没有分析出为什么会出现这个问题。于是我开始一步步排查问题。</p>
-<ol>
-<li><p>我首先认为是我GateWay网关，拦截配置的问题，可是我的情况是有时出现503，有时又能通过网关正常访问，所以暂时排除了这种情况。</p>
-</li>
-<li><p>是否本身的单体服务有问题，但是通过postman的测试，通过服务的端口访问接口，都能正常返回数据。所以也暂时排除这种情况。</p>
-</li>
-<li><p>Nacos注册中心的问题。</p>
-</li>
-</ol>
-<p>那基本能确定是Nacos注册中心的问题了，但也不完全是Nacos的锅。</p>
-<p>再次分析：</p>
-<p>F12查看Network，请求的发送情况，发现OPTIONS预检请求是正常发送的，但发送真正的请求的时候出现了503的错误。如下图:</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200716133417.png" srcset="/img/loading.gif" alt="avator"></p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200716133338.png" srcset="/img/loading.gif" alt="avator"></p>
-<p>接着我点开了Preview（预览功能），看到了错误提示：</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200716133611.png" srcset="/img/loading.gif" alt="avator"></p>
-<p>我们可以通过错误提示很清晰的看到message的反馈，就是发现不了我的product服务。</p>
-<p>和我们判断的没错是nacos的问题，于是我进入nacos查看服务是否注册成功。</p>
-<p>这里就发现了一个很奇怪的现象，正常的我们刷新nacos的界面服务是不会掉的，但是我的product商品服务，一会有一会儿又没有，刚开始我发现了这个问题，但没有引起注意，也就导致这个问题之前一直没有得到解决。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>于是，我抱着再试一试的心态，将该服务的端口号从10000改为了8100，也就是改为了其他的数（或者修改一下服务名），这个服务就在nacos注册中心稳定了。（前提是确保你的服务Nacos配置没有问题）</p>
-<p>这其实是一个很容易解决的bug，但是之前网上找过都没有得到好的解决。</p>
-<p>让我想到了idea在使用过程中确实存在一些bug，常见的就是</p>
-<ol>
-<li><p>创建继承maven项目数量多了之后，项目结构就会不一样，需要手动修改，或者更换项目名才能解决。</p>
-</li>
-<li><p>使用springboot的过程中有些端口无法使用，这种无法使用是由于idea和系统的问题，你能正常跑通你的项目，但是这个项目你无法通过客户端访问，只要访问就是500服务器错误。</p>
-</li>
-</ol>
-<hr>
-<p>同时这里强调，不是因为什么端口被占用的问题，端口如果被占用，连服务都是无法启动的，所以这就是一些简单又很坑人的地方。</p>
-<p>如果您有幸看到了这篇文章，希望对您有帮助，解决到您的问题。</p>
 
-            </article>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/SpringCloud/">SpringCloud</a>
-                    
-                      <a class="hover-with-bg" href="/categories/SpringCloud/GateWay/">GateWay</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/SpringCloud/">SpringCloud</a>
-                    
-                      <a class="hover-with-bg" href="/tags/GateWay/">GateWay</a>
-                    
-                  </div>
-                
+
               </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <div class="post-prev col-6">
-                    
-                    
-                  </div>
-                  <div class="post-next col-6">
-                    
-                    
-                      <a href="/cxlittlecute/4e6c6273.html">
-                        <span class="hidden-mobile">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </div>
-                </div>
-              
             </div>
-
-            
-              <!-- Comments -->
-              <div class="comments" id="comments">
-                
-                
-  <div id="vcomments"></div>
-  <script type="text/javascript">
-    function loadValine() {
-      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
-        new Valine({
-          el: "#vcomments",
-          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
-          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
-          placeholder: "说点什么",
-          path: window.location.pathname,
-          avatar: "retro",
-          meta: ["nick","mail","link"],
-          pageSize: "10",
-          lang: "zh-CN",
-          highlight: false,
-          recordIP: false,
-          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
-        });
-      });
-    }
-    createObserver(loadValine, 'vcomments');
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
-      powered by Valine.</a></noscript>
-
-
-              </div>
-            
           </div>
         </div>
       </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
     
   </main>
 
@@ -585,10 +417,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('true' === 'true') {
+      if ('false' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/674d8191.html');
+          var target = decodeURI('/categories/SpringCloud/GateWay/index.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -650,31 +482,6 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: 'article.markdown-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -682,7 +489,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "GateWay网关访问服务出现503的问题解决&nbsp;",
+        "分类 - GateWay&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -697,21 +504,6 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
 
 
   <script  src="/js/local-search.js" ></script>
@@ -725,20 +517,6 @@
   </script>
 
 
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
