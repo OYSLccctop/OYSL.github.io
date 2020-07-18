@@ -461,8 +461,6 @@ characterStream.forEach(System.out::println);</code></pre>
             .map(Employee::getSalary)
             .reduce(Double::sum); <span class="hljs-comment">// 为什么这里返回Optional？因为这里没有设置起始值</span>
 &#125;</code></pre>
-<pre><code class="hljs java">
-</code></pre>
 
 <p>map和reduce的连接通常称为map-reduce模式，现在大数据经常应用这种模式。</p>
 <h3 id="收集"><a href="#收集" class="headerlink" title="收集"></a>收集</h3><p>collect-将流转换为其他形式。接收一个Collection接口的实现，用于给stream中元素汇总的方法。</p>
