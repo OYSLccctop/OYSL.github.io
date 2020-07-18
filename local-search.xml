@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Stream知识用法总结</title>
+    <link href="/cxlittlecute/8a5cc6c1.html"/>
+    <url>/cxlittlecute/8a5cc6c1.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="JAVA-8-Stream"><a href="#JAVA-8-Stream" class="headerlink" title="JAVA 8 Stream"></a>JAVA 8 Stream</h1><p>最近写项目经常用到Java8新API stream流，当我们的项目数据量比较大的时候，很少会使用外键约束，因为这样产生的笛卡尔集，数量巨大，会造成我们的系统性能低下。</p><p>我们为了能避免这样的情况发生，一般会去除外键，那么通过一个一个表查询出来的数据，如何才能更好的进行VO或者TO的封装了，使用StreamAPI就是一个不错的处理方式。</p><p>于是，通过本篇文章对此进行一个知识点和用法的总结，帮助你了解和学习它的使用。</p><h2 id="Stream是什么"><a href="#Stream是什么" class="headerlink" title="Stream是什么"></a>Stream是什么</h2><p>数据渠道，用于操作数据源所生产的元素序列。</p><p>集合讲的是数据，流讲的是计算。</p><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>它的主要作用就是，使用一种管道流的思想处理我们的集合对象，对集合对象进行如同SQL语句一样的查找、过滤、排序等操作。</p><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ol><li>Stream自己不会存储数据。</li><li>Stream不会改变源对象。</li><li>数据源来源：集合、数组、IO channel、生成器函数等.</li><li>借助于同样新出现的Lambda表达式，极大的提高编程效率和程序可读性。</li><li>中间操作返回新流，它们总是惰性的（延时执行）。（中间操作不会立即执行，而是创建一个新流，终止操作被执行时，遍历才开始）</li></ol><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>一、创建Stream</p><p>从一个数据源，如集合、数组中获取流。</p><p>二、中间操作</p><p>一个操作的中间链，对数据源的数据进行操作。</p><p>三、终止操作</p><p>一个终止操作，执行中间操作链，并产生结果。</p><h2 id="创建Stream流"><a href="#创建Stream流" class="headerlink" title="创建Stream流"></a>创建Stream流</h2><ul><li><p>stream() − 创建顺序流。</p></li><li><p>parallelStream() − 创建并行流。</p></li></ul><pre><code class="hljs java"><span class="hljs-comment">/**</span><span class="hljs-comment"> * 1.集合流</span><span class="hljs-comment"> *  - Collection.stream() 穿行流</span><span class="hljs-comment"> *  - Collection.parallelStream() 并行流</span><span class="hljs-comment"> */</span>List&lt;String&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();Stream&lt;String&gt; stream = list.stream();<span class="hljs-comment">/*</span><span class="hljs-comment">* 2.数组流</span><span class="hljs-comment">*   Arrays.stream(array)</span><span class="hljs-comment">* */</span>String[] strings = <span class="hljs-keyword">new</span> String[<span class="hljs-number">10</span>];Stream&lt;String&gt; stream2 = Arrays.stream(strings);<span class="hljs-comment">/*</span><span class="hljs-comment">* 3.Stream 静态方法</span><span class="hljs-comment">*   Stream.of(...)</span><span class="hljs-comment">* */</span>Stream&lt;Integer&gt; stream3 = Stream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<span class="hljs-comment">/*</span><span class="hljs-comment">* 4.无限流（一直停不下来）</span><span class="hljs-comment">*  (1)迭代</span><span class="hljs-comment">*  (2)生成</span><span class="hljs-comment">* */</span><span class="hljs-comment">// 迭代</span>Stream&lt;Integer&gt; iterate = Stream.iterate(<span class="hljs-number">0</span>, (x) -&gt; x + <span class="hljs-number">2</span>);<span class="hljs-comment">// 生成(可无限制造对象)</span>Stream&lt;Double&gt; generate = Stream.generate(() -&gt; Math.random());</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>GateWay网关访问服务出现503的问题解决</title>
     <link href="/cxlittlecute/674d8191.html"/>
     <url>/cxlittlecute/674d8191.html</url>
