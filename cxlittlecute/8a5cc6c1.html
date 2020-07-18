@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      2.4k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      34
        分钟
     </span>
   
@@ -242,7 +242,7 @@
 <li>数据源来源：集合、数组、IO channel、生成器函数等.</li>
 <li>借助于同样新出现的Lambda表达式，极大的提高编程效率和程序可读性。</li>
 <li>中间操作返回新流，它们总是惰性的（延时执行），除非流水线触发终止操作，否则中间操作不会执行任何处理。由于是在终止操作时一次性全部处理，也称为惰性求值。</li>
-<li>内部迭代：迭代操作时stream API完成的。</li>
+<li>内部迭代：迭代操作是stream API完成的。</li>
 </ol>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>一、创建Stream</p>
 <p>从一个数据源，如集合、数组中获取流。</p>
@@ -442,6 +442,123 @@ characterStream.forEach(System.out::println);</code></pre>
             .min(Double::compare);
     System.out.println(min.get());
 &#125;</code></pre>
+
+<h2 id="归约-收集"><a href="#归约-收集" class="headerlink" title="归约/收集"></a>归约/收集</h2><ul>
+<li>归约：reduce(T identity, BinaryOperator) / reduce(BinaryOperator) 可以将流中的数据反复结合起来，得到一个值</li>
+<li>收集：collect 将流转换成其他形式；接收一个 Collector 接口的实现，用于给流中元素做汇总的方法<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test9</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 规约</span>
+    List&lt;Integer&gt; list = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);
+    Integer sum = list.stream()
+            .reduce(<span class="hljs-number">0</span>, (x, y) -&gt; x + y); <span class="hljs-comment">// identity起始值 binaryOperator二元运算 现将起始值作为x，从流中取出元素作为y</span>
+    System.out.println(sum);
+
+    System.out.println(<span class="hljs-string">"-----------------------------------------"</span>);
+    
+    <span class="hljs-comment">// 获取当前所有员工工资总和</span>
+    Optional&lt;Double&gt; reduce = emps.stream()
+            .map(Employee::getSalary)
+            .reduce(Double::sum); <span class="hljs-comment">// 为什么这里返回Optional？因为这里没有设置起始值</span>
+&#125;</code></pre>
+<pre><code class="hljs java">
+</code></pre>
+
+</li>
+</ul>
+<p>map和reduce的连接通常称为map-reduce模式，现在大数据经常应用这种模式。</p>
+<h3 id="收集"><a href="#收集" class="headerlink" title="收集"></a>收集</h3><p>collect-将流转换为其他形式。接收一个Collection接口的实现，用于给stream中元素汇总的方法。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test10</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-comment">// 把公司员工所有名字提取出来，放入集合中</span>
+        List&lt;String&gt; list = emps.stream()
+                .map(Employee::getName)
+                .collect(Collectors.toList());<span class="hljs-comment">// Collectors实现类提供了很多静态方法，创建常见的收集器实例</span>
+
+        list.forEach(System.out::println);
+
+        System.out.println(<span class="hljs-string">"-------------------------------------------"</span>);
+
+        Set&lt;String&gt; set = emps.stream()
+                .map(Employee::getName)
+                .collect(Collectors.toSet());
+
+        set.forEach(System.out::println);
+
+        System.out.println(<span class="hljs-string">"-------------------------------------------"</span>);
+
+        HashSet&lt;String&gt; hs = emps.stream()
+                .map(Employee::getName)
+                .collect(Collectors.toCollection(HashSet::<span class="hljs-keyword">new</span>));
+
+        hs.forEach(System.out::println);
+&#125;</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test10</span><span class="hljs-params">()</span></span>&#123;
+    System.out.println(<span class="hljs-string">"-------------------------------------------"</span>);
+        <span class="hljs-comment">// 收集总数</span>
+        Long collect = emps.stream()
+                .collect(Collectors.counting());
+        <span class="hljs-comment">//平均值</span>
+        Double avg = emps.stream()
+                .collect(Collectors.averagingDouble(Employee::getSalary)); <span class="hljs-comment">// 指定了map</span>
+        System.out.println(avg);
+
+        <span class="hljs-comment">//总和</span>
+        Double collect1 = emps.stream()
+                .collect(Collectors.summingDouble(Employee::getSalary));
+        System.out.println(collect1);
+
+        <span class="hljs-comment">//最大值</span>
+        Optional&lt;Employee&gt; max = emps.stream()
+                .collect(Collectors.maxBy((e1, e2) -&gt; Double.compare(e1.getSalary(), e2.getSalary())));
+        System.out.println(max.get());
+
+        <span class="hljs-comment">//最小值</span>
+        Optional&lt;Double&gt; min = emps.stream()
+                .map(Employee::getSalary)
+                .collect(Collectors.minBy(Double::compare));
+        System.out.println(min.get());
+
+        System.out.println(<span class="hljs-string">"-------------------------------------------"</span>);
+&#125;</code></pre>
+<pre><code class="hljs reasonml">public void test10<span class="hljs-literal">()</span>&#123;
+        <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>out.println(<span class="hljs-string">"-------------------------------------------"</span>);
+        <span class="hljs-comment">// 根据状态分组</span>
+        Map&lt;Status, List&lt;Employee&gt;&gt; map = emps.stream<span class="hljs-literal">()</span>
+                .collect(<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Collectors</span>.</span></span>grouping<span class="hljs-constructor">By(Employee::<span class="hljs-params">getStatus</span>)</span>);
+
+        <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>out.println(map);
+
+        <span class="hljs-comment">// 多级分组</span>
+        Map&lt;Status, Map&lt;String, List&lt;Employee&gt;&gt;&gt; collect2 = emps.stream<span class="hljs-literal">()</span>
+                .collect(<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Collectors</span>.</span></span>grouping<span class="hljs-constructor">By(Employee::<span class="hljs-params">getStatus</span>, Collectors.<span class="hljs-params">groupingBy</span>((<span class="hljs-params">e</span>)</span> -&gt; &#123;
+                    <span class="hljs-keyword">if</span> (e.get<span class="hljs-constructor">Age()</span> &lt;= <span class="hljs-number">35</span>) &#123;
+                        return <span class="hljs-string">"青年"</span>;
+                    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e.get<span class="hljs-constructor">Age()</span> &lt;= <span class="hljs-number">50</span>) &#123;
+                        return <span class="hljs-string">"中年"</span>;
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        return <span class="hljs-string">"老年"</span>;
+                    &#125;
+                &#125;)));
+        <span class="hljs-comment">//分区</span>
+        Map&lt;Boolean, List&lt;Employee&gt;&gt; listMap = emps.stream<span class="hljs-literal">()</span>
+                .collect(<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Collectors</span>.</span></span>partitioning<span class="hljs-constructor">By((<span class="hljs-params">e</span>)</span> -&gt; e.get<span class="hljs-constructor">Salary()</span> &gt; <span class="hljs-number">5000</span>)); <span class="hljs-comment">// 满足条件的一个区，不满足条件的在另一个区</span>
+        <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">System</span>.</span></span>out.println(listMap);
+&#125;</code></pre>
+
+<p>最后还有获取运算结果的方式和连接：</p>
+<pre><code class="hljs java">DoubleSummaryStatistics dss = emps.stream()
+       .collect(Collectors.summarizingDouble(Employee::getSalary));
+   System.out.println(dss.getMax());
+   System.out.println(dss.getMin());
+   System.out.println(dss.getSum());
+   System.out.println(dss.getCount());
+   System.out.println(dss.getAverage());
+   
+   <span class="hljs-comment">// 将参数连接起来</span>
+   String str = emps.stream()
+       .map(Employee::getName)
+       .collect(Collectors.joining(<span class="hljs-string">"-"</span>));  <span class="hljs-comment">// 可传入分隔符，首尾需要接着添加两个参数</span>
+   System.out.println(str);</code></pre>
+
 
 
 
