@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.8k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      23
        分钟
     </span>
   
@@ -368,6 +368,93 @@ characterStream.forEach(System.out::println);</code></pre>
 
 <p>此处总结一下这里，等于说Map是把一个个的流放入一个新的流中，导致流的嵌套；而flatMap是将一个个流中的元素放入新的流中。（这样就好理解一些）</p>
 <p>类比于：集合中的add(Object obj)  addAll(Collection coll)方法。</p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><ul>
+<li>sorted()：自然排序(Comparable)</li>
+<li>sorted(Comparator c)：定制排序(Comparator)</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test7</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 自然排序</span>
+    List&lt;Integer&gt; list = Arrays.asList(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>);
+    list.stream()
+            .sorted() <span class="hljs-comment">//comparaTo()</span>
+            .forEach(System.out::println);
+    
+    <span class="hljs-comment">// 定制排序</span>
+    emps.stream()
+            .sorted((e1, e2) -&gt; &#123; <span class="hljs-comment">//compara()</span>
+                <span class="hljs-keyword">if</span> (e1.getAge().equals(e2.getAge()))&#123;
+                    <span class="hljs-keyword">return</span> e1.getName().compareTo(e2.getName());
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-keyword">return</span> e1.getAge().compareTo(e2.getAge());
+                &#125;
+            &#125;)
+            .forEach(System.out::println);
+&#125;</code></pre>
+
+<h2 id="终止操作"><a href="#终止操作" class="headerlink" title="终止操作"></a>终止操作</h2><ul>
+<li>allMatch：检查是否匹配所有元素</li>
+<li>anyMatch：检查是否至少匹配一个元素</li>
+<li>noneMatch：检查是否没有匹配所有元素</li>
+<li>findFirst：返回第一个元素</li>
+<li>findAny：返回当前流中的任意元素</li>
+<li>count：返回流中元素的总个数</li>
+<li>max：返回流中最大值</li>
+<li>min：返回流中最小值</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8</span><span class="hljs-params">()</span></span>&#123;
+    List&lt;Status&gt; list = Arrays.asList(Status.FREE, Status.BUSY, Status.VOCATION);
+
+    <span class="hljs-keyword">boolean</span> flag1 = list.stream()
+            .allMatch((s) -&gt; s.equals(Status.BUSY));
+    System.out.println(flag1);
+
+    <span class="hljs-keyword">boolean</span> flag2 = list.stream()
+            .anyMatch((s) -&gt; s.equals(Status.BUSY));
+    System.out.println(flag2);
+
+    <span class="hljs-keyword">boolean</span> flag3 = list.stream()
+            .noneMatch((s) -&gt; s.equals(Status.BUSY));
+    System.out.println(flag3);
+
+    <span class="hljs-comment">// 避免空指针异常</span>
+    Optional&lt;Status&gt; op1 = list.stream()
+            .findFirst();
+    <span class="hljs-comment">// 如果Optional为空 找一个替代的对象</span>
+    Status s1 = op1.orElse(Status.BUSY);
+    System.out.println(s1);
+
+    Optional&lt;Status&gt; op2 = list.stream()
+            .findAny();
+    System.out.println(op2);
+
+    <span class="hljs-keyword">long</span> count = list.stream()
+            .count();
+    System.out.println(count);
+
+    <span class="hljs-comment">// 获取最大工资的员工信息</span>
+    Optional&lt;Employee&gt; max = emps.stream()
+            .max((e1, e2) -&gt; Double.compare(e1.getSalary(), e2.getSalary()));
+    System.out.println(max.get());
+
+    <span class="hljs-comment">// 获取最小工资</span>
+    Optional&lt;Double&gt; min = emps.stream()
+            .map(Employee::getSalary)
+            .min(Double::compare);
+    System.out.println(min.get());
+&#125;</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </article>
             <hr>
