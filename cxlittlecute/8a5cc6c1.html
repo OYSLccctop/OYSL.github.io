@@ -366,7 +366,7 @@ Stream&lt;String&gt; stringStream = pattern.splitAsStream(<span class="hljs-stri
         .flatMap(GulimallProductApplicationTests::filterCharacter); <span class="hljs-comment">// 应用函数的效果，去掉大流整合成一个流&#123;a,b,c,b,c,c,a&#125;</span>
 characterStream.forEach(System.out::println);</code></pre>
 
-<p>此处总结一下这里，等于说Map是把一个个的流放入一个新的流中，导致流的嵌套；而flatMap是将一个个流中的元素放入新的流中。（这样就好理解一些）</p>
+<p>此处总结一下这里，等于说Map是把一个个的流放入一个新的流中，导致流的嵌套；而flatMap是将一个个流中的元素放入新的流中。（这样会好理解一些）</p>
 <p>类比于：集合中的add(Object obj)  addAll(Collection coll)方法。</p>
 <h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><ul>
 <li>sorted()：自然排序(Comparable)</li>
