@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>Lambda表达式 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-07-19 16:38">
+      2020年7月19日 下午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      679 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,103 +213,185 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 11 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/bbcf5ff7.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Lambda表达式</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/56a14e38.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HashMap理解总结</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8a5cc6c1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Stream知识用法总结</span>
-      <span style="float: right;">07-18</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/674d8191.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">GateWay网关访问服务出现503的问题解决</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4e6c6273.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/1d5383b1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云oss上传报错Invalid according to Policy Policy expired</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8ce042f1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo消除中文路径</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/61702.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Jenkins执行shell命令，提示command not found解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/10754.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云全站加速HTTPS证书无法开启问题解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/202.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云域名配置</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/07/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/07/page/2/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年7月19日 晚上
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h1><p>继续今天愉快的Java8之旅，Lambda表达式和Stream流是Java8中对Java影响最大的两个改变。</p>
+<h2 id="为什么要使用Lambda"><a href="#为什么要使用Lambda" class="headerlink" title="为什么要使用Lambda"></a>为什么要使用Lambda</h2><p>首先Lambda是钟匿名函数，它的表达式可以被当做方法传递的代码。然后它能使我们的编程风格更加简洁。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test12</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 原来的匿名内部类</span>
+    Comparator&lt;Integer&gt; comparator = <span class="hljs-keyword">new</span> Comparator&lt;Integer&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Integer o1, Integer o2)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> Integer.compare(o1,o2);
+        &#125;
+    &#125;;
+    TreeSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;(comparator);
+
+
+    <span class="hljs-comment">// Lambda 表达式</span>
+    Comparator&lt;Integer&gt; comparator2 = (a, b) -&gt; Integer.compare(a, b);
+    TreeSet&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> TreeSet&lt;&gt;(comparator2);
+&#125;</code></pre>
+
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>一、 Lambda表达式引入了一个新的操作符”-&gt;”，该操作符被称为箭头操作符或Lambda操作符。将表达式分为两个部分：</p>
+<p>左侧：表达式参数列表<br>右侧：表达式所要执行的功能，Lambda体</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test13</span><span class="hljs-params">()</span> </span>&#123;
+
+    <span class="hljs-comment">// 语法格式一：无参数，无返回值：() -&gt; sout</span>
+    Runnable r = ()-&gt; System.out.println(<span class="hljs-string">"hello Lambda"</span>); <span class="hljs-comment">// 同级别如果有变量仍然无法改变它的值</span>
+    r.run();
+
+    <span class="hljs-comment">// 语法格式二：有一个参数，无返回值</span>
+    Consumer&lt;String&gt; con = (x) -&gt; System.out.println(x);
+    con.accept(<span class="hljs-string">"test"</span>);
+
+    <span class="hljs-comment">// 语法格式三：有一个参数，无返回值 （小括号可以省略不写）</span>
+    Consumer&lt;String&gt; con2 = x -&gt; System.out.println(x);
+    con2.accept(<span class="hljs-string">"test"</span>);
+
+    <span class="hljs-comment">// 语法格式四：有两个及以上的参数，有返回值，并且 Lambda 体中有多条语句（用&#123;&#125;括起来）</span>
+    Comparator&lt;Integer&gt; com = (x,y) -&gt; &#123;
+        System.out.println(<span class="hljs-string">"多个参数并且有多条语句"</span>);
+        <span class="hljs-keyword">return</span> Integer.compare(x, y);
+    &#125;;
+
+    <span class="hljs-comment">// 语法格式五：有两个及以上的参数，有返回值，并且 Lambda 体中只有1条语句 （大括号 与 return 都可以省略不写）</span>
+    Comparator&lt;Integer&gt; com2 = (x,y) -&gt; Integer.compare(x, y);
+
+    <span class="hljs-comment">// 语法格式六：Lambda 表达式参数的数据类型可以省略不写，因为 Jvm编译器可以通过上下文推断出数据类型- “类型推断”（要写类型全部参数都必须要写）</span>
+    Comparator&lt;Integer&gt; com3 = (Integer x,Integer y) -&gt; Integer.compare(x, y);
+&#125;</code></pre>
+
+<p>口诀：<br>左右遇一括号省<br>左侧推断类型省</p>
+<h2 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h2><p>Lambda表达式需要函数式接口的支持。</p>
+<h3 id="什么是函数式接口"><a href="#什么是函数式接口" class="headerlink" title="什么是函数式接口"></a>什么是函数式接口</h3><p>若接口中只有一个抽象方法的接口，称为函数式接口。可以使用注解@FunctionalInterface修饰,可以检查是否是函数式接口。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 定义一个函数式接口</span>
+<span class="hljs-meta">@FunctionalInterface</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">MyFun</span> </span>&#123;
+
+    <span class="hljs-function">Integer <span class="hljs-title">count</span><span class="hljs-params">(Integer a, Integer b)</span></span>;
+&#125;</code></pre>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">operation</span><span class="hljs-params">(Integer a, Integer b, MyFun myFun)</span></span>&#123;
+    <span class="hljs-keyword">return</span> myFun.count(a, b); <span class="hljs-comment">// 这样可以定义两个起始值</span>
+&#125;
+
+<span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test06</span><span class="hljs-params">()</span></span>&#123;
+    Integer result = operation(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, (x, y) -&gt; x + y);
+    System.out.println(result);
+&#125;</code></pre>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java8/">Java8</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java8/">Java8</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/56a14e38.html">
+                        <span class="hidden-mobile">HashMap理解总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -514,10 +647,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/07/index.html');
+          var target = decodeURI('/cxlittlecute/bbcf5ff7.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -579,6 +712,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -586,7 +744,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "Lambda表达式&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -601,6 +759,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -614,6 +787,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
