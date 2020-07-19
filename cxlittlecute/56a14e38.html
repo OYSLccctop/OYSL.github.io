@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 字
+      2.7k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      28
+      30
        分钟
     </span>
   
@@ -312,6 +312,8 @@ tab[i = (n - <span class="hljs-number">1</span>) &amp; hash]</code></pre>
 <p>因为不为2的n次幂 的话，对应的二进制数肯定有一位为0 , 这样不管你的hashCode 值对应的该位，是0还是1 ,</p>
 <p>最终得到的该位上的数肯定是0，这带来的问题就是HashMap上的数组元素分布不均匀，而数组上的某些位置，永远也用不到。</p>
 <p>这将带来的问题就是你的HashMap 数组的利用率太低，并且链表可能因为上边的(n - 1) &amp; hash 运算结果碰撞率过高，导致链表太深。(当然jdk 1.8已经在链表数据超过8个以后转换成了红黑树的操作，但那样也很容易造成它们之间的转换时机的提前到来)，所以说HashMap的长度一定是2的次幂，否则会出现性能问题。</p>
+<h3 id="扩容因子为什么是0-75？"><a href="#扩容因子为什么是0-75？" class="headerlink" title="扩容因子为什么是0.75？"></a>扩容因子为什么是0.75？</h3><p>假设hash函数是理想的，数据会通过hash函数均匀的映射到数组上。一个数据映射到每一个桶（bucket）的概率是相等的。那么在任意的数组容量下，put一个数据发生碰撞的概率=数组元素个数/数组容量。</p>
+<p>设置为0.75是做好了时间和空间的权衡的，因为扩容因子越大，碰撞的概率也就越大，发生碰撞后的代价也更大，结果导致效率也大打折扣。所以设置为0.75空间利用率比较高，而且避免了相当多的Hash冲突，使得底层的链表或者是红黑树的高度比较低，提升了空间效率。</p>
 <h3 id="底层实现原理的区别"><a href="#底层实现原理的区别" class="headerlink" title="底层实现原理的区别"></a>底层实现原理的区别</h3><h4 id="JDK7"><a href="#JDK7" class="headerlink" title="JDK7"></a>JDK7</h4><p>HashMap map = new HashMap();<br>在实例化以后，底层创建一个长度是16的一维数组Entry[] table。<br>…put很多次后…</p>
 <p>map.put(key1,value1);</p>
 <p>首先，调用key1所在类的hashcode计算key1哈希值，此哈希值经过某种算法后，得到在Entry数组中的存放位置。</p>
