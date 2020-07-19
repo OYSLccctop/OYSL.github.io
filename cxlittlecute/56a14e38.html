@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.5k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      28
        分钟
     </span>
   
@@ -305,6 +305,13 @@
 <p>而在jdk1.8中虽然扩容之后的数组和1.7是一样的，但是在计算元素位置的方式上不太一样，jdk1.7需要与新的数组长度进行重新hash运算，这个方式是相对耗性能的，而在1.8中对这一步进行了优化。</p>
 <p>在1.8中我们使用的是2次幂的扩展(指长度扩为原来2倍)，所以，经过rehash之后，元素的位置要么是在原位置，要么是在原位置再移动2次幂的位置。因此，我们在扩充HashMap的时候，不需要像JDK1.7的实现那样重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“原索引+oldCap”。</p>
 <p>这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。这一块就是JDK1.8新增的优化点。有一点注意区别，JDK1.7中rehash的时候，旧链表迁移新链表的时候，如果在新表的数组索引位置相同，则链表元素会倒置，但是从上图可以看出，JDK1.8不会倒置。</p>
+<h3 id="为什么HashMap的数组长度一定是2的次幂？"><a href="#为什么HashMap的数组长度一定是2的次幂？" class="headerlink" title="为什么HashMap的数组长度一定是2的次幂？"></a>为什么HashMap的数组长度一定是2的次幂？</h3><pre><code class="hljs java"><span class="hljs-comment">// Java8中计算数组索引下标的位置</span>
+tab[i = (n - <span class="hljs-number">1</span>) &amp; hash]</code></pre>
+<p>因为hashMap 的数组长度都是2的n次幂 ，那么对于这个数再减去1，转换成二进制的话，就肯定是最高位为0，其他位全是1 的数。</p>
+<p>以Java8为例当数组长度不为2的n次幂 的时候，hashCode 值与数组长度减一做与运算的时候，会出现重复的数据，</p>
+<p>因为不为2的n次幂 的话，对应的二进制数肯定有一位为0 , 这样不管你的hashCode 值对应的该位，是0还是1 ,</p>
+<p>最终得到的该位上的数肯定是0，这带来的问题就是HashMap上的数组元素分布不均匀，而数组上的某些位置，永远也用不到。</p>
+<p>这将带来的问题就是你的HashMap 数组的利用率太低，并且链表可能因为上边的(n - 1) &amp; hash 运算结果碰撞率过高，导致链表太深。(当然jdk 1.8已经在链表数据超过8个以后转换成了红黑树的操作，但那样也很容易造成它们之间的转换时机的提前到来)，所以说HashMap的长度一定是2的次幂，否则会出现性能问题。</p>
 <h3 id="底层实现原理的区别"><a href="#底层实现原理的区别" class="headerlink" title="底层实现原理的区别"></a>底层实现原理的区别</h3><h4 id="JDK7"><a href="#JDK7" class="headerlink" title="JDK7"></a>JDK7</h4><p>HashMap map = new HashMap();<br>在实例化以后，底层创建一个长度是16的一维数组Entry[] table。<br>…put很多次后…</p>
 <p>map.put(key1,value1);</p>
 <p>首先，调用key1所在类的hashcode计算key1哈希值，此哈希值经过某种算法后，得到在Entry数组中的存放位置。</p>
@@ -312,13 +319,14 @@
 <pre><code>如果key的哈希值与已存在数据的哈希值不同，添加成功。
 如果key的哈希值与已存在数据的哈希值相同，继续使用equals方法比较：
     如果equals返回false，此时key添加成功。
-    如果equals返回true，此时value1替换value2。</code></pre><h4 id="JDK8"><a href="#JDK8" class="headerlink" title="JDK8"></a>JDK8</h4><ol>
+    如果equals返回true，此时value1替换value2。</code></pre><p>扩容的方式是将老数组中的数据逐个链表地遍历，扔到新的扩容后的数组中，我们的数组索引位置的计算是通过 对key值的hashcode进行hash扰乱运算后，再通过和 length-1进行位运算得到最终数组索引位置。</p>
+<h4 id="JDK8"><a href="#JDK8" class="headerlink" title="JDK8"></a>JDK8</h4><ol>
 <li>new HashMap刚开始时底层没有创建一个长度为16的数组</li>
 <li>底层数组不是Entry[]，变为了Node[]</li>
 <li>首次调用put（）方法时，底层创建长度为16的数组</li>
 <li>jdk7底层结构：数组+链表，jdk8底层结构：数组+链表+红黑树<br>当数组的某一个索引位置上的以链表形式存在的个数&gt;8且当前数组的长度&gt;64，此时此索引位置上的所有数据改为使用红黑树存储。</li>
 </ol>
-<p>参考：<br><a href="https://blog.csdn.net/qq32933432/article/details/86668385" target="_blank" rel="noopener">https://blog.csdn.net/qq32933432/article/details/86668385</a><br><a href="https://blog.csdn.net/liyantianmin/article/details/79401854" target="_blank" rel="noopener">https://blog.csdn.net/liyantianmin/article/details/79401854</a><br><a href="https://blog.csdn.net/qq_36520235/article/details/82417949" target="_blank" rel="noopener">https://blog.csdn.net/qq_36520235/article/details/82417949</a></p>
+<p>参考：<br><a href="https://blog.csdn.net/qq32933432/article/details/86668385" target="_blank" rel="noopener">https://blog.csdn.net/qq32933432/article/details/86668385</a><br><a href="https://blog.csdn.net/liyantianmin/article/details/79401854" target="_blank" rel="noopener">https://blog.csdn.net/liyantianmin/article/details/79401854</a><br><a href="https://blog.csdn.net/qq_36520235/article/details/82417949" target="_blank" rel="noopener">https://blog.csdn.net/qq_36520235/article/details/82417949</a><br><a href="https://blog.csdn.net/Tane_1018/article/details/103392267" target="_blank" rel="noopener">https://blog.csdn.net/Tane_1018/article/details/103392267</a><br><a href="https://www.jianshu.com/p/ee0de4c99f87" target="_blank" rel="noopener">https://www.jianshu.com/p/ee0de4c99f87</a></p>
 
             </article>
             <hr>
