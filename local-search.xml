@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>接口中的默认方法与静态方法</title>
+    <link href="/cxlittlecute/bf52b93a.html"/>
+    <url>/cxlittlecute/bf52b93a.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="接口中的默认方法与静态方法"><a href="#接口中的默认方法与静态方法" class="headerlink" title="接口中的默认方法与静态方法"></a>接口中的默认方法与静态方法</h1><p>大家查看Java8中源码经常会看到接口中被default修饰的方法。<br>在之前接口中只能存在全局静态常量和抽象方法。<br>而现在Java8中可以有被default修饰的方法。</p><h2 id="为什么要使用default修饰接口中的方法"><a href="#为什么要使用default修饰接口中的方法" class="headerlink" title="为什么要使用default修饰接口中的方法"></a>为什么要使用default修饰接口中的方法</h2><p>引入default主要目的是为了实现接口的升级。因为在原有的Java代码框架中，如果要对接口进行升级就会导致所有接口的实现类都要被<br>修改，这就很麻烦了。</p><p>那么我们在接口内部包含了一些默认的方法实现，为了解决接口的修改与现有的实现不兼容的问题。</p><p>默认方法能够向库的接口添加新功能，并确保与为这些接口的旧版本编写的代码兼容。并且不用在其子类进行逐个实现。</p><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>创建接口Interface,并且在接口Interface1中定义默认方法helloWorld()。</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Interface</span></span>&#123;    <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;        System.out.println(<span class="hljs-string">"test"</span>);    &#125;&#125;</code></pre><p>编写一个类实现接口Interface1,并调用接口中定义的默认方法helloWorld()：</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface</span></span>&#123;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();        <span class="hljs-comment">//直接调用helloWorld()方法</span>        myImplement.helloWorld();    &#125;&#125;</code></pre><p>执行结果直接输出HelloWorld中的内容。</p><h2 id="类优先原则"><a href="#类优先原则" class="headerlink" title="类优先原则"></a>类优先原则</h2><p>若一个接口中定义了一个默认方法，而另一个接口或父类中又定义了一个同名的方法时。</p><ul><li><p>选择父类中的方法。如果一个父类提供了具体的实现，那么接口中具有相同名称和参数的默认方法会被忽略。</p></li><li><p>接口冲突。如果父接口提供一个默认方法，而另一个接口也提供了一个具有相同名称和参数列表的方法。（不管方法是否是默认方法），那么必须覆盖该方法来解决冲突。（也就是在实现类中重写该方法）</p></li></ul><p>类优先于接口:</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Interface2</span></span>&#123;    <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;        System.out.println(<span class="hljs-string">"hi i'm from Interface2"</span>);    &#125;&#125;<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface2</span></span>&#123;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;        MyImplement2 myImplement2 = <span class="hljs-keyword">new</span> MyImplement2();        myImplement2.helloWorld();    &#125;    <span class="hljs-comment">// 结果是MyImplement执行的结果，因为类优先于接口</span>&#125;</code></pre><p>同时实现两个接口：</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface1</span>,<span class="hljs-title">Interface2</span></span>&#123;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();        <span class="hljs-comment">//直接调用helloWorld()方法</span>        myImplement.helloWorld();    &#125;&#125;</code></pre><p>上面这样同时实现两个接口，恰好两个接口定义的默认方法相同，所以编译器不知道应该执行哪一个就会报错，解决办法就是在实现类中重写该方法：</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface1</span>,<span class="hljs-title">Interface2</span> </span>&#123;    <span class="hljs-meta">@Override</span>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;        System.out.println(<span class="hljs-string">"testtest"</span>);    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();        myImplement.helloWorld();    &#125;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Optional类</title>
     <link href="/cxlittlecute/2df787ac.html"/>
     <url>/cxlittlecute/2df787ac.html</url>

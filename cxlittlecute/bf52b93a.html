@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>接口中的默认方法与静态方法 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-07-20 09:27">
+      2020年7月20日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      702 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,103 +213,185 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 15 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/bf52b93a.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">接口中的默认方法与静态方法</span>
-      <span style="float: right;">07-20</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/2df787ac.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Optional类</span>
-      <span style="float: right;">07-20</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/caf276df.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">方法引用和构造器引用</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/860e391d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">四大内置核心函数式接口</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/bbcf5ff7.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Lambda表达式</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/56a14e38.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HashMap理解总结</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8a5cc6c1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Stream知识用法总结</span>
-      <span style="float: right;">07-18</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/674d8191.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">GateWay网关访问服务出现503的问题解决</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4e6c6273.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/1d5383b1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云oss上传报错Invalid according to Policy Policy expired</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/07/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/07/page/2/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年7月20日 上午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="接口中的默认方法与静态方法"><a href="#接口中的默认方法与静态方法" class="headerlink" title="接口中的默认方法与静态方法"></a>接口中的默认方法与静态方法</h1><p>大家查看Java8中源码经常会看到接口中被default修饰的方法。<br>在之前接口中只能存在全局静态常量和抽象方法。<br>而现在Java8中可以有被default修饰的方法。</p>
+<h2 id="为什么要使用default修饰接口中的方法"><a href="#为什么要使用default修饰接口中的方法" class="headerlink" title="为什么要使用default修饰接口中的方法"></a>为什么要使用default修饰接口中的方法</h2><p>引入default主要目的是为了实现接口的升级。因为在原有的Java代码框架中，如果要对接口进行升级就会导致所有接口的实现类都要被<br>修改，这就很麻烦了。</p>
+<p>那么我们在接口内部包含了一些默认的方法实现，为了解决接口的修改与现有的实现不兼容的问题。</p>
+<p>默认方法能够向库的接口添加新功能，并确保与为这些接口的旧版本编写的代码兼容。并且不用在其子类进行逐个实现。</p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>创建接口Interface,并且在接口Interface1中定义默认方法helloWorld()。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Interface</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"test"</span>);
+    &#125;
+&#125;</code></pre>
+
+<p>编写一个类实现接口Interface1,并调用接口中定义的默认方法helloWorld()：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();
+        <span class="hljs-comment">//直接调用helloWorld()方法</span>
+        myImplement.helloWorld();
+    &#125;
+&#125;</code></pre>
+<p>执行结果直接输出HelloWorld中的内容。</p>
+<h2 id="类优先原则"><a href="#类优先原则" class="headerlink" title="类优先原则"></a>类优先原则</h2><p>若一个接口中定义了一个默认方法，而另一个接口或父类中又定义了一个同名的方法时。</p>
+<ul>
+<li><p>选择父类中的方法。如果一个父类提供了具体的实现，那么接口中具有相同名称和参数的默认方法会被忽略。</p>
+</li>
+<li><p>接口冲突。如果父接口提供一个默认方法，而另一个接口也提供了一个具有相同名称和参数列表的方法。（不管方法是否是默认方法），那么必须覆盖该方法来解决冲突。（也就是在实现类中重写该方法）</p>
+</li>
+</ul>
+<p>类优先于接口:</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Interface2</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"hi i'm from Interface2"</span>);
+    &#125;
+&#125;
+
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface2</span></span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        MyImplement2 myImplement2 = <span class="hljs-keyword">new</span> MyImplement2();
+        myImplement2.helloWorld();
+    &#125;
+    <span class="hljs-comment">// 结果是MyImplement执行的结果，因为类优先于接口</span>
+&#125;</code></pre>
+<p>同时实现两个接口：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface1</span>,<span class="hljs-title">Interface2</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();
+        <span class="hljs-comment">//直接调用helloWorld()方法</span>
+        myImplement.helloWorld();
+    &#125;
+&#125;</code></pre>
+<p>上面这样同时实现两个接口，恰好两个接口定义的默认方法相同，所以编译器不知道应该执行哪一个就会报错，解决办法就是在实现类中重写该方法：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImplement</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Interface1</span>,<span class="hljs-title">Interface2</span> </span>&#123;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">helloWorld</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"testtest"</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        MyImplement myImplement = <span class="hljs-keyword">new</span> MyImplement();
+        myImplement.helloWorld();
+    &#125;
+&#125;</code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java8/">Java8</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java8/">Java8</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/2df787ac.html">
+                        <span class="hidden-mobile">Optional类</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -514,10 +647,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/07/index.html');
+          var target = decodeURI('/cxlittlecute/bf52b93a.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -579,6 +712,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -586,7 +744,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "接口中的默认方法与静态方法&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -601,6 +759,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -614,6 +787,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
