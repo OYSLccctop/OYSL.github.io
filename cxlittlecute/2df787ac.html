@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      578 字
+      918 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      12
        分钟
     </span>
   
@@ -285,6 +285,41 @@
     Optional&lt;String&gt; str = op.flatMap((e) -&gt; Optional.of(e.getName())); <span class="hljs-comment">// 进一步防止空指针异常</span>
     System.out.println(str.get());
 &#125;</code></pre>
+
+<p>总结：<br>Optional类给我进行空指针异常的判断提供了很大的便利，之前我们判断空指针异常大多数情况下都是使用if(xxx != null)进行判断，然后根据不同的情况，返回不同的值。</p>
+<p>但是这种使用if的情况，如果需要判断的属性很多，那么if就会出现嵌套很冗余的情况，大量的if反而影响可读性。</p>
+<p>现在有了Java8以后我们就可以选择Optional类，所以我们可以对我们的类属性进行Optional包装。</p>
+<p>下面我们看一个实例，获取男人女神的名字，我通过两种方式避免空指针异常：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewMan</span> </span>&#123;
+    <span class="hljs-comment">// Optional也属于对象，所以我们不能赋值为null，这样就没有意义了（它自己调用自己的方法也是null），所以我们可以创建一个空的Optional实例</span>
+    <span class="hljs-keyword">private</span> Optional&lt;Godness&gt; godness = Optional.empty();
+&#125;
+
+<span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Godness</span> </span>&#123;
+    <span class="hljs-keyword">private</span> String name;
+&#125;</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">(Optional&lt;NewMan&gt; newMan)</span></span>&#123;
+    <span class="hljs-keyword">return</span> newMan.orElse(<span class="hljs-keyword">new</span> NewMan())
+            .getGodness()
+            .orElse(<span class="hljs-keyword">new</span> Godness(<span class="hljs-string">"波多野菊衣"</span>));
+            .getName();
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">(Man man)</span></span>&#123;
+    <span class="hljs-keyword">if</span> (man != <span class="hljs-keyword">null</span>)&#123;
+        Godness gn = man.getGodness;
+        <span class="hljs-keyword">if</span> (gn != <span class="hljs-keyword">null</span>)&#123;
+            <span class="hljs-keyword">return</span> gn.getName;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"波多野菊衣"</span>;
+&#125;</code></pre>
+
+<p>通过以上两种方式都可以在对象为null的时候设置默认值避免空指针异常。</p>
+
             </article>
             <hr>
             <div>
