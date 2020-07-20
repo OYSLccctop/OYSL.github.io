@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>重复注解和类型注解</title>
+    <link href="/cxlittlecute/d1ceb33.html"/>
+    <url>/cxlittlecute/d1ceb33.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="重复注解和类型注解"><a href="#重复注解和类型注解" class="headerlink" title="重复注解和类型注解"></a>重复注解和类型注解</h1><p>Java8对注解的处理也发生了两点改变：可重复的注解和可用于类型的注解</p><p>要想定义重复注解，该注解必须使用Repeatable修饰一下，同时指定它的容器类。</p><pre><code class="hljs java"><span class="hljs-meta">@Repeatable</span>(MyAnnotations<span class="hljs-class">.<span class="hljs-keyword">class</span>) //指定容器类</span><span class="hljs-class">@<span class="hljs-title">Target</span>(</span>&#123;ElementType.TYPE, ElementType.METHOD,  ElementType.FIELD&#125;)<span class="hljs-meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyAnnotation &#123;    <span class="hljs-function">String <span class="hljs-title">value</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> "Java 8"</span>;&#125;<span class="hljs-comment">// 定义容器</span><span class="hljs-meta">@Target</span>(&#123;ElementType.TYPE, ElementType.METHOD,  ElementType.FIELD&#125;)<span class="hljs-meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyAnnotations &#123;    MyAnnotation[] value();&#125;</code></pre><p>然后配合反射去使用：</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> </span>&#123;    <span class="hljs-comment">//重复注解</span>    <span class="hljs-meta">@Test</span>    <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"Hello"</span>)    <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"World"</span>)    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test01</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> NoSuchMethodException </span>&#123;        <span class="hljs-comment">// 获取bean class实例</span>        Class&lt;Test&gt; clazz = Test<span class="hljs-class">.<span class="hljs-keyword">class</span></span>;        Method test = clazz.getMethod(<span class="hljs-string">"test"</span>);        MyAnnotation[] mas = test.getAnnotationsByType(MyAnnotation<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;        <span class="hljs-keyword">for</span> (MyAnnotation ma : mas) &#123;            System.out.println(ma.value()); <span class="hljs-comment">// 就能把注解内容获取</span>        &#125;    &#125;&#125;</code></pre><p>类型注解：</p><pre><code class="java"><span class="meta">@Repeatable</span>(MyAnnotations<span class="class">.<span class="keyword">class</span>) </span><span class="class">@<span class="title">Target</span>(</span>{ElementType.TYPE, ElementType.METHOD,  ElementType.FIELD})  <span class="comment">// 这里</span><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation {    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> "Java 8"</span>;}</code></pre><p>新增ElementType.TYPE_USE 和ElementType.TYPE_PARAMETER（在Target上）</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>新时间日期API</title>
     <link href="/cxlittlecute/aed0d4.html"/>
     <url>/cxlittlecute/aed0d4.html</url>
