@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>新时间日期API</title>
+    <link href="/cxlittlecute/aed0d4.html"/>
+    <url>/cxlittlecute/aed0d4.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="新时间日期API"><a href="#新时间日期API" class="headerlink" title="新时间日期API"></a>新时间日期API</h1><p>之前经常使用的Data和Calendar等时间API其实并不怎么好用，麻烦而且存在线程安全问题，所以在JAVA8推出了新的API接口。</p><p>全新的API是不可变的线程安全的。</p><p>时间操作是我们写程序经常会用到的API，所以通过这篇文章进行一个总结。</p><ul><li>LocalDate LocalTime LocalDateTime 它们的使用方式都一样  注意都是产生新的实例</li></ul><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-comment">//获取当前时间日期 now</span>    LocalDateTime ldt1 = LocalDateTime.now();    System.out.println(ldt1);    <span class="hljs-comment">//指定时间日期 of</span>    LocalDateTime ldt2 = LocalDateTime.of(<span class="hljs-number">2020</span>, <span class="hljs-number">05</span>, <span class="hljs-number">17</span>, <span class="hljs-number">16</span>, <span class="hljs-number">24</span>, <span class="hljs-number">33</span>);    System.out.println(ldt2);    <span class="hljs-comment">//加 plus</span>    LocalDateTime ldt3 = ldt2.plusYears(<span class="hljs-number">2</span>);    System.out.println(ldt3);    <span class="hljs-comment">//减 minus</span>    LocalDateTime ldt4 = ldt2.minusMonths(<span class="hljs-number">3</span>);    System.out.println(ldt4);    <span class="hljs-comment">//获取指定的你年月日时分秒... get</span>    System.out.println(ldt2.getDayOfYear());    System.out.println(ldt2.getHour());    System.out.println(ldt2.getSecond());    System.out.println(ldt2.getYear());&#125;</code></pre><ul><li>Instant:时间戳（以 Unix 元年 1970-01-01 00:00:00 到某个时间之间的毫秒值）</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>接口中的默认方法与静态方法</title>
     <link href="/cxlittlecute/bf52b93a.html"/>
     <url>/cxlittlecute/bf52b93a.html</url>
