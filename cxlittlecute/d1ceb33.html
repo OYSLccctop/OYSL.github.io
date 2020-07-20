@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      232 字
+      279 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      4
        分钟
     </span>
   
@@ -255,11 +255,11 @@
     <span class="hljs-meta">@Test</span>
     <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"Hello"</span>)
     <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"World"</span>)
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test01</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> NoSuchMethodException </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> NoSuchMethodException </span>&#123;
         <span class="hljs-comment">// 获取bean class实例</span>
         Class&lt;Test&gt; clazz = Test<span class="hljs-class">.<span class="hljs-keyword">class</span></span>;
-        Method test = clazz.getMethod(<span class="hljs-string">"test"</span>);
-        MyAnnotation[] mas = test.getAnnotationsByType(MyAnnotation<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        Method test1 = clazz.getMethod(<span class="hljs-string">"test1"</span>);
+        MyAnnotation[] mas = test1.getAnnotationsByType(MyAnnotation<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
         <span class="hljs-keyword">for</span> (MyAnnotation ma : mas) &#123;
             System.out.println(ma.value()); <span class="hljs-comment">// 就能把注解内容获取</span>
         &#125;
@@ -268,16 +268,26 @@
 
 
 <p>类型注解：</p>
-<pre><code class="java"><span class="meta">@Repeatable</span>(MyAnnotations<span class="class">.<span class="keyword">class</span>) </span>
-<span class="class">@<span class="title">Target</span>(</span>{ElementType.TYPE, ElementType.METHOD,  ElementType.FIELD})  <span class="comment">// 这里</span>
-<span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)
-<span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation {
+<pre><code class="hljs java"><span class="hljs-meta">@Repeatable</span>(MyAnnotations<span class="hljs-class">.<span class="hljs-keyword">class</span>) </span>
+<span class="hljs-class">@<span class="hljs-title">Target</span>(</span>&#123;ElementType.TYPE, ElementType.METHOD,  ElementType.FIELD&#125;)  <span class="hljs-comment">// 这里</span>
+<span class="hljs-meta">@Retention</span>(RetentionPolicy.RUNTIME)
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyAnnotation &#123;
 
-    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> "Java 8"</span>;
-}
-</code></pre>
-<p>新增ElementType.TYPE_USE 和ElementType.TYPE_PARAMETER（在Target上）</p>
+    <span class="hljs-function">String <span class="hljs-title">value</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> "Java 8"</span>;
+&#125;
 
+``` 
+新增ElementType.TYPE_USE 和ElementType.TYPE_PARAMETER（在Target上）。
+设置之后我们就可以在参数类型前面添加注解了：
+``` java
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> </span>&#123;
+
+    <span class="hljs-comment">//重复注解</span>
+    <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"Hello"</span>)
+    <span class="hljs-meta">@MyAnnotation</span>(<span class="hljs-string">"World"</span>)
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">( @MyAnnotation(<span class="hljs-string">"java"</span>)</span> String str) </span>&#123;
+
+&#125;</code></pre>
             </article>
             <hr>
             <div>
