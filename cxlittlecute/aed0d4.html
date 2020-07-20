@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      500 字
+      968 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      14
        分钟
     </span>
   
@@ -314,6 +314,79 @@
     System.out.println(period.getYears());
     System.out.println(period.getMonths());
 &#125;</code></pre>
+<h2 id="时间校正器"><a href="#时间校正器" class="headerlink" title="时间校正器"></a>时间校正器</h2><ul>
+<li>TemporalAdjuster：时间校正器。有时我们需要调整日期为想要的时间。这个类是一个接口。</li>
+<li>TemporalAdjusters：该类提供了很多静态方法进行实现。</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">TemporalAdjuster</span> </span>&#123;
+    <span class="hljs-function">Temporal <span class="hljs-title">adjustInto</span><span class="hljs-params">(Temporal var1)</span></span>;
+&#125;</code></pre>
+
+<p>这里提一下Temporal接口，大家可以看一下LocalDate这些本地时间操作的源码，它是实现了这个Temporal这个接口的，所以Temporal可以根据实际需求表示为日期、时间或两者组合。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test5</span><span class="hljs-params">()</span></span>&#123;
+    LocalDateTime now = LocalDateTime.now();
+    <span class="hljs-comment">// 将月中的天数指定为想要的天数</span>
+    <span class="hljs-comment">// 改为本月十号</span>
+    LocalDateTime localDateTime = now.withDayOfMonth(<span class="hljs-number">10</span>);
+    <span class="hljs-comment">// with（）传递一个时间校正器</span>
+    <span class="hljs-comment">// 下一个周五是什么时候</span>
+    LocalDateTime with = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+    System.out.println(with);
+&#125;</code></pre>
+
+<p>我们可以根据源码看出TemporalAdjuster是一个函数式接口，那么我们可以通过自定义时间来判断多久是下一个工作日：</p>
+<pre><code class="hljs java">LocalDateTime with1 = now2.with((t) -&gt; &#123;
+    LocalDateTime ldt4 = (LocalDateTime) t;
+    DayOfWeek dow1 = ldt4.getDayOfWeek();
+    <span class="hljs-keyword">if</span> (dow1.equals(DayOfWeek.FRIDAY)) &#123;
+        <span class="hljs-keyword">return</span> ldt4.plusDays(<span class="hljs-number">3</span>);
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dow1.equals(DayOfWeek.SATURDAY)) &#123;
+        <span class="hljs-keyword">return</span> ldt4.plusDays(<span class="hljs-number">2</span>);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> ldt4.plusDays(<span class="hljs-number">1</span>);
+    &#125;
+&#125;);
+System.out.println(with1);</code></pre>
+
+<h2 id="时间格式化"><a href="#时间格式化" class="headerlink" title="时间格式化"></a>时间格式化</h2><p>-DateTimeFormatter：格式化时间 / 日期</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test6</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// DateTimeFormatter后能选择很多种格式化的方式</span>
+    DateTimeFormatter dtf1 = DateTimeFormatter.ISO_DATE_TIME;
+    LocalDateTime ldt1 = LocalDateTime.now();
+    String str1 = ldt1.format(dtf1);
+    System.out.println(str1);
+
+    <span class="hljs-comment">//自定义格式化 ofPattern</span>
+    DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern(<span class="hljs-string">"yyyy-MM-dd HH:mm:ss"</span>);
+    LocalDateTime ldt2 = LocalDateTime.now();
+    String str2 = ldt2.format(dtf2);
+    System.out.println(str2);
+
+    <span class="hljs-comment">//解析回去 </span>
+    LocalDateTime newDate = ldt1.parse(str1, dtf1);
+    System.out.println(newDate);
+&#125;</code></pre>
+
+<h2 id="时区操作"><a href="#时区操作" class="headerlink" title="时区操作"></a>时区操作</h2><ul>
+<li>ZonedDate</li>
+<li>ZonedTime</li>
+<li>ZonedDateTime<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test7</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">//查看支持的所有时区</span>
+    Set&lt;String&gt; set = ZoneId.getAvailableZoneIds();
+    set.forEach(System.out::println);
+
+    <span class="hljs-comment">//指定时区 构建时间</span>
+    LocalDateTime ldt1 = LocalDateTime.now(ZoneId.of(<span class="hljs-string">"Europe/Tallinn"</span>));
+    System.out.println(ldt1);
+
+    <span class="hljs-comment">//在已构建好的日期时间上指定时区</span>
+    LocalDateTime ldt2 = LocalDateTime.now(ZoneId.of(<span class="hljs-string">"Europe/Tallinn"</span>));
+    ZonedDateTime zdt1 = ldt2.atZone(ZoneId.of(<span class="hljs-string">"Europe/Tallinn"</span>));
+    System.out.println(ldt2);
+    System.out.println(zdt1);
+&#125;</code></pre></li>
+</ul>
 
             </article>
             <hr>
