@@ -55,7 +55,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong> </strong>&nbsp;</a>
+       href="/">&nbsp;<strong>献给正在打拼的你，未来可期！</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      901 字
+      1k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      12
        分钟
     </span>
   
@@ -230,7 +230,7 @@
               </p>
             
             <article class="markdown-body">
-              <p>在Java中经常会涉及到对象的排序问题，对于对象正常情况下，只能比较 == 或 ！=，不能使用 &gt; 或 &lt;，但是在实际开发中，我们又需要对多个对象进行排序，那么就涉及到对象之间的比较大小的问题。那么实现方为以下两种。</p>
+              <h1 id="Comparable、Comparator、compareTo-、compare的区别和联系"><a href="#Comparable、Comparator、compareTo-、compare的区别和联系" class="headerlink" title="Comparable、Comparator、compareTo 、compare的区别和联系"></a>Comparable、Comparator、compareTo 、compare的区别和联系</h1><p>在Java中经常会涉及到对象的排序问题，对于对象正常情况下，只能比较 == 或 ！=，不能使用 &gt; 或 &lt;，但是在实际开发中，我们又需要对多个对象进行排序，那么就涉及到对象之间的比较大小的问题。那么实现方为以下两种。</p>
 <p>Java实现对象排序的方式有两种：</p>
 <ul>
 <li>自然排序：java.lang.Comparable</li>
@@ -253,7 +253,7 @@
     &#125;;
 &#125;</code></pre>
 
-<h1 id="Comparable自然排序"><a href="#Comparable自然排序" class="headerlink" title="Comparable自然排序"></a>Comparable自然排序</h1><p>默认的时候一般会考虑Comparable。</p>
+<h2 id="Comparable自然排序"><a href="#Comparable自然排序" class="headerlink" title="Comparable自然排序"></a>Comparable自然排序</h2><p>默认的时候一般会考虑Comparable。</p>
 <p>Comparable接口的举例说明：</p>
 <ul>
 <li><p>我们一些包装类已经替我们实现了Comparable接口，重写了compareTo方法，我们就能对他们的对象进行大小比较。</p>
@@ -333,6 +333,9 @@
     &#125;
 &#125;</code></pre>
 <p>注意：实现Comparable接口等于说是在类的基础上做的修改。同时实现了Comparable接口的类的对象的列表或数组可以通过Collections.sort或Arrays.sort进行自动排序。</p>
+<h2 id="Comparator定制排序"><a href="#Comparator定制排序" class="headerlink" title="Comparator定制排序"></a>Comparator定制排序</h2><h3 id="什么时候使用Comparator"><a href="#什么时候使用Comparator" class="headerlink" title="什么时候使用Comparator"></a>什么时候使用Comparator</h3><p>当元素的类型没有实现Comparable接口而又不方便修改代码，或者实现了Comparable接口的排序规则不适合当前的操作，那么我们可以考虑使用Comparator的对象来排序。</p>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>重写compare(Object o1,Object o2)方法。</p>
+<p>如果方法返回正整数，则表示o1大于o2；<br>如果返回0,表示相等；<br>如果返回负整数，表示o1小于02。</p>
 
             </article>
             <hr>
