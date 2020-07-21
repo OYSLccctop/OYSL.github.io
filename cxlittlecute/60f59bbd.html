@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>对POP、OOP、AOP的理解 - OYSL&#39;s blog</title>
+  <title>对POP、OOP、AOP、FP的理解 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      769 字
+      874 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      8
        分钟
     </span>
   
@@ -256,6 +256,9 @@
 <p>可以明显地看出，面向对象是以具体功能对象来划分问题，而不是步骤。绘制画面，这样的步骤多次出现在面向过程的设计中，很可能出现不同的绘制版本。而面向对象的设计中，绘图只可能在界面对象中出现，从而保证了绘图的统一。而且我们使用面向对象进行编程的话，可扩展性也更好。</p>
 <h2 id="AOP面向切面编程"><a href="#AOP面向切面编程" class="headerlink" title="AOP面向切面编程"></a>AOP面向切面编程</h2><p>可以通过预编译方式和运行期动态代理实现在不修改源代码的情况下给程序动态统一添加功能的一种技术。</p>
 <p>AOP采用横向抽取的机制，能很好的解决OOP通用业务（日志记录、性能统计、安全控制、事务处理、异常处理等）的解耦问题。</p>
+<h2 id="FP函数式编程"><a href="#FP函数式编程" class="headerlink" title="FP函数式编程"></a>FP函数式编程</h2><p>函数式编程的特点就是允许把函数本身作为参数传入另一个函数，还允许返回一个函数，那么在Java8中的Lambda表达式就是很好的体现。</p>
+<p>好处就是代码简洁，开发快速；并且接近自然语言，易于理解。缺点也很明显就是难以编写。</p>
+<p>参考：<br><a href="https://www.cnblogs.com/wyljq/p/12219208.html" target="_blank" rel="noopener">https://www.cnblogs.com/wyljq/p/12219208.html</a></p>
 
             </article>
             <hr>
@@ -705,7 +708,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "对POP、OOP、AOP的理解&nbsp;",
+        "对POP、OOP、AOP、FP的理解&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
