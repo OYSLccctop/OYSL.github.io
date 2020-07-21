@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Comparable、Comparator、compareTo 、compare的区别 - OYSL&#39;s blog</title>
+  <title>Comparable、Comparator、compareTo 、compare的区别和联系 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      106 字
+      899 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      11
        分钟
     </span>
   
@@ -225,12 +225,18 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月21日 中午
+                  本文最后更新于：2020年7月21日 下午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Comparable和Comparator的区别"><a href="#Comparable和Comparator的区别" class="headerlink" title="Comparable和Comparator的区别"></a>Comparable和Comparator的区别</h1><p>Comparable和Comparator都是用于比较数据的大小的接口，实现Comparable接口需要重写compareTo方法，实现Comparator接口需要重写compare方法，这两个方法的返回值都是int，用int类型的值来确定比较结果。</p>
+              <p>在Java中经常会涉及到对象的排序问题，对于对象正常情况下，只能比较 == 或 ！=，不能使用 &gt; 或 &lt;，但是在实际开发中，我们又需要对多个对象进行排序，那么就涉及到对象之间的比较大小的问题。那么实现方为以下两种。</p>
+<p>Java实现对象排序的方式有两种：</p>
+<ul>
+<li>自然排序：java.lang.Comparable</li>
+<li>定制排序：java.util.Comparator</li>
+</ul>
+<p>Comparable和Comparator都是用于比较数据的大小的接口，实现Comparable接口需要重写compareTo方法，实现Comparator接口需要重写compare方法，这两个方法的返回值都是int，用int类型的值来确定比较结果。</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8</span><span class="hljs-params">()</span></span>&#123;
     Comparator comparator = <span class="hljs-keyword">new</span> Comparator() &#123;
         <span class="hljs-meta">@Override</span>
@@ -246,6 +252,87 @@
         &#125;
     &#125;;
 &#125;</code></pre>
+
+<h1 id="Comparable自然排序"><a href="#Comparable自然排序" class="headerlink" title="Comparable自然排序"></a>Comparable自然排序</h1><p>默认的时候一般会考虑Comparable。</p>
+<p>Comparable接口的举例说明：</p>
+<ul>
+<li><p>我们一些包装类已经替我们实现了Comparable接口，重写了compareTo方法，我们就能对他们的对象进行大小比较。</p>
+</li>
+<li><p>包装类等重写CompareTo()方法后，默认进行的是从小到大的排列。</p>
+</li>
+<li><p>那么我们重写CompareTo（）的规则是什么了？</p>
+<ol>
+<li>如果当前对象this大于形参对象obj，则返回正整数；</li>
+<li>如果当前对象this小于形参obj，则返回负整数；</li>
+<li>如果当前对象this等于形参对象obj，则返回零。</li>
+</ol>
+</li>
+</ul>
+<p>我们可以一起来看看String类的源码，首先我们可以看到String类实现了Comparable的接口,并且重写了CompareTo（）方法，给出了比较两个String对象大小的方式：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200721144039.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(String var1)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> var2 = <span class="hljs-keyword">this</span>.value.length;
+    <span class="hljs-keyword">int</span> var3 = var1.value.length;
+    <span class="hljs-keyword">int</span> var4 = Math.min(var2, var3);
+    <span class="hljs-keyword">char</span>[] var5 = <span class="hljs-keyword">this</span>.value;
+    <span class="hljs-keyword">char</span>[] var6 = var1.value;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var7 = <span class="hljs-number">0</span>; var7 &lt; var4; ++var7) &#123;
+        <span class="hljs-keyword">char</span> var8 = var5[var7];
+        <span class="hljs-keyword">char</span> var9 = var6[var7];
+        <span class="hljs-keyword">if</span> (var8 != var9) &#123;
+            <span class="hljs-keyword">return</span> var8 - var9;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> var2 - var3;
+&#125;</code></pre>
+
+<ul>
+<li>如果自定义类想要进行排序，我们可以去实现Comparable接口，重写CompareTo()方法，在CompareTo（）方法中指明如何排序。不然的话进行排序就会报错。</li>
+</ul>
+<p>比如下面我们创建了一个商品的类，类中包含商品的名字和价格，我们要进行这个对象的排序就需要进行Comparable接口的实现和接口中方法的重写。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ComparaTest</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span></span>&#123;
+        Goods test1 = <span class="hljs-keyword">new</span> Goods(<span class="hljs-string">"test1"</span>, <span class="hljs-number">12</span>);
+        Goods test2 = <span class="hljs-keyword">new</span> Goods(<span class="hljs-string">"test2"</span>, <span class="hljs-number">13</span>);
+        Goods[] goods = <span class="hljs-keyword">new</span> Goods[]&#123;test1,test2&#125;;
+
+        Arrays.sort(goods);
+    &#125;
+&#125;</code></pre>
+<pre><code class="hljs java"><span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Goods</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Comparable</span> </span>&#123;
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> price;
+
+    <span class="hljs-comment">// 指明Goods类按照什么方式进行排序：按照价格从低到高排序</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(Object o)</span> </span>&#123;
+        <span class="hljs-comment">// 这里和重写equals方法相似</span>
+        <span class="hljs-keyword">if</span>(o <span class="hljs-keyword">instanceof</span> Goods)&#123;
+            <span class="hljs-comment">// 方式一：</span>
+            <span class="hljs-comment">// 顺便说一下为什么要转换，因为Object类型的引用，调用不了子类Goods的特有属性</span>
+            Goods goods = (Goods)o; <span class="hljs-comment">// 转换完后当前对象和我们的形参对象就是两个对象了</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.price &gt; goods.price)&#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.price &lt; goods.price)&#123;
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            &#125;<span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-comment">// 如果价格相等，还需要比较，那么就可以嵌套继续根据名字等进行排序比较</span>
+                <span class="hljs-comment">// return 0;</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name.compareTo(goods.name);
+            &#125;
+            <span class="hljs-comment">// 方式二：</span>
+            <span class="hljs-comment">// return Double.compare(this.price, goods.price);</span>
+        &#125;
+        <span class="hljs-comment">// 如果比较的不是一个商品对象</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"传入的数据类型不一致"</span>);
+    &#125;
+&#125;</code></pre>
+<p>注意：实现Comparable接口等于说是在类的基础上做的修改。实现了Comparable接口的类的对象的列表或数组可以通过Collections.sort或Arrays.sort进行自动排序。</p>
 
             </article>
             <hr>
@@ -695,7 +782,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Comparable、Comparator、compareTo 、compare的区别&nbsp;",
+        "Comparable、Comparator、compareTo 、compare的区别和联系&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
