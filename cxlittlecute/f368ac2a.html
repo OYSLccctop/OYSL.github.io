@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      16
        分钟
     </span>
   
@@ -336,6 +336,33 @@
 <h2 id="Comparator定制排序"><a href="#Comparator定制排序" class="headerlink" title="Comparator定制排序"></a>Comparator定制排序</h2><h3 id="什么时候使用Comparator"><a href="#什么时候使用Comparator" class="headerlink" title="什么时候使用Comparator"></a>什么时候使用Comparator</h3><p>当元素的类型没有实现Comparable接口而又不方便修改代码，或者实现了Comparable接口的排序规则不适合当前的操作，那么我们可以考虑使用Comparator的对象来排序。</p>
 <h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>重写compare(Object o1,Object o2)方法。</p>
 <p>如果方法返回正整数，则表示o1大于o2；<br>如果返回0,表示相等；<br>如果返回负整数，表示o1小于02。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test9</span><span class="hljs-params">()</span></span>&#123;
+    String[] arr = <span class="hljs-keyword">new</span> String[]&#123;<span class="hljs-string">"aa"</span>,<span class="hljs-string">"bb"</span>,<span class="hljs-string">"cc"</span>,<span class="hljs-string">"dd"</span>&#125;;
+    <span class="hljs-comment">// String本身实现了Comparable接口，但是如果我们想要从大到小排序就需要使用Comparator接口重新编写排序逻辑，因为String类的源码我们是没办法修改的。</span>
+    Arrays.sort(arr, <span class="hljs-keyword">new</span> Comparator&lt;String&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(String o1, String  o2)</span> </span>&#123;
+            <span class="hljs-keyword">if</span> (o1 <span class="hljs-keyword">instanceof</span> String &amp;&amp; o2 <span class="hljs-keyword">instanceof</span> String)&#123;
+                String s1 = (String)o1;
+                String s2 = (String)o2;
+                <span class="hljs-keyword">return</span> -s1.compareTo(s2);
+            &#125;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"输入的数据类型不一致"</span>);
+        &#125;
+    &#125;);
+    <span class="hljs-comment">// Lambda表达式写法</span>
+    Arrays.sort(arr,(o1,o2) -&gt; &#123;
+        <span class="hljs-keyword">if</span> (o1 <span class="hljs-keyword">instanceof</span> String &amp;&amp; o2 <span class="hljs-keyword">instanceof</span> String)&#123;
+            String s1 = (String)o1;
+            String s2 = (String)o2;
+            <span class="hljs-keyword">return</span> -s1.compareTo(s2);
+        &#125;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"输入的数据类型不一致"</span>);
+    &#125;);
+&#125;</code></pre>
+
+<p>注意：comparator是属于非侵入式的排序实现方式。</p>
+<p>对比：Comparable接口的的方式一旦指定，能够保证Comparable接口实现类在任何位置按照默认实现的方式比较大小，而Comparator属于临时性的比较。</p>
 
             </article>
             <hr>
