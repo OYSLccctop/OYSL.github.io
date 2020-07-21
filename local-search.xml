@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>== 和 equals的区别</title>
+    <link href="/cxlittlecute/f30662c7.html"/>
+    <url>/cxlittlecute/f30662c7.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="和-equals的区别"><a href="#和-equals的区别" class="headerlink" title="== 和 equals的区别"></a>== 和 equals的区别</h1><p>那么这是一个比较常见的面试题，在这里还是通过源码的分析再次总结一下。</p><p>举例：<br>比如现在我自定义一个类，然后根据这个类生成了两个对象,这两个对象的值属性都是一样的，比如这个叫tom，那个也叫tom，同时两个的年龄也是20岁。他们使用equals比较的结果是什么？</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">People</span> </span>&#123;    <span class="hljs-keyword">private</span> String name;    <span class="hljs-keyword">private</span> Integer age;    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>&#123;        <span class="hljs-keyword">return</span> name;    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(String name)</span> </span>&#123;        <span class="hljs-keyword">this</span>.name = name;    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">getAge</span><span class="hljs-params">()</span> </span>&#123;        <span class="hljs-keyword">return</span> age;    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(Integer age)</span> </span>&#123;        <span class="hljs-keyword">this</span>.age = age;    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">People</span><span class="hljs-params">(String name, Integer age)</span> </span>&#123;        <span class="hljs-keyword">this</span>.name = name;        <span class="hljs-keyword">this</span>.age = age;    &#125;&#125;    <span class="hljs-meta">@Test</span>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test10</span><span class="hljs-params">()</span></span>&#123;        People tom1 = <span class="hljs-keyword">new</span> People(<span class="hljs-string">"tom"</span>, <span class="hljs-number">20</span>);        People tom2 = <span class="hljs-keyword">new</span> People(<span class="hljs-string">"tom"</span>,<span class="hljs-number">20</span>);        System.out.println(tom1.equals(tom2));    &#125;</code></pre><p>如果说你回答true,那么你就错了，说明你误认为Object类中的equals方法比较的是值了。</p><p>那么下面我们就来总结一下它们的区别是什么。</p><p>总结：</p><ul><li>==既可以比较基本类型也可以比较引用类型。对于基本类型是直接比较的值（不一定类型相等），对于引用类型就是比较的内存的地址是否相同，即两个引用是否指向同一个对象实体。</li><li>equals的话，只能适用于引用数据类型，首先它是属于Object类中的方法，如果这个方法没有被当前的类重写那么比较的就是地址，等同于==。</li><li>自定义类想不相同，具体要看有没有重写Object的equals方法来判断。</li><li>通常情况下，我们重写equals方法，会去比较类中的属性值是否相等。（注意：这里便是我们的误区，因为我们经常使用像String这样的类（内部已重写equals方法），导致我们认为我们的自定义类比较的是值）。</li></ul><p>为什么说Object类中的equals方法和==作用相同了？上源码：</p><pre><code class="hljs java"><span class="hljs-comment">// 因为在Object中的equals方法的实现是这样的</span><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object var1)</span> </span>&#123;    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span> == var1;&#125;</code></pre><p>为什么说String、Data、File、包装类等中比较的是两个对象的值相等了？</p><pre><code class="hljs java"><span class="hljs-comment">// 它们都重写了Object类的equals方法   我们以下面String类为例</span><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object var1)</span> </span>&#123;    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == var1) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;    &#125; <span class="hljs-keyword">else</span> &#123;        <span class="hljs-keyword">if</span> (var1 <span class="hljs-keyword">instanceof</span> String) &#123;            String var2 = (String)var1;            <span class="hljs-keyword">int</span> var3 = <span class="hljs-keyword">this</span>.value.length;            <span class="hljs-keyword">if</span> (var3 == var2.value.length) &#123;                <span class="hljs-keyword">char</span>[] var4 = <span class="hljs-keyword">this</span>.value;                <span class="hljs-keyword">char</span>[] var5 = var2.value;                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var6 = <span class="hljs-number">0</span>; var3-- != <span class="hljs-number">0</span>; ++var6) &#123;                    <span class="hljs-keyword">if</span> (var4[var6] != var5[var6]) &#123;                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;                    &#125;                &#125;                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;            &#125;        &#125;        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;    &#125;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>对POP、OOP、AOP、FP的理解</title>
     <link href="/cxlittlecute/60f59bbd.html"/>
     <url>/cxlittlecute/60f59bbd.html</url>
