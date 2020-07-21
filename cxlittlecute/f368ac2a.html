@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Jenkins执行shell命令，提示command not found解决 - OYSL&#39;s blog</title>
+  <title>Comparable、Comparator、compareTo 、compare的区别 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-13 16:43">
-      2020年7月13日 下午
+    <time datetime="2020-07-21 11:01">
+      2020年7月21日 上午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      161 字
+      104 字
     </span>
   
 
@@ -230,20 +230,22 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="Command-not-found"><a href="#Command-not-found" class="headerlink" title="Command not found"></a>Command not found</h1><p>jenkins执行shell命令，有时会提示“Command not found”—-处理方案。</p>
-<p>1.首先，分析是linux环境的问题还是Jenkins的问题。</p>
-<p>如果登录linux，shell命令不可以执行，同样提示“Command not found”，则是环境变量设置失败，需要配置环境变量、/etc/profile。</p>
-<p>如果登录linux，shell命令可以执行，则是jenkins没有加载/etc/profile导致。</p>
-<p>我就是第二种情况。那就是得让jenkins执行我们实际的shell命令之前，执行识别环境变量的shell命令。让Jenkins先读取/etc/profile等的内容。</p>
-<pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
-<span class="hljs-built_in">source</span> ~/.bash_profile
-<span class="hljs-built_in">source</span> /etc/profile
+              <h1 id="Comparable和Comparator的区别"><a href="#Comparable和Comparator的区别" class="headerlink" title="Comparable和Comparator的区别"></a>Comparable和Comparator的区别</h1><p>Comparable和Comparator都是用于比较数据的大小的，实现Comparable接口需要重写compareTo方法，实现Comparator接口需要重写compare方法，这两个方法的返回值都是int，用int类型的值来确定比较结果。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8</span><span class="hljs-params">()</span></span>&#123;
+    Comparator comparator = <span class="hljs-keyword">new</span> Comparator() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Object o, Object t1)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        &#125;
+    &#125;;
 
-<span class="hljs-built_in">cd</span>..
-
-等其他shell命令</code></pre>
-
-
+    Comparable comparable = <span class="hljs-keyword">new</span> Comparable() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(Object o)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        &#125;
+    &#125;;
+&#125;</code></pre>
 
             </article>
             <hr>
@@ -253,7 +255,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Jenkins/">Jenkins</a>
+                      <a class="hover-with-bg" href="/categories/Java8/">Java8</a>
                     
                   </div>
                 
@@ -261,7 +263,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Jenkins/">Jenkins</a>
+                      <a class="hover-with-bg" href="/tags/Java8/">Java8</a>
                     
                   </div>
                 
@@ -274,18 +276,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/8ce042f1.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hexo消除中文路径</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/10754.html">
-                        <span class="hidden-mobile">阿里云全站加速HTTPS证书无法开启问题解决</span>
+                      <a href="/cxlittlecute/d1ceb33.html">
+                        <span class="hidden-mobile">重复注解和类型注解</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -605,7 +601,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/61702.html');
+          var target = decodeURI('/cxlittlecute/f368ac2a.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -699,7 +695,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Jenkins执行shell命令，提示command not found解决&nbsp;",
+        "Comparable、Comparator、compareTo 、compare的区别&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

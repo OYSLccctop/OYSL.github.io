@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Comparable、Comparator、compareTo 、compare的区别</title>
+    <link href="/cxlittlecute/f368ac2a.html"/>
+    <url>/cxlittlecute/f368ac2a.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Comparable和Comparator的区别"><a href="#Comparable和Comparator的区别" class="headerlink" title="Comparable和Comparator的区别"></a>Comparable和Comparator的区别</h1><p>Comparable和Comparator都是用于比较数据的大小的，实现Comparable接口需要重写compareTo方法，实现Comparator接口需要重写compare方法，这两个方法的返回值都是int，用int类型的值来确定比较结果。</p><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8</span><span class="hljs-params">()</span></span>&#123;    Comparator comparator = <span class="hljs-keyword">new</span> Comparator() &#123;        <span class="hljs-meta">@Override</span>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Object o, Object t1)</span> </span>&#123;            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;        &#125;    &#125;;    Comparable comparable = <span class="hljs-keyword">new</span> Comparable() &#123;        <span class="hljs-meta">@Override</span>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compareTo</span><span class="hljs-params">(Object o)</span> </span>&#123;            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;        &#125;    &#125;;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>重复注解和类型注解</title>
     <link href="/cxlittlecute/d1ceb33.html"/>
     <url>/cxlittlecute/d1ceb33.html</url>
