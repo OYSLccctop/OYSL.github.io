@@ -445,14 +445,11 @@ public void test1()&#12</div>
         
           
         
-        <div>四大内置核心函数式接口
+        <div>四大内置核心函数式接口写lambda表达式需要有函数式接口支持，并不是说每次用lambda表达式时都要自定义一个函数式接口，实际上，Java8已经为我们准备了java.util.function包，其中有许多非常实用的函数式接口。大致可以分为4种，下面介绍4种核心的接口的典型代表：
+
 public void test14()&#123;
       /*
-      * Comsumer&lt;T&gt;：消费型接口
-      *   void accept(T t）;
-      * */
-      Consumer&lt;Integer&gt; consumer = (x) -&gt; System.out.println(x);
-      c</div>
+      * Comsumer&lt;T</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -501,8 +498,8 @@ public void test14()&#123;
         <div>Lambda表达式继续今天愉快的Java8之旅，Lambda表达式和Stream流是Java8中对Java影响最大的两个改变。
 为什么要使用Lambda首先Lambda是种匿名函数，它的表达式可以被当做方法传递的代码。然后它能使我们的编程风格更加简洁。
 public void test12()&#123;
-    // 原来的匿名内部类
-    Comparator&lt;Integer&gt; </div>
+    // 原来的写法
+    Comparator&lt;Integer&gt; com</div>
       </a>
 
       <div class="index-btm post-metas">

@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      585 字
+      810 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      12
        分钟
     </span>
   
@@ -225,12 +225,13 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月19日 晚上
+                  本文最后更新于：2020年7月21日 上午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="四大内置核心函数式接口"><a href="#四大内置核心函数式接口" class="headerlink" title="四大内置核心函数式接口"></a>四大内置核心函数式接口</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200719204458.png" srcset="/img/loading.gif" alt=""></p>
+              <h1 id="四大内置核心函数式接口"><a href="#四大内置核心函数式接口" class="headerlink" title="四大内置核心函数式接口"></a>四大内置核心函数式接口</h1><p>写lambda表达式需要有函数式接口支持，并不是说每次用lambda表达式时都要自定义一个函数式接口，实际上，Java8已经为我们准备了java.util.function包，其中有许多非常实用的函数式接口。大致可以分为4种，下面介绍4种核心的接口的典型代表：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200719204458.png" srcset="/img/loading.gif" alt=""></p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test14</span><span class="hljs-params">()</span></span>&#123;
       <span class="hljs-comment">/*</span>
 <span class="hljs-comment">      * Comsumer&lt;T&gt;：消费型接口</span>
@@ -267,6 +268,12 @@
           System.out.println(<span class="hljs-string">"还好"</span>);
       &#125;
   &#125;</code></pre>
+<ul>
+<li>消费型接口典型的代表为Consumer，其抽象方法为accept(), 该方法仅接受一个参数，并且没有返回值。</li>
+<li>供给型接口的典型代表为Supplier，其抽象方法为get(), 该方法不接受参数，但有返回值。</li>
+<li>函数型接口中的代表为Function，其抽象方法位apply(), 接受有一个参数，并且有返回值。</li>
+<li>断言型接口的典型接口为Predicate，其抽象方法为test(), 接受一个参数，并返回一个布尔值。</li>
+</ul>
 <p>通过这些内置函数式接口可以进行一些自定义实现操作，类似于后面的Stream流。</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test15</span><span class="hljs-params">()</span> </span>&#123;
     List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">"test1"</span>, <span class="hljs-string">"test2"</span>, <span class="hljs-string">"test3"</span>);
