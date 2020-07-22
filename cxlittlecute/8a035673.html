@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>== 和 equals的区别 - OYSL&#39;s blog</title>
+  <title>基本数据类型 包装类 String之间的相互转换 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,7 +164,7 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-21 22:11">
+    <time datetime="2020-07-21 23:03">
       2020年7月21日 晚上
     </time>
   </div>
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      635 字
+      930 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      11
        分钟
     </span>
   
@@ -225,86 +225,114 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月21日 晚上
+                  本文最后更新于：2020年7月22日 上午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="和-equals的区别"><a href="#和-equals的区别" class="headerlink" title="== 和 equals的区别"></a>== 和 equals的区别</h1><p>那么这是一个比较常见的面试题，在这里还是通过源码的分析再次总结一下。</p>
-<p>举例：<br>比如现在我自定义一个类，然后根据这个类生成了两个对象,这两个对象的值属性都是一样的，比如这个叫tom，那个也叫tom，同时两个的年龄也是20岁。他们使用equals比较的结果是什么？</p>
-<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">People</span> </span>&#123;
-    <span class="hljs-keyword">private</span> String name;
-    <span class="hljs-keyword">private</span> Integer age;
+              <h1 id="基本数据类型-包装类-String之间的相互转换"><a href="#基本数据类型-包装类-String之间的相互转换" class="headerlink" title="基本数据类型 包装类 String之间的相互转换"></a>基本数据类型 包装类 String之间的相互转换</h1><p>类型转换是我们经常会遇到的问题，今天通过本博客进一步总结它的用法。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200721230535.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>Java提供了8种基本数据类型对应的包装类，使得基本数据类型的变量具有类的特征。</li>
+<li>基本数据类型转变为了包装类，就可以调用类中的方法。</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200722091807.png" srcset="/img/loading.gif" alt=""></p>
+<p>注意：除了Boolean和Character(没有父类)其他包装类的父类都是Number，我们可以根据以下的源码看出：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200722091736.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="基本数据类型-gt-包装类"><a href="#基本数据类型-gt-包装类" class="headerlink" title="基本数据类型-&gt;包装类"></a>基本数据类型-&gt;包装类</h2><ul>
+<li>调用包装类的构造器</li>
+<li>通过字符串参数</li>
+<li>自动装箱</li>
+</ul>
+<pre><code class="hljs java">
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test11</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 调用包装类的构造器</span>
+    <span class="hljs-keyword">int</span> num1 = <span class="hljs-number">10</span>;
+    Integer integer1 = <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">10</span>);
+    System.out.println(integer1.toString());
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">return</span> name;
-    &#125;
+    <span class="hljs-comment">//  通过字符串参数</span>
+    Integer integer2 = <span class="hljs-keyword">new</span> Integer(<span class="hljs-string">"123"</span>);
+    System.out.println(integer2.toString());
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(String name)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.name = name;
-    &#125;
+&#125;</code></pre>
+<p>但是需要注意，使用字符串转换的时候，如果是以Number为父类的包装类，使用字符串的构造器，里面的参数如果是又有数字又有字母会报错(也就是说参数想转什么类型，参数就必须符合这种结构)，但是Boolean支持这样，只会判断为false。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test11</span><span class="hljs-params">()</span></span>&#123;
+    Integer integer3 = <span class="hljs-keyword">new</span> Integer(<span class="hljs-string">"asb123"</span>); <span class="hljs-comment">// 报错，参数必须对应包装类的类型</span>
+    System.out.println(integer3.toString());
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">getAge</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">return</span> age;
-    &#125;
+    Boolean asb123 = <span class="hljs-keyword">new</span> Boolean(<span class="hljs-string">"asb123"</span>);
+    System.out.println(asb123); <span class="hljs-comment">// 不会报错，结果为false</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(Integer age)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.age = age;
-    &#125;
+&#125;</code></pre>
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">People</span><span class="hljs-params">(String name, Integer age)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.name = name;
-        <span class="hljs-keyword">this</span>.age = age;
-    &#125;
+<p>为什么会这样叻？<br>我们来看看Boolean的源码:</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Boolean</span><span class="hljs-params">(String var1)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>(parseBoolean(var1));
 &#125;
 
-    <span class="hljs-meta">@Test</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test10</span><span class="hljs-params">()</span></span>&#123;
-        People tom1 = <span class="hljs-keyword">new</span> People(<span class="hljs-string">"tom"</span>, <span class="hljs-number">20</span>);
-        People tom2 = <span class="hljs-keyword">new</span> People(<span class="hljs-string">"tom"</span>,<span class="hljs-number">20</span>);
-        System.out.println(tom1.equals(tom2));
-    &#125;</code></pre>
-
-<p>如果说你回答true,那么你就错了，说明你误认为Object类中的equals方法比较的是值了。</p>
-<p>那么下面我们就来总结一下它们的区别是什么。</p>
-<p>总结：</p>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">parseBoolean</span><span class="hljs-params">(String var0)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> var0 != <span class="hljs-keyword">null</span> &amp;&amp; var0.equalsIgnoreCase(<span class="hljs-string">"true"</span>);
+&#125;</code></pre>
+<p>在忽略大小写的情况下如果是true那么就是true，如果不是同事不为null，那么都为false。</p>
+<h2 id="包装类-gt-基本数据类型"><a href="#包装类-gt-基本数据类型" class="headerlink" title="包装类-&gt;基本数据类型"></a>包装类-&gt;基本数据类型</h2><p>首先，我们要知道这个操作也是必要的，因为我们的包装类属于类是不能进行加减乘除运算的。</p>
 <ul>
-<li>==既可以比较基本类型也可以比较引用类型。对于基本类型是直接比较的值（不一定类型相等），对于引用类型就是比较的内存的地址是否相同，即两个引用是否指向同一个对象实体。</li>
-<li>equals的话，只能适用于引用数据类型，首先它是属于Object类中的方法，如果这个方法没有被当前的类重写那么比较的就是地址，等同于==。</li>
-<li>自定义类想不相同，具体要看有没有重写Object的equals方法来判断。</li>
-<li>通常情况下，我们重写equals方法，会去比较类中的属性值是否相等。（注意：这里便是我们的误区，因为我们经常使用像String这样的类（内部已重写equals方法），导致我们认为我们的自定义类比较的是值）。</li>
+<li>调用包装类的xxxValue（），你是哪个包装类型就调用哪个value()方法.</li>
+<li>自动拆箱</li>
 </ul>
-<p>为什么说Object类中的equals方法和==作用相同了？上源码：</p>
-<pre><code class="hljs java"><span class="hljs-comment">// 因为在Object中的equals方法的实现是这样的</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object var1)</span> </span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span> == var1;
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test12</span><span class="hljs-params">()</span></span>&#123;
+    Integer in1 = <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">12</span>);
+    <span class="hljs-keyword">int</span> i = in1.intValue();
+    System.out.println(i);
 &#125;</code></pre>
 
-<p>为什么说String、Data、File、包装类等中比较的是两个对象的值相等了？</p>
-<pre><code class="hljs java"><span class="hljs-comment">// 它们都重写了Object类的equals方法   我们以下面String类为例</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object var1)</span> </span>&#123;
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == var1) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-keyword">if</span> (var1 <span class="hljs-keyword">instanceof</span> String) &#123;
-            String var2 = (String)var1;
-            <span class="hljs-keyword">int</span> var3 = <span class="hljs-keyword">this</span>.value.length;
-            <span class="hljs-keyword">if</span> (var3 == var2.value.length) &#123;
-                <span class="hljs-keyword">char</span>[] var4 = <span class="hljs-keyword">this</span>.value;
-                <span class="hljs-keyword">char</span>[] var5 = var2.value;
+<h2 id="自动装箱和自动拆箱"><a href="#自动装箱和自动拆箱" class="headerlink" title="自动装箱和自动拆箱"></a>自动装箱和自动拆箱</h2><p>那么说到这里就得说一下自动装箱和自动拆箱了，它属于Jdk5的新特性。我们通过下面的例子理解这个特性：</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test14</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">int</span> num = <span class="hljs-number">20</span>;
+    test13(num);
+&#125;
 
-                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var6 = <span class="hljs-number">0</span>; var3-- != <span class="hljs-number">0</span>; ++var6) &#123;
-                    <span class="hljs-keyword">if</span> (var4[var6] != var5[var6]) &#123;
-                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
-                    &#125;
-                &#125;
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
-            &#125;
-        &#125;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
-    &#125;
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test13</span><span class="hljs-params">(Object o)</span></span>&#123;
+    System.out.println(o);
+&#125;</code></pre>
+<p>上面的这个操作将num放入test13中发现是可以的，这里并不是说我们把Object obj = num,这样理解是不对的，因为int类型和Object类型是没有任何关系的，但为什么又行了？</p>
+<p>因为这里就用到了自动装箱,自动装箱就是这样的,相反有的就是自动拆箱。</p>
+<ul>
+<li>自动装箱：基本数据类型-&gt;包装类</li>
+<li>自动拆箱：包装类-&gt;基本数据类型</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test15</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 自动装箱</span>
+    <span class="hljs-keyword">int</span> i = <span class="hljs-number">10</span>;
+    Integer integer = i;
+    <span class="hljs-comment">// 自动拆箱</span>
+    <span class="hljs-keyword">int</span> i2 = integer;
 &#125;</code></pre>
 
+<h2 id="基本数据类型、包装类-gt-String"><a href="#基本数据类型、包装类-gt-String" class="headerlink" title="基本数据类型、包装类-&gt;String"></a>基本数据类型、包装类-&gt;String</h2><ul>
+<li>方式一：连接运算</li>
+<li>方法二：调用String重载的valueOf（Xxx xx）<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test16</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">// 方式一：</span>
+    <span class="hljs-keyword">int</span> num1 = <span class="hljs-number">10</span>;
+    String str1 = num1 + <span class="hljs-string">""</span>;
+    <span class="hljs-comment">// 方式二：</span>
+    <span class="hljs-keyword">float</span> f1 = <span class="hljs-number">12.3f</span>;
+    String str2 = String.valueOf(f1);
+    
+&#125;</code></pre>
+
+</li>
+</ul>
+<h2 id="String-gt-基本数据类型、包装类"><a href="#String-gt-基本数据类型、包装类" class="headerlink" title="String-&gt;基本数据类型、包装类"></a>String-&gt;基本数据类型、包装类</h2><ul>
+<li>调用包装类的parseXxx（String x）</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test17</span><span class="hljs-params">()</span></span>&#123;
+    String str = <span class="hljs-string">"123"</span>;
+    <span class="hljs-keyword">int</span> i = Integer.parseInt(str);
+&#125;</code></pre>
+
+<p>注意：<br>最后再强调一下，字符串转换的时候如果有数字和字母，那么会报错NumberFormatException，除了Boolean特殊一些，可以再看一下上面的源码解析。</p>
+<p>同时因为基本数据类型和包装类两个之间有自动装箱和自行拆箱的特性，所以我们可以把他们两个相对string来说看成一个整体进行转换。</p>
 
             </article>
             <hr>
@@ -335,18 +363,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/8a035673.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">基本数据类型 包装类 String之间的相互转换</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/60f59bbd.html">
-                        <span class="hidden-mobile">对POP、OOP、AOP、FP的理解</span>
+                      <a href="/cxlittlecute/f30662c7.html">
+                        <span class="hidden-mobile">== 和 equals的区别</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -666,7 +688,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/f30662c7.html');
+          var target = decodeURI('/cxlittlecute/8a035673.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -760,7 +782,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "== 和 equals的区别&nbsp;",
+        "基本数据类型 包装类 String之间的相互转换&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
