@@ -361,7 +361,7 @@
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ExecutionException, InterruptedException </span>&#123;
         ExecutorService executorService = Executors.newFixedThreadPool(<span class="hljs-number">10</span>);
         executorService.execute(<span class="hljs-keyword">new</span> NumberThread1()); <span class="hljs-comment">// 适用于Runnable</span>
-        Future&lt;Integer&gt; submit = executorService.submit(<span class="hljs-keyword">new</span> NumberThread2());
+        Future&lt;Integer&gt; submit = executorService.submit(<span class="hljs-keyword">new</span> NumberThread2()); <span class="hljs-comment">// 适用于Callable</span>
         Integer integer = submit.get();
         System.out.println(integer);
         executorService.shutdown();
