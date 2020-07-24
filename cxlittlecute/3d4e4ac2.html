@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      789 字
+      791 字
     </span>
   
 
@@ -263,7 +263,7 @@
     &#125;
 &#125;</code></pre>
 
-<p>如果用暴力方法解决的话就会有大量的回溯造成，因为我们不匹配的时候会j 被置为0，i往后移动一位，但是我们通过分析可以清楚的知道，中间已经匹配过的字符是不用再次匹配的，也就是说不可能匹配上的，但是还是回溯回去做了相同的工作，这样就造成了时间上的浪费。</p>
+<p>如果用暴力方法解决的话就会有大量的回溯造成，因为我们不匹配的时候会j 被置为0，i往后移动一位，但是我们通过分析可以清楚的知道，中间已经匹配过的字符是不用再次匹配的，也就是说不可能匹配上的，但是还是回溯回去做了相同的工作，这样就造成了时间上的大量浪费。</p>
 <p>所以，kmp方法算法就利用之前判断过信息，通过一个next数组，保存模式串中前后最长公共子序列的长度，每次回溯时，通过next数组找到，前面匹配过的位置，省去了大量的计算时间。</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
     String str1 = <span class="hljs-string">"BBC ABCDAB ABCDABCDABDE"</span>;
