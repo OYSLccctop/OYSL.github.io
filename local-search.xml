@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>KMP实现</title>
+    <link href="/cxlittlecute/3d4e4ac2.html"/>
+    <url>/cxlittlecute/3d4e4ac2.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="KMP实现"><a href="#KMP实现" class="headerlink" title="KMP实现"></a>KMP实现</h1><p>总结一下使用根据最大长度表实现KMP算法。</p><p>首先，KMP是一个解决模式串在文本串是否出现过，以及若是出现时，最早出现的位置的经典算法。</p><p>我们惯用的思路都是属于暴力匹配：</p><ul><li>如果当前字符匹配成功（即s1[i] == s2[j]），则i++，j++，继续匹配下一个字符；</li><li>如果失配（即s1[i] == s2[j]），令i = i - (j - 1)，j = 0。相当于每次匹配失败时，i 回溯，j 被置为0。</li></ul><pre><code class="hljs java"><span class="hljs-comment">// 暴力匹配</span><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">violenceMatch</span><span class="hljs-params">(String str1, String str2)</span> </span>&#123;    <span class="hljs-keyword">char</span>[] s1 = str1.toCharArray();    <span class="hljs-keyword">char</span>[] s2 = str2.toCharArray();    <span class="hljs-keyword">int</span> s1length = s1.length;    <span class="hljs-keyword">int</span> s2length = s2.length;    <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; <span class="hljs-comment">// i指向s1</span>    <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; <span class="hljs-comment">// j指向s2</span>    <span class="hljs-keyword">while</span> (i &lt; s1length &amp;&amp; j &lt;s2length) &#123;        <span class="hljs-keyword">if</span> (s1[i] == s2[j]) &#123;            i++;            j++;        &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 没有匹配成功</span>            i = i - j + <span class="hljs-number">1</span>;            j = <span class="hljs-number">0</span>;        &#125;    &#125;    <span class="hljs-comment">// 判断是否匹配成功</span>    <span class="hljs-keyword">if</span> (j == s2length)&#123;        <span class="hljs-keyword">return</span> i - j;    &#125;<span class="hljs-keyword">else</span> &#123;        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;    &#125;&#125;</code></pre><p>如果用暴力方法解决的话就会有大量的回溯造成，因为我们不匹配的时候会j 被置为0，i往后移动一位，但是我们通过分析可以清楚的知道，中间已经匹配过的字符是不用再次匹配的，也就是说不可能匹配上的，但是还是回溯回去做了相同的工作，这样就造成了时间上的浪费。</p><p>所以，kmp方法算法就利用之前判断过信息，通过一个next数组，保存模式串中前后最长公共子序列的长度，每次回溯时，通过next数组找到，前面匹配过的位置，省去了大量的计算时间。</p><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;    String str1 = <span class="hljs-string">"BBC ABCDAB ABCDABCDABDE"</span>;    <span class="hljs-comment">// String str2 = "ABCDABD";</span>    String str2 = <span class="hljs-string">"ABCDABD"</span>;    <span class="hljs-keyword">int</span>[] next = kmpNext(<span class="hljs-string">"ABCDABD"</span>);    <span class="hljs-comment">//System.out.println(Arrays.toString(next));</span>    <span class="hljs-keyword">int</span> index = kmpSearch(str1, str2, next);    System.out.println(<span class="hljs-string">"index"</span> + index);&#125;<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">kmpSearch</span><span class="hljs-params">(String str1, String str2, <span class="hljs-keyword">int</span>[] next)</span> </span>&#123;    <span class="hljs-comment">// 遍历</span>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>; i &lt; str1.length(); i++) &#123;        <span class="hljs-keyword">while</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; str1.charAt(i) != str2.charAt(j)) &#123;            j = next[j - <span class="hljs-number">1</span>]; <span class="hljs-comment">// 失配时模式串移动的位数</span>        &#125;        <span class="hljs-keyword">if</span> (str1.charAt(i) == str2.charAt(j)) &#123;            j++;        &#125;        <span class="hljs-keyword">if</span> (j == str2.length()) &#123;            <span class="hljs-keyword">return</span> i - j + <span class="hljs-number">1</span>;        &#125;    &#125;    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;&#125;<span class="hljs-comment">// 获取到一个字符串（子串）的部分匹配值表（最大长度表）</span><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] kmpNext(String dest) &#123;    <span class="hljs-comment">// 创建一个next数组保存部分匹配值</span>    <span class="hljs-keyword">int</span>[] next = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[dest.length()];    next[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>; <span class="hljs-comment">// 如果字符串的长度为1 部分匹配值就是0</span>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>, j = <span class="hljs-number">0</span>; i &lt; dest.length(); i++) &#123;        <span class="hljs-keyword">while</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; dest.charAt(i) != dest.charAt(j)) &#123;            j = next[j - <span class="hljs-number">1</span>];        &#125;        <span class="hljs-keyword">if</span> (dest.charAt(i) == dest.charAt(j)) &#123;            j++;        &#125;        next[i] = j;    &#125;    <span class="hljs-keyword">return</span> next;&#125;</code></pre><p>以上方法的KMP实现只需要大家掌握两个地方：</p><ul><li>一个是什么是最大长度表，它是如何计算的（参考下面链接）。</li><li>失配时应该怎么计算模式串移动的位数：已匹配字符数 - 失配字符的上一位字符所对应的最大长度值。</li></ul><p>本文只是对KMP进行了简单实现，如果想深入了解可以参考看一下下面的链接，感谢原作者的付出。</p><p>参考链接：<br><a href="https://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="noopener">https://blog.csdn.net/v_july_v/article/details/7041827</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据结构与算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>浅谈StringBuilder和StringBuffer</title>
     <link href="/cxlittlecute/b1c49b5c.html"/>
     <url>/cxlittlecute/b1c49b5c.html</url>

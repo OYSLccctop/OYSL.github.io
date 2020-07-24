@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>KMP实现 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-07-24 09:52">
+      2020年7月24日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      792 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,103 +213,205 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 24 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/2df787ac.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Optional类</span>
-      <span style="float: right;">07-20</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/caf276df.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">方法引用和构造器引用</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/860e391d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">四大内置核心函数式接口</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/bbcf5ff7.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Lambda表达式</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/56a14e38.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HashMap理解总结</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8a5cc6c1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Stream知识用法总结</span>
-      <span style="float: right;">07-18</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/674d8191.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">GateWay网关访问服务出现503的问题解决</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4e6c6273.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/1d5383b1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云oss上传报错Invalid according to Policy Policy expired</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8ce042f1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo消除中文路径</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年7月24日 上午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="KMP实现"><a href="#KMP实现" class="headerlink" title="KMP实现"></a>KMP实现</h1><p>总结一下使用根据最大长度表实现KMP算法。</p>
+<p>首先，KMP是一个解决模式串在文本串是否出现过，以及若是出现时，最早出现的位置的经典算法。</p>
+<p>我们惯用的思路都是属于暴力匹配：</p>
+<ul>
+<li>如果当前字符匹配成功（即s1[i] == s2[j]），则i++，j++，继续匹配下一个字符；</li>
+<li>如果失配（即s1[i] == s2[j]），令i = i - (j - 1)，j = 0。相当于每次匹配失败时，i 回溯，j 被置为0。</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 暴力匹配</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">violenceMatch</span><span class="hljs-params">(String str1, String str2)</span> </span>&#123;
+    <span class="hljs-keyword">char</span>[] s1 = str1.toCharArray();
+    <span class="hljs-keyword">char</span>[] s2 = str2.toCharArray();
+
+    <span class="hljs-keyword">int</span> s1length = s1.length;
+    <span class="hljs-keyword">int</span> s2length = s2.length;
+    <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; <span class="hljs-comment">// i指向s1</span>
+    <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; <span class="hljs-comment">// j指向s2</span>
+    <span class="hljs-keyword">while</span> (i &lt; s1length &amp;&amp; j &lt;s2length) &#123;
+        <span class="hljs-keyword">if</span> (s1[i] == s2[j]) &#123;
+            i++;
+            j++;
+        &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 没有匹配成功</span>
+            i = i - j + <span class="hljs-number">1</span>;
+            j = <span class="hljs-number">0</span>;
+        &#125;
+    &#125;
+    <span class="hljs-comment">// 判断是否匹配成功</span>
+    <span class="hljs-keyword">if</span> (j == s2length)&#123;
+        <span class="hljs-keyword">return</span> i - j;
+    &#125;<span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>如果用暴力方法解决的话就会有大量的回溯造成，因为我们不匹配的时候会j 被置为0，i往后移动一位，但是我们通过分析可以清楚的知道，中间已经匹配过的字符是不用再次匹配的，也就是说不可能匹配上的，但是还是回溯回去做了相同的工作，这样就造成了时间上的浪费。</p>
+<p>所以，kmp方法算法就利用之前判断过信息，通过一个next数组，保存模式串中前后最长公共子序列的长度，每次回溯时，通过next数组找到，前面匹配过的位置，省去了大量的计算时间。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    String str1 = <span class="hljs-string">"BBC ABCDAB ABCDABCDABDE"</span>;
+    <span class="hljs-comment">// String str2 = "ABCDABD";</span>
+    String str2 = <span class="hljs-string">"ABCDABD"</span>;
+    <span class="hljs-keyword">int</span>[] next = kmpNext(<span class="hljs-string">"ABCDABD"</span>);
+    <span class="hljs-comment">//System.out.println(Arrays.toString(next));</span>
+
+    <span class="hljs-keyword">int</span> index = kmpSearch(str1, str2, next);
+    System.out.println(<span class="hljs-string">"index"</span> + index);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">kmpSearch</span><span class="hljs-params">(String str1, String str2, <span class="hljs-keyword">int</span>[] next)</span> </span>&#123;
+    <span class="hljs-comment">// 遍历</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>; i &lt; str1.length(); i++) &#123;
+        <span class="hljs-keyword">while</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; str1.charAt(i) != str2.charAt(j)) &#123;
+            j = next[j - <span class="hljs-number">1</span>]; <span class="hljs-comment">// 失配时模式串移动的位数</span>
+        &#125;
+        <span class="hljs-keyword">if</span> (str1.charAt(i) == str2.charAt(j)) &#123;
+            j++;
+        &#125;
+        <span class="hljs-keyword">if</span> (j == str2.length()) &#123;
+            <span class="hljs-keyword">return</span> i - j + <span class="hljs-number">1</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+&#125;
+
+<span class="hljs-comment">// 获取到一个字符串（子串）的部分匹配值表（最大长度表）</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] kmpNext(String dest) &#123;
+    <span class="hljs-comment">// 创建一个next数组保存部分匹配值</span>
+    <span class="hljs-keyword">int</span>[] next = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[dest.length()];
+    next[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>; <span class="hljs-comment">// 如果字符串的长度为1 部分匹配值就是0</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>, j = <span class="hljs-number">0</span>; i &lt; dest.length(); i++) &#123;
+        <span class="hljs-keyword">while</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; dest.charAt(i) != dest.charAt(j)) &#123;
+            j = next[j - <span class="hljs-number">1</span>];
+        &#125;
+        <span class="hljs-keyword">if</span> (dest.charAt(i) == dest.charAt(j)) &#123;
+            j++;
+        &#125;
+        next[i] = j;
+    &#125;
+    <span class="hljs-keyword">return</span> next;
+&#125;</code></pre>
+<p>以上方法的KMP实现只需要大家掌握两个地方：</p>
+<ul>
+<li>一个是什么是最大长度表，它是如何计算的（参考下面链接）。</li>
+<li>失配时应该怎么计算模式串移动的位数：已匹配字符数 - 失配字符的上一位字符所对应的最大长度值。</li>
+</ul>
+<p>本文只是对KMP进行了简单实现，如果想深入了解可以参考看一下下面的链接，感谢原作者的付出。</p>
+<p>参考链接：<br><a href="https://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="noopener">https://blog.csdn.net/v_july_v/article/details/7041827</a></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/b1c49b5c.html">
+                        <span class="hidden-mobile">浅谈StringBuilder和StringBuffer</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -514,10 +667,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/page/2/index.html');
+          var target = decodeURI('/cxlittlecute/3d4e4ac2.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -579,6 +732,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -586,7 +764,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "KMP实现&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -601,6 +779,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -614,6 +807,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
