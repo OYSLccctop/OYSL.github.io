@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      2.1k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      24
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月24日 下午
+                  本文最后更新于：2020年7月24日 晚上
                 
               </p>
             
@@ -299,7 +299,7 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> isVisited</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> i 第一次就是0,等于说进入步骤第一步</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span>[] isVisited, <span class="hljs-keyword">int</span> i)</span> </span>&#123;
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span>[] isVisited, <span class="hljs-keyword">int</span> i)</span> </span>&#123;
     <span class="hljs-comment">//首先我们访问该结点，输出</span>
     System.out.print(getValueByIndex(i) + <span class="hljs-string">"-&gt;"</span>); <span class="hljs-comment">//返回结点i（下标）对应的数据0-&gt;"A"  1-&gt;"B"  2-&gt;"c"</span>
     <span class="hljs-comment">//将已经访问的结点设置为已经访问过</span>
@@ -324,6 +324,67 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; getNumOfVertex(); i++) &#123;
         <span class="hljs-keyword">if</span> (!isVisited[i]) &#123;
             dfs(isVisited, i);
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<h2 id="广度优先遍历（BFS）"><a href="#广度优先遍历（BFS）" class="headerlink" title="广度优先遍历（BFS）"></a>广度优先遍历（BFS）</h2><h3 id="BFS思想"><a href="#BFS思想" class="headerlink" title="BFS思想"></a>BFS思想</h3><p>BFS需要使用一个队列，用来保存访问过的结点的顺序，类似于一个分层搜索的过程，我们使用这个顺序来访问这些结点的邻接结点。</p>
+<h3 id="BFS算法步骤"><a href="#BFS算法步骤" class="headerlink" title="BFS算法步骤"></a>BFS算法步骤</h3><ol>
+<li>访问初始结点v并标记结点v为已访问</li>
+<li>将结点v加入队列</li>
+<li>当队列非空时，继续执行，否则算法结束（这里的算法结束指的是对v这个结点的算法结束）。</li>
+<li>出队列，取得头结点u。</li>
+<li>查找结点u的第一个邻接结点w。</li>
+<li>若结点u的邻接结点w不存在，则转到步骤3；否则循环执行下面三个步骤：<br> 6.1 若结点w未被访问，则访问w并标记为已访问。<br> 6.2 结点w入队列。(w的访问顺序同样也被记录在队列中)<br> 6.3 查找结点u的继w邻接结点后的下一个邻接结点w，转到步骤6。</li>
+</ol>
+<h3 id="BFS举例分析"><a href="#BFS举例分析" class="headerlink" title="BFS举例分析"></a>BFS举例分析</h3><p>我们同样来举例分析一下：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200724180549.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>我们还是从A开始，先访问自己，A就输出了</li>
+<li>接着看A的下一个邻接结点B，判断B能访问于是B也就被输出了</li>
+<li>接着就和DFS不一样的地方出现了，我们DFS中时根据B作为新的初始结点去访问C，而我们的BFS中仍是以A为初始结点，去找B结点的邻接结点也就是C，发现C同样也能访问，于是就访问到了C。</li>
+<li>然后再去通过c找它的后继结点，发现找不到了。</li>
+<li>这个时候我们的B已经在队列中，A访问过后已经被弹出了队列，然后就从队列中弹出B（它现在位于队列头）。</li>
+<li>然后根据B去找，发现访问过的就跳过，跳过AC后发现能访问到D，然后又能访问到E。</li>
+<li>最后把剩下的CDE都作为队列头走一圈，发现都访问过了，就退出了。</li>
+</ol>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="hljs java"><span class="hljs-comment">//对一个节点进行广度优先遍历的方法</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span>[] isVisited, <span class="hljs-keyword">int</span> i)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> u;<span class="hljs-comment">//表示队列头结点对应下标</span>
+    <span class="hljs-keyword">int</span> w;<span class="hljs-comment">//邻接结点w</span>
+    <span class="hljs-comment">//队列,记录结点访问的顺序</span>
+    LinkedList queue = <span class="hljs-keyword">new</span> LinkedList();
+    <span class="hljs-comment">//访问结点,输出结点信息</span>
+    System.out.print(getValueByIndex(i) + <span class="hljs-string">"-&gt;"</span>);
+    <span class="hljs-comment">//标记为已访问</span>
+    isVisited[i] = <span class="hljs-keyword">true</span>;
+    <span class="hljs-comment">//将结点加入队列</span>
+    queue.addLast(i);
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) &#123;
+        <span class="hljs-comment">//取出队列的头结点下标</span>
+        u = (Integer) queue.removeFirst();
+        <span class="hljs-comment">//得到第一个邻接点的下标 w</span>
+        w = getFirstNeighbor(u);
+        <span class="hljs-keyword">while</span> (w != -<span class="hljs-number">1</span>) &#123;<span class="hljs-comment">//找到</span>
+            <span class="hljs-comment">//是否访问过</span>
+            <span class="hljs-keyword">if</span> (!isVisited[w]) &#123;
+                System.out.println(getValueByIndex(w) + <span class="hljs-string">"=&gt;"</span>);
+                <span class="hljs-comment">//标记已经访问</span>
+                isVisited[w] = <span class="hljs-keyword">true</span>;
+                <span class="hljs-comment">//入队列</span>
+                queue.addLast(w);
+            &#125;
+            <span class="hljs-comment">//如果访问过了，以U为前驱结点，找w后面的下一个结点</span>
+            w = getNextNeighhor(u, w);<span class="hljs-comment">//体现了广度优先</span>
+        &#125;
+    &#125;
+&#125;
+
+<span class="hljs-comment">//遍历所有的结点，都进行广度优先搜索</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; getNumOfVertex(); i++) &#123;
+        <span class="hljs-keyword">if</span> (!isVisited[i]) &#123;
+            bfs(isVisited, i);
         &#125;
     &#125;
 &#125;</code></pre>
