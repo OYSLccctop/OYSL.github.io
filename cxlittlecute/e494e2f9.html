@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      876 字
+      973 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      13
        分钟
     </span>
   
@@ -234,7 +234,6 @@
 <p>上一篇博客：<a href="http://ccctop.cn/cxlittlecute/f1a8c9e2.html" target="_blank" rel="noopener">http://ccctop.cn/cxlittlecute/f1a8c9e2.html</a></p>
 <p>如果上一篇博客没有太明白的朋友，可以参考看一看这一篇。</p>
 <p>上一篇博客我们说了图的实现方式主要是邻接矩阵和邻接表，那么今天我们就用邻接表再次分析图的DFS和BFS过程。</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200725201845.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="图的实现"><a href="#图的实现" class="headerlink" title="图的实现"></a>图的实现</h2><ul>
 <li>使用一个大小为V的数组 List<Integer>[] head（通图adj[]），把索引看做是顶点</li>
 <li>每个索引处head[v]存储了一个数组或队列，该队列中存储的是所有与该顶点相邻的其他顶点</li>
@@ -285,7 +284,7 @@
 
 &#125;</code></pre>
 
-<h2 id="DFS的实现"><a href="#DFS的实现" class="headerlink" title="DFS的实现"></a>DFS的实现</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200725202448.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="DFS的实现"><a href="#DFS的实现" class="headerlink" title="DFS的实现"></a>DFS的实现</h2><p>所谓的深度优先搜索，指的是在搜索时，如果遇到一个结点既有子结点，又有兄弟结点，那么先找子结点，然后找兄弟结点</p>
 <p>我们可以根据上图清楚的知道DFS的一个执行顺序。<br>主要有两点需要注意：</p>
 <ol>
 <li>如果已经访问过的会直接跳过。</li>
@@ -372,6 +371,7 @@
 
 
 <p>这样的方式实现就会更加明了简单，如果还没有明白的朋友可以debug一下跑一跑。</p>
+<h2 id="BFS实现"><a href="#BFS实现" class="headerlink" title="BFS实现"></a>BFS实现</h2><p>而BFS刚好相反，指的是在搜索时，如果遇到一个结点既有子结点，又有兄弟结点，那么先找兄弟结点，然后找子结点。</p>
 
             </article>
             <hr>
