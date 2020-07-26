@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      24
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月25日 晚上
+                  本文最后更新于：2020年7月26日 上午
                 
               </p>
             
@@ -420,6 +420,15 @@
                         bfs(G, w);
                     &#125;
                 &#125;
+
+                <span class="hljs-comment">/* 第二种方式：</span>
+<span class="hljs-comment">                for (Integer w : G.adj(wait)) &#123;</span>
+<span class="hljs-comment">                    if (!marked[w])&#123;</span>
+<span class="hljs-comment">                        System.out.print(w+"-&gt;");</span>
+<span class="hljs-comment">                        waitSearch.enqueue(w);</span>
+<span class="hljs-comment">                        marked[w] = true;</span>
+<span class="hljs-comment">                    &#125;</span>
+<span class="hljs-comment">                &#125;*/</span>
             &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;
                 e.printStackTrace();
             &#125;
