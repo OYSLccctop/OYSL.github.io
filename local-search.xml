@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>二叉查找树的创建</title>
+    <link href="/cxlittlecute/16592e4a.html"/>
+    <url>/cxlittlecute/16592e4a.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="二叉查找树的创建"><a href="#二叉查找树的创建" class="headerlink" title="二叉查找树的创建"></a>二叉查找树的创建</h1><h2 id="二叉树的基本定义"><a href="#二叉树的基本定义" class="headerlink" title="二叉树的基本定义"></a>二叉树的基本定义</h2><p>首先我们来回顾一下什么是二叉树，二叉树有哪些分类。</p><ul><li><p>二叉树：<br>  二叉树就是度不超过 2的树(每个结点最多有两个子结点)。</p><p>  <img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200727153402.png" srcset="/img/loading.gif" alt=""></p></li><li><p>满二叉树：<br>  一个二叉树，如果每一个层的结点树都达到最大值，则这个二叉树就是满二叉树。节点数的计算n=2^k - 1,k表示深度，也就是层数，第i层的节点数n= 2^(i- 1),它的节点数是一系列固定的数，如果节点数不是序列中的数的话，就不是满二叉树</p><p>  <img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200727153507.png" srcset="/img/loading.gif" alt=""></p></li><li><p>完全二叉树<br>  叶节点只能出现在最下层和次下层，当二叉树的深度为h时，它的h层节点必须都是连续靠左并不可隔开的(满二叉树也符合)，并且1～h-1层的结点数都达到最大个数(即1~h-1层为一个满二叉树)。<br>  （也就是说我们往完全二叉树放元素的时候，我们都是在非满的一层从左往右放结点）</p></li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200727154354.png" srcset="/img/loading.gif" alt=""></p><p>注意：满二叉树一定是完全二叉树，完全二叉树不一定是满二叉树。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据结构与算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>树的基本定义和相关术语</title>
     <link href="/cxlittlecute/291a9097.html"/>
     <url>/cxlittlecute/291a9097.html</url>
@@ -13,14 +38,14 @@
     
     <categories>
       
-      <category>Java8</category>
+      <category>数据结构与算法</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>Java8</tag>
+      <tag>数据结构与算法</tag>
       
     </tags>
     
