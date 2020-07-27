@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.4k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      15
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月26日 晚上
+                  本文最后更新于：2020年7月27日 早上
                 
               </p>
             
@@ -289,10 +289,19 @@
 &#125;</code></pre>
 或者使用lombok：<pre><code class="hljs java"><span class="hljs-meta">@EqualsAndHashCode</span>
 <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Goods</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Comparable</span>, <span class="hljs-title">Comparator</span> </span>&#123;
-&#125;</code></pre></li>
+&#125;</code></pre>
+
+</li>
 </ul>
 </li>
 </ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>hashCode主要用于提升查询效率，来确定在散列结构中对象的存储地址；</li>
+<li>重写equals()必须重写hashCode()，二者参与计算的自身属性字段应该相同；</li>
+<li>hash类型的存储结构，添加元素重复性校验的标准就是先取hashCode值，后判断equals()；</li>
+<li>equals()相等的两个对象，hashcode()一定相等；</li>
+<li>反过来：hashcode()不等，一定能推出equals()也不等；<br>hashcode()相等，equals()可能相等，也可能不等。</li>
+</ul>
 
             </article>
             <hr>
