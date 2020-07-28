@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-07-27 15:30">
-      2020年7月27日 下午
+    <time datetime="2020-07-28 12:00">
+      2020年7月28日 中午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      315 字
+      1.9k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      24
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年7月27日 下午
+                  本文最后更新于：2020年7月28日 下午
                 
               </p>
             
@@ -243,6 +243,239 @@
 </ul>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200727154354.png" srcset="/img/loading.gif" alt=""></p>
 <p>注意：满二叉树一定是完全二叉树，完全二叉树不一定是满二叉树。</p>
+<h2 id="二叉查找树的创建-1"><a href="#二叉查找树的创建-1" class="headerlink" title="二叉查找树的创建"></a>二叉查找树的创建</h2><p>我们根据上面的图看出，树其实就是一个个结点组成的，那么我们就利用面向对象的思想，来设计二叉树。</p>
+<ol>
+<li><p>创建Node结点类：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span>&lt;<span class="hljs-title">Key</span>, <span class="hljs-title">Value</span>&gt; </span>&#123;
+
+    <span class="hljs-keyword">public</span> Node left;    <span class="hljs-comment">// 记录左子结点</span>
+    <span class="hljs-keyword">public</span> Node right;   <span class="hljs-comment">// 记录左子结点</span>
+    <span class="hljs-keyword">public</span> Key key;      <span class="hljs-comment">// 存储键</span>
+    <span class="hljs-keyword">public</span> Value value;  <span class="hljs-comment">// 存储值</span>
+
+    <span class="hljs-comment">// 创建Node对象</span>
+    Node(Key key, Value value, Node left, Node right) &#123;
+        <span class="hljs-keyword">this</span>.key = key;
+        <span class="hljs-keyword">this</span>.left = left;
+        <span class="hljs-keyword">this</span>.right = right;
+        <span class="hljs-keyword">this</span>.value = value;
+    &#125;
+&#125;</code></pre>
+</li>
+<li><p>插入方法put（）实现分析：</p>
+<ul>
+<li><p>如果当前树中没有任何一个结点，则直接把新结点当做根结点使用。</p>
+</li>
+<li><p>如果当前树不为空，则从根结点开始：（三种情况）</p>
+<ul>
+<li>如果新结点的key小于当前结点的key，则继续找当前结点的左子结点；</li>
+<li>如果新结点的key大于当前结点的key，则继续找当前结点的右子结点；</li>
+<li>如果新结点的key等于当前结点的key，则树中已经存在这样的结点，替换该结点的value值即可。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code class="hljs java"><span class="hljs-comment">//向树中添加元素key-value</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">put</span><span class="hljs-params">(Key key, Value value)</span> </span>&#123;
+    root = put(root, key, value);
+&#125;
+
+<span class="hljs-comment">//向指定的树x中添加key-value,并返回添加元素后新的树</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">put</span><span class="hljs-params">(Node x, Key key, Value value)</span> </span>&#123;
+    <span class="hljs-comment">//如果x子树为空，</span>
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+        N++;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Node(key, value, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-comment">//如果x子树不为空</span>
+    <span class="hljs-comment">//比较x结点的键和key的大小：</span>
+
+    <span class="hljs-keyword">int</span> cmp = key.compareTo(x.key);
+    <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-comment">//如果key大于x结点的键，则继续找x结点的右子树</span>
+        x.right = put(x.right, key, value);
+
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-comment">//如果key小于x结点的键，则继续找x结点的左子树</span>
+        x.left = put(x.left, key, value);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-comment">//如果key等于x结点的键，则替换x结点的值为value即可</span>
+        x.value = value;
+    &#125;
+    <span class="hljs-keyword">return</span> x;
+&#125;</code></pre>
+
+<ol start="3">
+<li><p>查询方法get实现分析：</p>
+<p> 从根节点开始：</p>
+<ul>
+<li>如果要查询的key小于当前结点的key，则继续找当前结点的左子结点；</li>
+<li>如果要查询的key大于当前结点的key，则继续找当前结点的右子结点；</li>
+<li>如果要查询的key等于当前结点的key，则树中返回当前结点的value。</li>
+</ul>
+</li>
+</ol>
+<pre><code class="hljs java"><span class="hljs-comment">//查询树中指定key对应的value</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Value <span class="hljs-title">get</span><span class="hljs-params">(Key key)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> get(root, key);
+&#125;
+
+<span class="hljs-comment">//从指定的树x中，查找key对应的值</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Value <span class="hljs-title">get</span><span class="hljs-params">(Node x, Key key)</span> </span>&#123;
+    <span class="hljs-comment">//x树为null</span>
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+
+    <span class="hljs-comment">//x树不为null</span>
+    <span class="hljs-comment">//比较key和x结点的键的大小</span>
+    <span class="hljs-keyword">int</span> cmp = key.compareTo(x.key);
+    <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-comment">//如果key大于x结点的键，则继续找x结点的右子树</span>
+        <span class="hljs-keyword">return</span> get(x.right, key);
+
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-comment">//如果key小于x结点的键，则继续找x结点的左子树</span>
+        <span class="hljs-keyword">return</span> get(x.left, key);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-comment">//如果key等于x结点的键，就找到了键为key的结点，只需要返回x结点的值即可</span>
+        <span class="hljs-keyword">return</span> x.value;
+    &#125;
+&#125;</code></pre>
+
+<ol start="4">
+<li><p>删除方法delete()实现分析：</p>
+<ul>
+<li>找到被删除结点；</li>
+<li>找到被删除结点右子树中的最小结点minNode</li>
+<li>删除右子树中的最小结点</li>
+<li>让被删除结点的左子树称为最小结点minNode的左子树，让被删除结点的右子树称为最小结点minNode的右子树</li>
+<li>让被删除结点的父节点指向最小结点minNode</li>
+</ul>
+</li>
+</ol>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BinaryTree</span>&lt;<span class="hljs-title">Key</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Comparable</span>&lt;<span class="hljs-title">Key</span>&gt;, <span class="hljs-title">Value</span>&gt; </span>&#123;
+    <span class="hljs-keyword">private</span> Node root; <span class="hljs-comment">//记录根结点</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> N; <span class="hljs-comment">//记录树中元素的个数</span>
+
+
+    <span class="hljs-comment">// 向树中插入一个键值对</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">put</span><span class="hljs-params">(Key key, Value value)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.root = put(root, key, value);
+    &#125;
+
+    <span class="hljs-comment">// 给指定树x上，添加键一个键值对，并返回添加后的新树</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">put</span><span class="hljs-params">(Node x, Key key, Value val)</span> </span>&#123;
+        <span class="hljs-comment">// 如果root为空也就是没有root结点，则将当前结点作为root结点</span>
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+            N++;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Node&lt;Key, Value&gt;(key, val, <span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>);
+        &#125;
+
+        <span class="hljs-comment">// 如果不为空，就需要比较结点的key大小</span>
+        <span class="hljs-keyword">int</span> cmp = key.compareTo((Key) x.key);
+        <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123;
+            x.right = put(x.right, key, val);
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">//如果key小于x结点的键，则继续找x结点的左子树</span>
+            x.left = put(x.left, key, val);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-comment">//如果key等于x结点的键，则替换x结点的值为value即可</span>
+            x.value = val;
+        &#125;
+        <span class="hljs-keyword">return</span> x;
+    &#125;
+
+    <span class="hljs-comment">// 根据key，从树中找出对应的值</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Value <span class="hljs-title">get</span><span class="hljs-params">(Key key)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> get(root, key);
+    &#125;
+
+    <span class="hljs-comment">// 从指定的树x中，找出key对应的值</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Value <span class="hljs-title">get</span><span class="hljs-params">(Node x, Key key)</span> </span>&#123;
+        <span class="hljs-comment">// x为null</span>
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        &#125;
+
+        <span class="hljs-comment">// x树不为空</span>
+        <span class="hljs-comment">// 比较key和x结点的键的大小</span>
+        <span class="hljs-keyword">int</span> cmp = key.compareTo((Key) x.key);
+        <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">// 如果key大于x结点的键，则继续找x结点的右子树</span>
+            <span class="hljs-keyword">return</span> get(x.right, key);
+
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">// 如果key小于x结点的键，则继续找x结点的左子树</span>
+            <span class="hljs-keyword">return</span> get(x.left, key);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-comment">// 如果key等于x结点的键，就找到了键为key的结点，只需要返回x结点的值即可</span>
+            <span class="hljs-keyword">return</span> (Value) x.value;
+        &#125;
+    &#125;
+
+    <span class="hljs-comment">// 根据key，删除树中对应的键值对</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(Key key)</span> </span>&#123;
+        delete(root, key);
+    &#125;
+
+    <span class="hljs-comment">// 删除指定树x上的键为key的键值对，并返回删除后的新树</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">delete</span><span class="hljs-params">(Node x, Key key)</span> </span>&#123;
+        <span class="hljs-comment">// x树为null</span>
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        &#125;
+        <span class="hljs-comment">// x树不为null</span>
+        <span class="hljs-keyword">int</span> cmp = key.compareTo((Key) x.key);
+        <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">//如果key大于x结点的键，则继续找x结点的右子树</span>
+            x.right = delete(x.right, key);
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">//如果key小于x结点的键，则继续找x结点的左子树</span>
+            x.left = delete(x.left, key);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-comment">// 让元素个数-1</span>
+            N--;
+            <span class="hljs-comment">//如果key等于x结点的键，完成真正的删除结点动作，要删除的结点就是x；</span>
+            <span class="hljs-keyword">if</span> (x.right == <span class="hljs-keyword">null</span>)&#123; <span class="hljs-comment">// 右子树为空</span>
+                <span class="hljs-keyword">return</span> x.left;
+            &#125;
+            <span class="hljs-keyword">if</span> (x.left == <span class="hljs-keyword">null</span>)&#123; <span class="hljs-comment">// 左子树为空</span>
+                <span class="hljs-keyword">return</span> x.right;
+            &#125;
+            <span class="hljs-comment">// 得找到右子树中最小的结点</span>
+            Node minNode = x.right;
+            <span class="hljs-keyword">while</span> (minNode.left != <span class="hljs-keyword">null</span>)&#123;
+                minNode = minNode.left;
+            &#125;
+            <span class="hljs-comment">// 删除右子树中最小的结点</span>
+            Node n = x.right;
+            <span class="hljs-keyword">while</span> (n.left != <span class="hljs-keyword">null</span>)&#123;
+                <span class="hljs-keyword">if</span> (n.left.left == <span class="hljs-keyword">null</span>)&#123;
+                    n.left = <span class="hljs-keyword">null</span>;
+                &#125;<span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-comment">// 变换n结点即可</span>
+                    n = n.left;
+                &#125;
+            &#125;
+            <span class="hljs-comment">// 让x结点的左子树成为minNode的左子树</span>
+            minNode.left = x.left;
+            <span class="hljs-comment">// 让x结点的右子树成为minNode的右子树</span>
+            minNode.right = x.right;
+            <span class="hljs-comment">// 让x结点的父结点指向minNode</span>
+            x = minNode;
+
+        &#125;
+        <span class="hljs-keyword">return</span> x;
+    &#125;
+
+    <span class="hljs-comment">// 获取树中元素的个数</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">size</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> N;
+    &#125;
+&#125;</code></pre>
 
             </article>
             <hr>
