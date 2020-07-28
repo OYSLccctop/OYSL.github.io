@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      29
        分钟
     </span>
   
@@ -493,9 +493,40 @@
         System.out.println(bt.size());
         System.out.println(bt.get(<span class="hljs-number">1</span>));
     &#125;
-&#125;</code></pre></li>
-</ol>
+&#125;</code></pre>
 
+</li>
+</ol>
+<h2 id="二叉查找树的其他方法："><a href="#二叉查找树的其他方法：" class="headerlink" title="二叉查找树的其他方法："></a>二叉查找树的其他方法：</h2><h3 id="查找二叉树中的最小和最大值"><a href="#查找二叉树中的最小和最大值" class="headerlink" title="查找二叉树中的最小和最大值"></a>查找二叉树中的最小和最大值</h3><p>在某些情况下，我们需要查找出树中存储所有元素的键的最小和最大值，比如我们的树中存储的是学生的排名和姓名数据，那么需要查找出排名最高最低是谁。</p>
+<pre><code class="hljs java"><span class="hljs-comment">//查找整个树中最小的键</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Key <span class="hljs-title">min</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> (Key) min(root).key;
+&#125;
+
+<span class="hljs-comment">//在指定树x中找出最小键所在的结点</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> Node <span class="hljs-title">min</span><span class="hljs-params">(Node x)</span> </span>&#123;
+    <span class="hljs-comment">//需要判断x还有没有左子结点，如果有，则继续向左找，如果没有，则x就是最小键所在的结点</span>
+    <span class="hljs-keyword">if</span> (x.left != <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> min(x.left);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> x;
+    &#125;
+&#125;
+
+<span class="hljs-comment">//在整个树中找到最大的键</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Key <span class="hljs-title">max</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> (Key) max(root).key;
+&#125;
+
+<span class="hljs-comment">//在指定的树x中，找到最大的键所在的结点</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Node <span class="hljs-title">max</span><span class="hljs-params">(Node x)</span> </span>&#123;
+    <span class="hljs-comment">//判断x还有没有右子结点，如果有，则继续向右查找，如果没有，则x就是最大键所在的结点</span>
+    <span class="hljs-keyword">if</span> (x.right != <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> max(x.right);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> x;
+    &#125;
+&#125;</code></pre>
             </article>
             <hr>
             <div>
