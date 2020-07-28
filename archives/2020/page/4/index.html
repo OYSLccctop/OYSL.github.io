@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>标签 - 数据结构与算法 - OYSL&#39;s blog</title>
+  <title>归档 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -42,7 +42,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -172,43 +172,31 @@
                 
 
 <div class="list-group">
-  <p class="h4">共计 5 篇文章</p>
+  <p class="h4">共计 31 篇文章</p>
   <hr>
   
     
       
       <p class="h5">2020</p>
     
-    <a href="/cxlittlecute/86071d60.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">二叉树的基本遍历</span>
-      <span style="float: right;">07-28</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/16592e4a.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">二叉查找树的创建</span>
-      <span style="float: right;">07-28</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/291a9097.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">树的基本定义和相关术语</span>
-      <span style="float: right;">07-27</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/e494e2f9.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">图的DFS和BFS</span>
-      <span style="float: right;">07-25</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/3d4e4ac2.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">KMP实现</span>
-      <span style="float: right;">07-24</span>
+    <a href="/cxlittlecute/19858.html" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Hexo博客搭建与部署</span>
+      <span style="float: right;">07-13</span>
     </a>
   
 </div>
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/archives/2020/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/">1</a><a class="page-number" href="/archives/2020/page/2/">2</a><a class="page-number" href="/archives/2020/page/3/">3</a><span class="page-number current">4</span>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
@@ -475,7 +463,7 @@
       if ('false' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/index.html');
+          var target = decodeURI('/archives/2020/page/4/index.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -544,7 +532,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "标签 - 数据结构与算法&nbsp;",
+        "归档&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
