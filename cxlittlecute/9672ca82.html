@@ -309,13 +309,13 @@
                 queue.enqueue(root);
                 <span class="hljs-comment">//3.循环遍历队列：</span>
                 <span class="hljs-keyword">while</span> (!queue.isEmpty()) &#123;
-                    <span class="hljs-comment">//3.1从队列中拿出一个结点；</span>
+                    <span class="hljs-comment">//3.1从队列中拿出一个结点</span>
                     Node tmp = queue.dequeue();
-                    <span class="hljs-comment">//3.2如果这个结点的左子结点不为空，则把这个左子结点添加到队列中；</span>
+                    <span class="hljs-comment">//3.2如果这个结点的左子结点不为空，则把这个左子结点添加到队列中</span>
                     <span class="hljs-keyword">if</span> (tmp.left != <span class="hljs-keyword">null</span>) &#123;
                         queue.enqueue(tmp.left);
                     &#125;
-                    <span class="hljs-comment">//3.3如果这个结点的右子结点不为空，则把这个右子结点添加到队列中；</span>
+                    <span class="hljs-comment">//3.3如果这个结点的右子结点不为空，则把这个右子结点添加到队列中</span>
                     <span class="hljs-keyword">if</span> (tmp.right != <span class="hljs-keyword">null</span>) &#123;
                         queue.enqueue(tmp.right);
                     &#125;
