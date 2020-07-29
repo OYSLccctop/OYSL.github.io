@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>二叉树最大深度和最小深度问题 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-07-29 09:56">
+      2020年7月29日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      444 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      5
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,103 +213,175 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 32 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/860e391d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">四大内置核心函数式接口</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/bbcf5ff7.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Lambda表达式</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/56a14e38.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">HashMap理解总结</span>
-      <span style="float: right;">07-19</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8a5cc6c1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Stream知识用法总结</span>
-      <span style="float: right;">07-18</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/674d8191.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">GateWay网关访问服务出现503的问题解决</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4e6c6273.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/1d5383b1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云oss上传报错Invalid according to Policy Policy expired</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8ce042f1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo消除中文路径</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/61702.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Jenkins执行shell命令，提示command not found解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/10754.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云全站加速HTTPS证书无法开启问题解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/page/2/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/4/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年7月29日 上午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="二叉树最大深度和最小深度问题"><a href="#二叉树最大深度和最小深度问题" class="headerlink" title="二叉树最大深度和最小深度问题"></a>二叉树最大深度和最小深度问题</h1><h2 id="二叉树的最大深度"><a href="#二叉树的最大深度" class="headerlink" title="二叉树的最大深度"></a>二叉树的最大深度</h2><p>最大深度：树的根节点到最远叶子结点的最长路径上的结点数。</p>
+<p>实现步骤：</p>
+<ol>
+<li>如果根结点为空，则最大深度为0；</li>
+<li>计算左子树的最大深度；</li>
+<li>计算右子树的最大深度；</li>
+<li>当前树的最大深度=左子树的最大深度和右子树的最大深度中的较大者+1。</li>
+</ol>
+<pre><code class="hljs java"><span class="hljs-comment">// 计算指定树x的最大深度</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxDepth</span><span class="hljs-params">(Node x)</span></span>&#123;
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-comment">// x的最大深度</span>
+    <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 左子树的最大深度</span>
+    <span class="hljs-keyword">int</span> maxL = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 右子树的最大深度</span>
+    <span class="hljs-keyword">int</span> maxR = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">//2.计算左子树的最大深度；</span>
+    <span class="hljs-keyword">if</span> (x.left != <span class="hljs-keyword">null</span>) &#123;
+        maxL = maxDepth(x.left);
+    &#125;
+    <span class="hljs-comment">//3.计算右子树的最大深度；</span>
+    <span class="hljs-keyword">if</span> (x.right != <span class="hljs-keyword">null</span>) &#123;
+        maxR = maxDepth(x.right);
+    &#125;
+    <span class="hljs-comment">//4.当前树的最大深度=左子树的最大深度和右子树的最大深度中的较大者+1</span>
+    max = maxL &gt; maxR ? maxL + <span class="hljs-number">1</span> : maxR + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> max;
+&#125;</code></pre>
+
+<h2 id="最小深度"><a href="#最小深度" class="headerlink" title="最小深度"></a>最小深度</h2><p>最小深度：从根节点到最近叶节点的最短路径上的节点数。</p>
+<p>实现步骤：</p>
+<ol>
+<li>如果根结点为空，则最小深度为0；</li>
+<li>如果左子树为空，右子树不为空，最小深度=右子树的最小深度+1；</li>
+<li>如果右子树为空，左子树不为空，最小深度=左子树的最小深度+1；</li>
+<li>当前树的最小深度=左子树的最小深度和右子树的最小深度中的较小者+1。</li>
+</ol>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDepth</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">return</span> minDepth(root);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDepth</span><span class="hljs-params">(Node x)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-keyword">if</span> (x.left == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> minDepth(x.right) + <span class="hljs-number">1</span>;
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x.right == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">return</span> minDepth(x.left) + <span class="hljs-number">1</span>;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> Math.min(minDepth(x.left), minDepth(x.right)) + <span class="hljs-number">1</span>;
+    &#125;
+&#125;</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/86071d60.html">
+                        <span class="hidden-mobile">二叉树的基本遍历</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -514,10 +637,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/page/3/index.html');
+          var target = decodeURI('/cxlittlecute/bb5d33c4.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -579,6 +702,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -586,7 +734,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "二叉树最大深度和最小深度问题&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -601,6 +749,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -614,6 +777,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 

@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>二叉树最大深度和最小深度问题</title>
+    <link href="/cxlittlecute/bb5d33c4.html"/>
+    <url>/cxlittlecute/bb5d33c4.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="二叉树最大深度和最小深度问题"><a href="#二叉树最大深度和最小深度问题" class="headerlink" title="二叉树最大深度和最小深度问题"></a>二叉树最大深度和最小深度问题</h1><h2 id="二叉树的最大深度"><a href="#二叉树的最大深度" class="headerlink" title="二叉树的最大深度"></a>二叉树的最大深度</h2><p>最大深度：树的根节点到最远叶子结点的最长路径上的结点数。</p><p>实现步骤：</p><ol><li>如果根结点为空，则最大深度为0；</li><li>计算左子树的最大深度；</li><li>计算右子树的最大深度；</li><li>当前树的最大深度=左子树的最大深度和右子树的最大深度中的较大者+1。</li></ol><pre><code class="hljs java"><span class="hljs-comment">// 计算指定树x的最大深度</span><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxDepth</span><span class="hljs-params">(Node x)</span></span>&#123;    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>)&#123;        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    &#125;    <span class="hljs-comment">// x的最大深度</span>    <span class="hljs-keyword">int</span> max = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 左子树的最大深度</span>    <span class="hljs-keyword">int</span> maxL = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 右子树的最大深度</span>    <span class="hljs-keyword">int</span> maxR = <span class="hljs-number">0</span>;    <span class="hljs-comment">//2.计算左子树的最大深度；</span>    <span class="hljs-keyword">if</span> (x.left != <span class="hljs-keyword">null</span>) &#123;        maxL = maxDepth(x.left);    &#125;    <span class="hljs-comment">//3.计算右子树的最大深度；</span>    <span class="hljs-keyword">if</span> (x.right != <span class="hljs-keyword">null</span>) &#123;        maxR = maxDepth(x.right);    &#125;    <span class="hljs-comment">//4.当前树的最大深度=左子树的最大深度和右子树的最大深度中的较大者+1</span>    max = maxL &gt; maxR ? maxL + <span class="hljs-number">1</span> : maxR + <span class="hljs-number">1</span>;    <span class="hljs-keyword">return</span> max;&#125;</code></pre><h2 id="最小深度"><a href="#最小深度" class="headerlink" title="最小深度"></a>最小深度</h2><p>最小深度：从根节点到最近叶节点的最短路径上的节点数。</p><p>实现步骤：</p><ol><li>如果根结点为空，则最小深度为0；</li><li>如果左子树为空，右子树不为空，最小深度=右子树的最小深度+1；</li><li>如果右子树为空，左子树不为空，最小深度=左子树的最小深度+1；</li><li>当前树的最小深度=左子树的最小深度和右子树的最小深度中的较小者+1。</li></ol><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDepth</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-keyword">return</span> minDepth(root);&#125;<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minDepth</span><span class="hljs-params">(Node x)</span> </span>&#123;    <span class="hljs-keyword">if</span> (x == <span class="hljs-keyword">null</span>) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    &#125;    <span class="hljs-keyword">if</span> (x.left == <span class="hljs-keyword">null</span>) &#123;        <span class="hljs-keyword">return</span> minDepth(x.right) + <span class="hljs-number">1</span>;    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x.right == <span class="hljs-keyword">null</span>) &#123;        <span class="hljs-keyword">return</span> minDepth(x.left) + <span class="hljs-number">1</span>;    &#125; <span class="hljs-keyword">else</span> &#123;        <span class="hljs-keyword">return</span> Math.min(minDepth(x.left), minDepth(x.right)) + <span class="hljs-number">1</span>;    &#125;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据结构与算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>二叉树的基本遍历</title>
     <link href="/cxlittlecute/86071d60.html"/>
     <url>/cxlittlecute/86071d60.html</url>
