@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.1k 字
     </span>
   
 
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月1日 晚上
+                  本文最后更新于：2020年8月2日 上午
                 
               </p>
             
@@ -303,8 +303,15 @@ chmod -R 777 ik/</code></pre>
 </ol>
 <p>xml中的修改情况如下：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200801181856.png" srcset="/img/loading.gif" alt=""></p>
-<p>注意：如果打开 IKAnalyzer.cfg.xml 为乱码的话，可以在先退出当前文件，在命令行输入 vi /etc/virc，然后在文件添加 set encoding=utf-8，保存退出，重新打开 IKAnalyzer.cfg.xml 即可。</p>
+<p>注意：</p>
+<ul>
+<li>如果打开 IKAnalyzer.cfg.xml 为乱码的话，可以在先退出当前文件，在命令行输入 vi /etc/virc，然后在文件添加 set encoding=utf-8，保存退出，重新打开 IKAnalyzer.cfg.xml 即可。</li>
+</ul>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200801182052.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>如果出现nginx访问txt出现乱码情况。在nginx.conf中增加如下配置：然后nginx -s reload，重新加载或者重启容器。</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200802100655.png" srcset="/img/loading.gif" alt=""></p>
 <ol start="5">
 <li>最后我们需要重启ES容器。然后使用Kibana进行分词测试。</li>
 </ol>
