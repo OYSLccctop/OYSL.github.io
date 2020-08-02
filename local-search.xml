@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Docker常用命令（转载）</title>
+    <link href="/cxlittlecute/c8b964af.html"/>
+    <url>/cxlittlecute/c8b964af.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Docker常用命令（转载）"><a href="#Docker常用命令（转载）" class="headerlink" title="Docker常用命令（转载）"></a>Docker常用命令（转载）</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200802123615.png" srcset="/img/loading.gif" alt=""></p><pre><code class="hljs shell">attach  Attach to a running container      #当前shell下attach下连接指定运行镜像build   Build an image form a Dockerfile   #通过Dockerfile定制镜像commit  Create a new image form a container changes #提交当前容器为新的镜像cp Copy file/folders from the containers filesystem to the host path # 容器中拷贝指定文件或者目录到宿主机上create  Create a new Container            #创建一个新的容器，同run，但是不会启动容器diff  Inspect changes on a Container’s filesystem #查看docker 容器的变化exec  Run a Command in an existing container  #在已存在的容器上运行命令export   Stream the contents of a container as a tar archive   #导出容器的内容作为一个tar 归档文件[对应import]history    Show the history of an image     # 展示一个镜像形成历史images     List images    #列出系统当前镜像import     Create a new filesystem image form the contents of a tarball # 从tar包中的内容创建一个新的文件系统镜像[对应export]info     Display system-while information       # 显示系统相关信息inspect    Return low—level  information on a container    # 查看容器详细信息kill   kill a running container      # kill 指定docker 容器load    Load an image from a tar archive      # 从一个tar包中加载一个镜像[对应save]login   Register or login to the docker registry server    # 注册或者登陆一个Docker源服务器logout    Log out from a Docker registry server    # 从当前Docker registry  退出logs     Fetch  the logs of a container      # 输出当前容器日志信息port     Lookup  the public-facing port which  is NAT-ed to PRIVATE-PORT   # 查看映射端口对应的容器内部源端口pause   Pause all processes within a container   # 暂停容器ps     List containers         # 列出容器列表pull   Pull an image or a repository from the docker registry server  # 从docker镜像服务器拉取指定镜像或者库镜像push   Push  an image or a repository from the docker registry server  # 推送指定镜像或者库镜至docker 源服务器restart  Restart a running container       # 重启运行的容器rm    Remove  one or more container        # 移除一个或者多个容器rmi   Remove  one or more images           # 移除一个或多个镜像[无容器使用该镜像才可以删除，否则需删除相关容器才可继续  或者-f强制删除]run    Run a  command  in a new container       # 创建一个新的容器并运行一个命令save   Save an image  to a tar archive          # 保存一个镜像为一个tar包[对应load]search  Search for an image on the Docker Hub   # 在docker hub 中搜索镜像start   Start a  stoped containers              # 启动容器stop    Stop  a running container               # 停止容器tag     Tag an image into a repository          # 给源中镜像打标签top     Lookup the running proesses of a container # 查看容器中运行的进程信息unpause  Unpause a paused container             # 取消暂停容器version  Show the docker version information    # 查看docker版本号wait   Block until a container stops, then print its exit code # 截取容器停止时的退出状态值</code></pre><p>笔记出自bilibili 博主：遇见狂神说</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Docker</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Elasticsearch（七）-分词</title>
     <link href="/cxlittlecute/3cc92c66.html"/>
     <url>/cxlittlecute/3cc92c66.html</url>
