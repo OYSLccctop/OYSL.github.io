@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      547 字
+      591 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      7
        分钟
     </span>
   
@@ -231,11 +231,17 @@
             
             <article class="markdown-body">
               <h1 id="Docker具名和匿名挂载"><a href="#Docker具名和匿名挂载" class="headerlink" title="Docker具名和匿名挂载"></a>Docker具名和匿名挂载</h1><p>挂载对于docker的使用是很重要的一个操作，因为我们可以通过挂载，将容器中的数据同步到本地主机上，这样就实现了容器数据的持久化或者数据共享。</p>
-<h2 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h2><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 三种挂载： 匿名挂载、具名挂载、指定路径挂载</span>
+<h2 id="挂载方式"><a href="#挂载方式" class="headerlink" title="挂载方式"></a>挂载方式</h2><ol>
+<li>直接使用命令挂载 -v分为以下几种情况：</li>
+</ol>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 三种挂载： 匿名挂载、具名挂载、指定路径挂载</span>
 -v 容器内路径			#匿名挂载
 -v 卷名：容器内路径		  #具名挂载
 -v /宿主机路径：容器内路径 #指定路径挂载 docker volume ls 是查看不到的</code></pre>
-
+<ol start="2">
+<li>还可以使用DockerFile实现自动挂载。</li>
+<li>以及使用数据卷容器进行挂载。</li>
+</ol>
 <h2 id="匿名挂载"><a href="#匿名挂载" class="headerlink" title="匿名挂载"></a>匿名挂载</h2><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 匿名挂载</span>
 <span class="hljs-meta">#</span><span class="bash"> -v 容器内路径!</span>
 
