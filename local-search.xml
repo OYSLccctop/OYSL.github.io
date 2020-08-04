@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Springboot整合ES</title>
+    <link href="/cxlittlecute/1b871313.html"/>
+    <url>/cxlittlecute/1b871313.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Springboot整合ES"><a href="#Springboot整合ES" class="headerlink" title="Springboot整合ES"></a>Springboot整合ES</h1><h2 id="操作方式"><a href="#操作方式" class="headerlink" title="操作方式"></a>操作方式</h2><p>Java 操作 ES 的两种方式：<br>1）、9300：TCP (我们不在9300操作，官方也不建议)</p><ul><li><p>spring-data-elasticsearch:transport-api.jar;</p><ul><li>springboot 版本不同，transport-api.jar不同，不能适配es版本</li><li>7.x 已经不建议使用，8 以后就要废弃<br>2、9200：HTTP（推荐使用）</li></ul></li><li><p>JestClient：非官方，更新慢</p></li><li><p>RestTemplate：模拟发 HTTP 请求，ES 很多操作需要自己封装，麻烦</p></li><li><p>HttpClient：同上</p></li><li><p>Elasticsearch-Rest-Client：官方 RestClient，封装了 ES 操作，API 层次分明，上手简单最终选择</p><ul><li>Elasticsearch-Rest-Client(elasticsearch-rest-high-level-client)</li></ul></li></ul><h2 id="整合步骤"><a href="#整合步骤" class="headerlink" title="整合步骤"></a>整合步骤</h2><ol><li>创建项目。（注意我们使用idea创建项目的时候，可以选择Spring data Elasticsearch但是它支持的版本过低，所以一般不会勾选）</li></ol><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200804221100.png" srcset="/img/loading.gif" alt=""></p><ol start="2"><li><p>查看官网API  <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/index.html" target="_blank" rel="noopener">Java REST Client</a>。</p></li><li><p>High Level对请求进行了更深层的封装。</p></li><li><p>导入Jar包依赖。（注意我们的springboot依赖中有ES的版本控制，如果发现下载ES的Jar包失败，请先删除文件夹中的内容，然后在properites中设置版本，重新下载）</p></li></ol><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200804221549.png" srcset="/img/loading.gif" alt=""></p><ol start="5"><li>编写配置，给容器中注入一个RestHighLevelClient。</li></ol><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ESconfig</span> </span>&#123;    <span class="hljs-meta">@Bean</span>    <span class="hljs-function"><span class="hljs-keyword">public</span> RestHighLevelClient <span class="hljs-title">esRestHighLevelClient</span><span class="hljs-params">()</span> </span>&#123;        RestHighLevelClient client = <span class="hljs-keyword">new</span> RestHighLevelClient(                <span class="hljs-comment">// 这里可以配置多个 es服务，我当前服务不是集群，所以目前只配置一个</span>                RestClient.builder(                        <span class="hljs-keyword">new</span> HttpHost(<span class="hljs-string">"你的IP地址"</span>, <span class="hljs-number">9200</span>, <span class="hljs-string">"http"</span>)));        <span class="hljs-keyword">return</span> client;    &#125;&#125;</code></pre><ol start="6"><li>我们就可以通过注入RestHighLevelClient进行测试了。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Elasticsearch</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Elasticsearch</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Docker Swarm</title>
     <link href="/cxlittlecute/656e6847.html"/>
     <url>/cxlittlecute/656e6847.html</url>
