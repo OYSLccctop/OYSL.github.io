@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      351 字
+      562 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      7
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月4日 晚上
+                  本文最后更新于：2020年8月5日 早上
                 
               </p>
             
@@ -281,6 +281,50 @@
 <ol start="6">
 <li>我们就可以通过注入RestHighLevelClient进行测试了。</li>
 </ol>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ol>
+<li>在ESconfig中配置设置请求头信息的代码块，现在没有认证就把认证注解了。</li>
+</ol>
+<pre><code class="hljs shell">    public static final RequestOptions COMMON_OPTIONS;
+    static &#123;
+        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
+        // 这里先注释掉，目前没有用到，后边用到了再解释
+//        builder.addHeader("Authorization", "Bearer " + TOKEN);
+//        builder.setHttpAsyncResponseConsumerFactory(
+//                new HttpAsyncResponseConsumerFactory
+//                        .HeapBufferedResponseConsumerFactory(30 * 1024 * 1024 * 1024));
+        COMMON_OPTIONS = builder.build();
+    &#125;</code></pre>
+<ol start="2">
+<li>操作的方式。（方式有很多种，选择两种进行测试）<a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-low-usage-requests.html#java-rest-low-usage-request-options" target="_blank" rel="noopener">参照官方文档</a></li>
+</ol>
+<pre><code class="hljs shell">    /*
+    *测试存储数据
+    * */
+    @Test
+    public void indexData() throws IOException &#123;
+/*        IndexRequest indexRequest = new IndexRequest("users");
+        indexRequest.id("1");
+        indexRequest.source("userName","zhangsan","age",18,"gender","男");*/
+
+        // 第二种方式（推荐使用）
+        IndexRequest indexRequest = new IndexRequest("users");
+        User user = new User();
+        user.setUserName("zhangsan");
+        user.setAge(18);
+        user.setGender("男");
+
+        String jsonString = JSON.toJSONString(user);
+        indexRequest.source(jsonString, XContentType.JSON); //要保存的内容
+
+        // 执行操作
+        IndexResponse index = client.index(indexRequest, ESconfig.COMMON_OPTIONS);
+
+        // 提取有用的数据相应
+        System.out.println(index);
+    &#125;</code></pre>
+
+<p>最后，查询到数据。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200805070549.png" srcset="/img/loading.gif" alt=""></p>
 
             </article>
             <hr>
