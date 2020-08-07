@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      361 字
+      948 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      10
        分钟
     </span>
   
@@ -237,7 +237,6 @@
 <li>对象的反序列化。（readObject方法）</li>
 <li>Object对象的clone()方法.(它的作用是创建一个对象的副本)</li>
 </ol>
-<p>参考：<br><a href="https://blog.csdn.net/zhupanlinch/article/details/103004406" target="_blank" rel="noopener">https://blog.csdn.net/zhupanlinch/article/details/103004406</a></p>
 <h2 id="Java反射创建对象的效率高，还是操作通过new创建对象的效率高？"><a href="#Java反射创建对象的效率高，还是操作通过new创建对象的效率高？" class="headerlink" title="Java反射创建对象的效率高，还是操作通过new创建对象的效率高？"></a>Java反射创建对象的效率高，还是操作通过new创建对象的效率高？</h2><p>new创建对象的效率高，反射之所以慢,原因是:</p>
 <ol>
 <li>即时编译器(JIT)没法对相关代码进行优化。因为JIT会减少Java字节码再解析的操作。</li>
@@ -251,7 +250,32 @@
 <li>判断任意一个类所具有的成员变量和方法</li>
 <li>调用执行任意一个对象的方法</li>
 </ol>
-<h2 id="哪里会用到反射机制？"><a href="#哪里会用到反射机制？" class="headerlink" title="哪里会用到反射机制？"></a>哪里会用到反射机制？</h2>
+<h2 id="哪里会用到反射机制？"><a href="#哪里会用到反射机制？" class="headerlink" title="哪里会用到反射机制？"></a>哪里会用到反射机制？</h2><ol>
+<li>经典的就是在xml文件或者properties里面写好了配置，然后在Java类里面解析xml或properties里面的内容。<br>得到一个字符串，然后用反射机制，根据这个字符串获得某个类的Class实例，这样就可以动态配置一些东西，不用每一次都要在代码里面去new或者做其他的事情。<br>以后要改的话直接改配置文件，代码维护起来就很方便了。<a href="http://ccctop.cn/cxlittlecute/7af799fd.html" target="_blank" rel="noopener">举例，如本文最后的列子。</a></li>
+<li>总的来说，反射的目的就是为了扩展未知的应用，比如你写了一个程序，这个程序定义了一些接口，只要实现了这些接口的dll都可以作为插件来插入到这个程序中。那么怎么实现呢？就可以通过反射来实现。就是把dll加载进内存，然后通过反射的方式来调用dll中的方法。很多工厂模式就是使用的反射。 </li>
+</ol>
+<h2 id="反射的实现方式？"><a href="#反射的实现方式？" class="headerlink" title="反射的实现方式？"></a>反射的实现方式？</h2><p>第一种：通过Object类的getClass方法。<br>第二种：通过对象实例方法获取对象。<br>第三种：通过Class.forName方式。</p>
+<h2 id="实现Java反射的类有哪些？"><a href="#实现Java反射的类有哪些？" class="headerlink" title="实现Java反射的类有哪些？"></a>实现Java反射的类有哪些？</h2><pre><code>java.lang.Class ：一个类
+java.lang.reflect.Field ：类的成员变量(属性)
+java.lang.reflect.Method ：类的成员方法
+java.lang.reflect.Constructor ：类的构造方法
+java.lang.reflect.Array ：提供了静态方法动态创建数组，访问数组的元素</code></pre><h2 id="反射机制的优缺点？"><a href="#反射机制的优缺点？" class="headerlink" title="反射机制的优缺点？"></a>反射机制的优缺点？</h2><p>优点：</p>
+<ol>
+<li><p>增加程序的灵活性，避免将代码写死在程序中。（建议：都去实现读取文件模拟框架的配置文件读取）.</p>
+</li>
+<li><p>代码简洁，提高代码的复用率，外部调用方便.</p>
+</li>
+<li><p>对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法.</p>
+</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>性能问题.使用反射基本上是一种解释操作，用于字段和方法接入时要远慢于直接代码.它包含一些动态类型，JIT无法对其进行优化。</li>
+<li>使用反射会模糊程序内部逻辑。</li>
+<li>安全限制，使用反射技术要求程序必须在一个没有安全限制的环境中运行。</li>
+</ol>
+<p>参考：<br><a href="https://blog.csdn.net/zhupanlinch/article/details/103004406" target="_blank" rel="noopener">https://blog.csdn.net/zhupanlinch/article/details/103004406</a><br><a href="https://blog.csdn.net/qq_36470686/article/details/85015753" target="_blank" rel="noopener">https://blog.csdn.net/qq_36470686/article/details/85015753</a></p>
+
             </article>
             <hr>
             <div>

@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      27
        分钟
     </span>
   
@@ -230,7 +230,8 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><h2 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射"></a>什么是反射</h2><p>Java属于准动态语言，就是因为我们可以调用反射的API，在运行状态下获取类的信息，这种动态获取类信息的方法我们称为反射。</p>
+              <h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><h2 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射"></a>什么是反射</h2><p>JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。</p>
+<p>反射就是把java类中的各种成分映射成一个个的Java对象.</p>
 <p>用法没有什么好介绍的，我们需要注意的是一个类在被加载后，只会有一个Class对象，类的整个结构信息都保存在这个Class对象中。</p>
 <h2 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h2><p>在Object类中定了如下的方法,此方法被所有子类继承：</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> Class <span class="hljs-title">getClass</span><span class="hljs-params">()</span></span></code></pre>
@@ -405,6 +406,7 @@
 <li>在运行时构造任意一个类的对象</li>
 <li>在运行时判断任意一个类所具有的成员变量和方法</li>
 <li>在运行时调用任意一个对象的方法</li>
+<li>在运行时通过反射越过泛型检查</li>
 </ol>
 <h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p>优点：<br>　　反射提高了程序的灵活性和扩展性，降低耦合性，提高自适应能力。它允许程序创建和控制任何类的对象，无需提前硬编码目标类<br>缺点：<br>　　（1）性能问题：使用反射基本上是一种解释操作，用于字段和方法接入时要远慢于直接代码。因此反射机制主要应用在对灵活性和扩展性要求很高的系统框架上，普通程序不建议使用。<br>　　2）使用反射会模糊程序内内部逻辑：程序员希望在源代码中看到程序的逻辑，反射等绕过了源代码的技术，因而会带来维护问题。反射代码比相应的直接代码更复杂。</p>
 <h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><ol>
