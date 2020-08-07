@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      917 字
+      1.5k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      18
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月6日 晚上
+                  本文最后更新于：2020年8月7日 上午
                 
               </p>
             
@@ -310,6 +310,95 @@
 <p>讲到了这里就必要要聊一下双亲委派机制：</p>
 <p>双亲委派机制是指当一个类加载器收到一个类加载请求时，该类加载器首先会把请求委派给父类加载器。每个类加载器都是如此，只有在父类加载器在自己的搜索范围内找不到指定类时，子类加载器才会尝试自己去加载。</p>
 <h2 id="获取运行时类的完整结构"><a href="#获取运行时类的完整结构" class="headerlink" title="获取运行时类的完整结构"></a>获取运行时类的完整结构</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200806215253.png" srcset="/img/loading.gif" alt=""></p>
+<p>这里就不用代码演示这些获取的方法了，都是getXxx(),但是区别在于，只有getXxx（）获取的是该类的公开属性或方法和父类的公开属性或方法，getDeclaredXxx（）获取的是该类的所有属性或方法。</p>
+<h2 id="这里我们需要思考有了class对象我们能做什么？"><a href="#这里我们需要思考有了class对象我们能做什么？" class="headerlink" title="这里我们需要思考有了class对象我们能做什么？"></a>这里我们需要思考有了class对象我们能做什么？</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807090855.png" srcset="/img/loading.gif" alt=""></p>
+<p>newInstance()调用的是类的无参构造器。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>难道我们没有无参的构造器就不能进行对象的创建吗？</p>
+<p>当然不是，只要在操作的时候明确的调用类中的构造器,并将参数传递进去之后，就可以实例化操作。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807091928.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="调用指定的方法"><a href="#调用指定的方法" class="headerlink" title="调用指定的方法"></a>调用指定的方法</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807095448.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807095549.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test3</span> </span>&#123;
+
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException </span>&#123;
+        <span class="hljs-comment">// 获取Class对象</span>
+        Class c1 = Class.forName(<span class="hljs-string">"User"</span>);
+
+        <span class="hljs-comment">// 构建一个对象</span>
+        User user = (User) c1.newInstance();<span class="hljs-comment">// 本质上是调用了类的无参构造器</span>
+        System.out.println(user);
+
+        <span class="hljs-comment">// 通过构造器创建对象</span>
+        Constructor declaredConstructor = c1.getDeclaredConstructor(Integer<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">String</span>.<span class="hljs-title">class</span>)</span>;
+        User user2 = (User) declaredConstructor.newInstance(<span class="hljs-number">12</span>, <span class="hljs-string">"OY"</span>);
+        System.out.println(user2);
+
+        <span class="hljs-comment">// 通过反射调用普通方法</span>
+        User user3 = (User) c1.newInstance();
+        Method setName = c1.getDeclaredMethod(<span class="hljs-string">"setName"</span>, String<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        <span class="hljs-comment">// invoke：激活 (对象，"方法的值")</span>
+        setName.invoke(user3, <span class="hljs-string">"OY"</span>);
+        System.out.println(user3);
+
+        <span class="hljs-comment">// 通过反射操作属性</span>
+        User user4 = (User) c1.newInstance();
+        user4.setName(<span class="hljs-string">"xxx"</span>);
+        Field name = c1.getDeclaredField(<span class="hljs-string">"name"</span>);
+        <span class="hljs-comment">// name是私有属性，不行直接操作，我们需要关闭程序的安全监测，属性或者方法的setAccessible(true)</span>
+        name.setAccessible(<span class="hljs-keyword">true</span>);
+        name.set(user4, <span class="hljs-string">"OY4"</span>);
+        System.out.println(user4.getName());
+
+        <span class="hljs-comment">// 调用静态方法</span>
+        Method test = c1.getDeclaredMethod(<span class="hljs-string">"test"</span>);
+        test.invoke(<span class="hljs-keyword">null</span>, <span class="hljs-keyword">null</span>);
+
+    &#125;
+&#125;</code></pre>
+
+<h3 id="setAccessible"><a href="#setAccessible" class="headerlink" title="setAccessible"></a>setAccessible</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807100209.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="操作泛型"><a href="#操作泛型" class="headerlink" title="操作泛型"></a>操作泛型</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807102058.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs java"><span class="hljs-keyword">import</span> java.lang.reflect.Method;
+<span class="hljs-keyword">import</span> java.lang.reflect.ParameterizedType;
+<span class="hljs-keyword">import</span> java.lang.reflect.Type;
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo10</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test01</span> <span class="hljs-params">(Map&lt;String,User&gt; map, List&lt;User&gt; list)</span></span>&#123;
+        System.out.println(<span class="hljs-string">"test01"</span>);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Map&lt;String, User&gt; <span class="hljs-title">test02</span><span class="hljs-params">()</span></span>&#123;
+        System.out.println(<span class="hljs-string">"test02"</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> NoSuchMethodException </span>&#123;
+        Method method = Demo10.class.getMethod("test01",Map.class,List.class);
+        Type[] genericParameterTypes= method.getGenericParameterTypes();
+        <span class="hljs-keyword">for</span> (Type genericParameterType : genericParameterTypes) &#123;
+            System.out.println(<span class="hljs-string">"参数范型"</span>+genericParameterType);
+            <span class="hljs-keyword">if</span> (genericParameterType <span class="hljs-keyword">instanceof</span> ParameterizedType)&#123;
+                Type[] actualTypeAnguments=((ParameterizedType)(ParameterizedType) genericParameterType).getActualTypeArguments();
+                <span class="hljs-keyword">for</span> (Type actualTypeAngument : actualTypeAnguments) &#123;
+                    System.out.println(<span class="hljs-string">"实际参数范型"</span>+actualTypeAngument);
+                &#125;
+            &#125;
+        &#125;
+        Method method1 = Demo10.class.getMethod("test02",null);
+        Type getGenericReturnType= method1.getGenericReturnType();
+        <span class="hljs-keyword">if</span> (getGenericReturnType <span class="hljs-keyword">instanceof</span>  ParameterizedType) &#123;
+            Type[] actualTypeArguments = ((ParameterizedType) getGenericReturnType).getActualTypeArguments();
+            <span class="hljs-keyword">for</span> (Type actualTypeArgument : actualTypeArguments) &#123;
+                System.out.println(<span class="hljs-string">"返回值范型"</span> + actualTypeArgument);
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>运行结果：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807104903.png" srcset="/img/loading.gif" alt=""></p>
 
             </article>
             <hr>
