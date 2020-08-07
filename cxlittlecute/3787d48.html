@@ -267,10 +267,8 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
 <p>那么我们可以造一个「备忘录」，每次算出某个子问题的答案后别急着返回，先记到「备忘录」里再返回；每次遇到一个子问题先去「备忘录」里查一查，如果发现之前已经解决过这个问题了，直接把答案拿出来用，不要再耗时去计算了。</p>
 <h4 id="dp-数组的迭代解法"><a href="#dp-数组的迭代解法" class="headerlink" title="dp 数组的迭代解法"></a>dp 数组的迭代解法</h4><p>其实这个方法和上面带备忘录的递归解法，只是反过来算了而已，备忘录的方法只是自顶向下，而dp数组是自底向上，从规模最小的问题开始向上推，这也就是动态规划摆脱递归，由循环迭代完成的思路。</p>
 <p>并且通过转移方程我们可以发现当前状态只和之前的两个状态有关，并不需要一个 DP table 来存储所有的状态，只要想办法存储之前的两个状态就行了，这样就可以优化dp数组的迭代过程。这个技巧称为状态压缩。</p>
-<h2 id="打家劫舍"><a href="#打家劫舍" class="headerlink" title="打家劫舍"></a>打家劫舍</h2><p><a href="https://leetcode-cn.com/problems/house-robber/" target="_blank" rel="noopener">打家劫舍</a></p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200807215031.png" srcset="/img/loading.gif" alt=""></p>
-<p>我们前面说了动态规划的难点就是找到状态转移方程，那么我们首先来分析确定一下这道题base case、状态和选择。</p>
-<p>盗贼的选择有两种：抢或者不抢。<br>状态：状态是会变化的变量，在这里就是房间的索引。</p>
+<p>关于题目细节的分析：<br>参考以下这篇文章：<br><a href="https://leetcode-cn.com/problems/house-robber-ii/solution/tong-yong-si-lu-tuan-mie-da-jia-jie-she-wen-ti-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/house-robber-ii/solution/tong-yong-si-lu-tuan-mie-da-jia-jie-she-wen-ti-by-/</a></p>
+<p><a href="https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/dong-tai-gui-hua-xiang-jie-jin-jie" target="_blank" rel="noopener">https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/dong-tai-gui-hua-xiang-jie-jin-jie</a></p>
 
             </article>
             <hr>
