@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.8k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      22
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月7日 晚上
+                  本文最后更新于：2020年8月8日 上午
                 
               </p>
             
@@ -267,6 +267,117 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
 <p>那么我们可以造一个「备忘录」，每次算出某个子问题的答案后别急着返回，先记到「备忘录」里再返回；每次遇到一个子问题先去「备忘录」里查一查，如果发现之前已经解决过这个问题了，直接把答案拿出来用，不要再耗时去计算了。</p>
 <h4 id="dp-数组的迭代解法"><a href="#dp-数组的迭代解法" class="headerlink" title="dp 数组的迭代解法"></a>dp 数组的迭代解法</h4><p>其实这个方法和上面带备忘录的递归解法，只是反过来算了而已，备忘录的方法只是自顶向下，而dp数组是自底向上，从规模最小的问题开始向上推，这也就是动态规划摆脱递归，由循环迭代完成的思路。</p>
 <p>并且通过转移方程我们可以发现当前状态只和之前的两个状态有关，并不需要一个 DP table 来存储所有的状态，只要想办法存储之前的两个状态就行了，这样就可以优化dp数组的迭代过程。这个技巧称为状态压缩。</p>
+<h2 id="打家劫舍"><a href="#打家劫舍" class="headerlink" title="打家劫舍"></a>打家劫舍</h2><p>自顶向下：</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        &#125;
+        <span class="hljs-keyword">int</span> length = nums.length;
+        <span class="hljs-keyword">if</span> (length == <span class="hljs-number">1</span>) &#123;
+            <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>];
+        &#125;
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+        dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];
+        dp[<span class="hljs-number">1</span>] = Math.max(nums[<span class="hljs-number">0</span>], nums[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt; length; i++) &#123;
+            dp[i] = Math.max(dp[i - <span class="hljs-number">2</span>] + nums[i], dp[i - <span class="hljs-number">1</span>]);
+        &#125;
+        <span class="hljs-keyword">return</span> dp[length - <span class="hljs-number">1</span>];
+    &#125;
+&#125;</code></pre>
+<p>自顶向下状态压缩：</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        &#125;
+        <span class="hljs-keyword">int</span> length = nums.length;
+        <span class="hljs-keyword">if</span> (length == <span class="hljs-number">1</span>) &#123;
+            <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>];
+        &#125;
+        <span class="hljs-keyword">int</span> first = nums[<span class="hljs-number">0</span>], second = Math.max(nums[<span class="hljs-number">0</span>], nums[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt; length; i++) &#123;
+            <span class="hljs-keyword">int</span> temp = second;
+            second = Math.max(first + nums[i], second);
+            first = temp;
+        &#125;
+        <span class="hljs-keyword">return</span> second;
+    &#125;
+&#125;</code></pre>
+
+<p>自底向上：</p>
+<pre><code class="hljs java"> <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> n = nums.length;
+    <span class="hljs-comment">// dp[i] = x 表示：</span>
+    <span class="hljs-comment">// 从第 i 间房子开始抢劫，最多能抢到的钱为 x</span>
+    <span class="hljs-comment">// base case: dp[n] = 0</span>
+    <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n + <span class="hljs-number">2</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;
+        dp[i] = Math.max(dp[i + <span class="hljs-number">1</span>], nums[i] + dp[i + <span class="hljs-number">2</span>]);
+    &#125;
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
+&#125;</code></pre>
+
+<p>自底向上状态压缩：</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> n = nums.length;
+    <span class="hljs-comment">// 记录 dp[i+1] 和 dp[i+2]</span>
+    <span class="hljs-keyword">int</span> dp_i_1 = <span class="hljs-number">0</span>, dp_i_2 = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 记录 dp[i]</span>
+    <span class="hljs-keyword">int</span> dp_i = <span class="hljs-number">0</span>; 
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;
+        dp_i = Math.max(dp_i_1, nums[i] + dp_i_2);
+        dp_i_2 = dp_i_1;
+        dp_i_1 = dp_i;
+    &#125;
+    <span class="hljs-keyword">return</span> dp_i;
+&#125;</code></pre>
+
+<h2 id="打家劫舍-Ⅱ"><a href="#打家劫舍-Ⅱ" class="headerlink" title="打家劫舍 Ⅱ"></a>打家劫舍 Ⅱ</h2><p>这个题就等于一个环形排列，我们可以把它分为两个单排列。</p>
+<p>首先，首尾房间不能同时被抢，那么只可能有三种不同情况：要么都不被抢；要么第一间房子被抢最后一间不抢；要么最后一间房子被抢第一间不抢。</p>
+<p>不过，其实我们不需要比较三种情况，只要比较情况二和情况三就行了，因为这两种情况对于房子的选择余地比情况一大呀，房子里的钱数都是非负数，所以选择余地大，最优决策结果肯定不会小。</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span>(nums.length == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span>[] nums1 = Arrays.copyOfRange(nums, <span class="hljs-number">1</span>, nums.length);
+        <span class="hljs-keyword">int</span>[] nums2 = Arrays.copyOfRange(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> Math.max(subrob(nums1), subrob(nums2));
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">subrob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span></span>&#123;
+        <span class="hljs-keyword">int</span> len = nums.length;
+        <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (len == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[len];
+        dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];
+        dp[<span class="hljs-number">1</span>] = Math.max(nums[<span class="hljs-number">0</span>], nums[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt; len; i++) &#123;
+            dp[i] = Math.max(dp[i - <span class="hljs-number">1</span>], dp[i - <span class="hljs-number">2</span>] + nums[i]);
+        &#125;
+        <span class="hljs-keyword">return</span> dp[len - <span class="hljs-number">1</span>];
+    &#125;
+&#125;</code></pre>
+<p>优化：</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span>(nums.length == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">return</span> Math.max(myRob(Arrays.copyOfRange(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>)), 
+                        myRob(Arrays.copyOfRange(nums, <span class="hljs-number">1</span>, nums.length)));
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">myRob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>, cur = <span class="hljs-number">0</span>, tmp;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> num : nums) &#123;
+            tmp = cur;
+            cur = Math.max(pre + num, cur);
+            pre = tmp;
+        &#125;
+        <span class="hljs-keyword">return</span> cur;
+    &#125;
+&#125;</code></pre>
+
+
 <p>关于题目细节的分析：<br>参考以下这篇文章：<br><a href="https://leetcode-cn.com/problems/house-robber-ii/solution/tong-yong-si-lu-tuan-mie-da-jia-jie-she-wen-ti-by-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/house-robber-ii/solution/tong-yong-si-lu-tuan-mie-da-jia-jie-she-wen-ti-by-/</a></p>
 <p><a href="https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/dong-tai-gui-hua-xiang-jie-jin-jie" target="_blank" rel="noopener">https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/dong-tai-gui-hua-xiang-jie-jin-jie</a></p>
 
