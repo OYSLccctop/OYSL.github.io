@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月8日 上午
+                  本文最后更新于：2020年8月8日 下午
                 
               </p>
             
@@ -267,7 +267,7 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
 <p>那么我们可以造一个「备忘录」，每次算出某个子问题的答案后别急着返回，先记到「备忘录」里再返回；每次遇到一个子问题先去「备忘录」里查一查，如果发现之前已经解决过这个问题了，直接把答案拿出来用，不要再耗时去计算了。</p>
 <h4 id="dp-数组的迭代解法"><a href="#dp-数组的迭代解法" class="headerlink" title="dp 数组的迭代解法"></a>dp 数组的迭代解法</h4><p>其实这个方法和上面带备忘录的递归解法，只是反过来算了而已，备忘录的方法只是自顶向下，而dp数组是自底向上，从规模最小的问题开始向上推，这也就是动态规划摆脱递归，由循环迭代完成的思路。</p>
 <p>并且通过转移方程我们可以发现当前状态只和之前的两个状态有关，并不需要一个 DP table 来存储所有的状态，只要想办法存储之前的两个状态就行了，这样就可以优化dp数组的迭代过程。这个技巧称为状态压缩。</p>
-<h2 id="打家劫舍"><a href="#打家劫舍" class="headerlink" title="打家劫舍"></a>打家劫舍</h2><p>自顶向下：</p>
+<h2 id="打家劫舍"><a href="#打家劫舍" class="headerlink" title="打家劫舍"></a>打家劫舍</h2><p>自底向上：</p>
 <pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
         <span class="hljs-keyword">if</span> (nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>) &#123;
@@ -286,7 +286,7 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
         <span class="hljs-keyword">return</span> dp[length - <span class="hljs-number">1</span>];
     &#125;
 &#125;</code></pre>
-<p>自顶向下状态压缩：</p>
+<p>自底向上状态压缩：</p>
 <pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
         <span class="hljs-keyword">if</span> (nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>) &#123;
@@ -306,7 +306,7 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
     &#125;
 &#125;</code></pre>
 
-<p>自底向上：</p>
+<p>自顶向上：</p>
 <pre><code class="hljs java"> <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
     <span class="hljs-keyword">int</span> n = nums.length;
     <span class="hljs-comment">// dp[i] = x 表示：</span>
@@ -319,7 +319,7 @@ dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][...] 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
 &#125;</code></pre>
 
-<p>自底向上状态压缩：</p>
+<p>自顶向上状态压缩：</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">rob</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
     <span class="hljs-keyword">int</span> n = nums.length;
     <span class="hljs-comment">// 记录 dp[i+1] 和 dp[i+2]</span>
