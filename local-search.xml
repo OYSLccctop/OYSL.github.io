@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>NIO</title>
+    <link href="/cxlittlecute/429dd195.html"/>
+    <url>/cxlittlecute/429dd195.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><p>本篇文章主要是对NIO的一些知识点进行一个简单的总结回顾.</p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java NIO（New IO或 Non Blocking IO）是从Java 1.4版本开始引入的一个新的IO API，可以替代标准的Java IO API。NIO支持面向缓冲区的、基于通道的IO操作。NIO将以更加高效的方式进行文件的读写操作。<br>在Java API中提供了两套NIO，一套是针对标准输入输出NIO，另一套就是网络编程NIO</p><h2 id="IO和NIO的区别"><a href="#IO和NIO的区别" class="headerlink" title="IO和NIO的区别"></a>IO和NIO的区别</h2><p>当然这是小伙伴们第一个想问的问题。</p><p>我们主要可以分为以下三点：</p><ul><li>面向对象对象不同。NIO面向块（buffer），IO面向流（Stream）。</li><li>模式不同。NIO有阻塞和非阻塞两种模式，IO只有阻塞模式。</li><li>选择器不同。NIO的选择器允许一个单独的线程来监视多个输入通道，但IO中没有选择器。</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200808210334.png" srcset="/img/loading.gif" alt=""></p><h3 id="什么是面向缓冲区和面向流"><a href="#什么是面向缓冲区和面向流" class="headerlink" title="什么是面向缓冲区和面向流"></a>什么是面向缓冲区和面向流</h3><h4 id="对于IO"><a href="#对于IO" class="headerlink" title="对于IO"></a>对于IO</h4><p>原来我们操作IO的时候是面对里面字节数据的流动，好比自来水管道传输自来水一样。每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。</p><p>而且传统的IO是单向的，比如目标文件传输数据到程序中，需要建立输入流，相反我们想要把程序中的数据，传输到其他地方去也需要另外建立一个输出流的管道。</p><h3 id="对于NIO"><a href="#对于NIO" class="headerlink" title="对于NIO"></a>对于NIO</h3><p>和IO一样同样需要建立一个管道，但是我们称这个管道为[通道]。我们可以把这个通道理解为我们生活中的铁路，那么铁路能自己完成运输吗？当然不能，我们都知道铁路要想完成运输就必须要有火车。</p><p>这里的通道只是目标地点和原地点的连接。通道没有能力单独传输任何数据，在NIO中要想传输数据就要依赖于[缓冲区],这个缓冲区就可以类比于运货的火车，并且它是双向运输的，我们就可以利用缓冲区进行数据的存或者取。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>反射问题总结</title>
     <link href="/cxlittlecute/ddf9c207.html"/>
     <url>/cxlittlecute/ddf9c207.html</url>
