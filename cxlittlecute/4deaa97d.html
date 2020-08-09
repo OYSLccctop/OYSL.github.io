@@ -245,7 +245,7 @@
 <p>选择器的作用就是监控这些通道的IO状况。也就是说当某一个通道上，某一个请求事件，完全准备就绪时，那么选择器才会将这个任务分配到服务端的一个或多个线程上再去运行。</p>
 <p>也就是说你客户端的请求没有准备就绪时，你服务端的线程想干什么就干什么。（好比你在家等着收快递，快递没给你发短信，它还没有把快件给你准备好，你就一直在家等着）</p>
 <h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>选择器（Selector） 是 SelectableChannle 对象的多路复用器，Selector 可以同时监控多个 SelectableChannel 的 IO 状况，也就是说，利用 Selector可使一个单独的线程管理多个 Channel。</p>
-<h3 id="Selector-的常用方法"><a href="#Selector-的常用方法" class="headerlink" title="Selector 的常用方法"></a>Selector 的常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809190423.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="Selector-常用方法"><a href="#Selector-常用方法" class="headerlink" title="Selector 常用方法"></a>Selector 常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809190423.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="SelectableChannle-的结构如下图："><a href="#SelectableChannle-的结构如下图：" class="headerlink" title="SelectableChannle 的结构如下图："></a>SelectableChannle 的结构如下图：</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185431.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="选择器（Selector）的应用"><a href="#选择器（Selector）的应用" class="headerlink" title="选择器（Selector）的应用"></a>选择器（Selector）的应用</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185702.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="SelectionKey"><a href="#SelectionKey" class="headerlink" title="SelectionKey"></a>SelectionKey</h3><p>表示 SelectableChannel 和 Selector 之间的注册关系。每次向选择器注册通道时就会选择一个事件(选择键)。选择键包含两个表示为整数值的操作集。操作集的每一位都表示该键的通道所支持的一类可选择操作。</p>
