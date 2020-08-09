@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      3.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      38
+      41
        分钟
     </span>
   
@@ -415,7 +415,8 @@
 </ul>
 <p>优缺点对比：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809082037.png" srcset="/img/loading.gif" alt=""></p>
-<p>什么时候选择直接缓冲区：主要分配给那些易受基础系统本机 I/O 操作影响的大型、持久的缓冲区.一般情况下，最好仅在直接缓冲区能在程序性能方面带来明显好处时分配它们.</p>
+<p>什么时候选择直接缓冲区？</p>
+<p>主要分配给那些易受基础系统本机 I/O 操作影响的大型、持久的缓冲区.一般情况下，最好仅在直接缓冲区能在程序性能方面带来明显好处时分配它们.</p>
 <pre><code class="hljs java"><span class="hljs-meta">@Test</span>
 <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span></span>&#123;
     <span class="hljs-comment">//分配直接缓冲区</span>
@@ -451,6 +452,8 @@
 </ul>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809102957.png" srcset="/img/loading.gif" alt=""></p>
 <p>注意：按照缓冲区的顺序，写入 position 和 limit 之间的数据到Channel 。</p>
+<h4 id="（5）字符集：Charset"><a href="#（5）字符集：Charset" class="headerlink" title="（5）字符集：Charset"></a>（5）字符集：Charset</h4><p>编码：字符串-&gt;字节数组的过程。<br>解码：字节数组-&gt;字符串的过程。</p>
+<p>我们使用代码进行操作说明：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Nio2</span> </span>&#123;
 
     <span class="hljs-meta">@Test</span>
@@ -507,7 +510,42 @@
         inChannel.close();
         outChannel.close();
     &#125;
-    
+
+    <span class="hljs-comment">// 输出支持的字符集</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test5</span><span class="hljs-params">()</span></span>&#123;
+        Map&lt;String,Charset&gt; map=Charset.availableCharsets();
+        Set&lt;Map.Entry&lt;String,Charset&gt;&gt; set=map.entrySet();
+        <span class="hljs-keyword">for</span>(Map.Entry&lt;String,Charset&gt; entry:set)&#123;
+            System.out.println(entry.getKey()+<span class="hljs-string">"="</span>+entry.getValue());
+        &#125;
+    &#125;
+
+    <span class="hljs-comment">// 字符集</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test6</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> CharacterCodingException </span>&#123;
+        Charset cs1 = Charset.forName(<span class="hljs-string">"GBK"</span>);
+        <span class="hljs-comment">// 获取编码器</span>
+        CharsetEncoder ce = cs1.newEncoder();
+        <span class="hljs-comment">// 获取解码器</span>
+        CharsetDecoder cd = cs1.newDecoder();
+
+        <span class="hljs-comment">// 就是CharBuffer和byteBuffer的转换</span>
+        CharBuffer cBuf = CharBuffer.allocate(<span class="hljs-number">1024</span>);
+        cBuf.put(<span class="hljs-string">"冲Ali的OY"</span>);
+        cBuf.flip();
+
+        <span class="hljs-comment">// 编码</span>
+        ByteBuffer bBuf = ce.encode(cBuf);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) &#123;
+            System.out.println(bBuf.get());
+        &#125;
+
+        <span class="hljs-comment">// 解码</span>
+        bBuf.flip();
+        CharBuffer cBuf2 = cd.decode(bBuf);
+        System.out.println(cBuf2.toString());
+    &#125;
 &#125;</code></pre>
 
 
