@@ -8,7 +8,7 @@
     <link href="/cxlittlecute/4deaa97d.html"/>
     <url>/cxlittlecute/4deaa97d.html</url>
     
-    <content type="html"><![CDATA[<h1 id="NIO（二）-非阻塞式网络通信"><a href="#NIO（二）-非阻塞式网络通信" class="headerlink" title="NIO（二）-非阻塞式网络通信"></a>NIO（二）-非阻塞式网络通信</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809113930.png" srcset="/img/loading.gif" alt=""></p><p>我们使用这个图首先来分析一下什么是阻塞式与非阻塞式网络通信。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="NIO（二）-非阻塞式网络通信"><a href="#NIO（二）-非阻塞式网络通信" class="headerlink" title="NIO（二）-非阻塞式网络通信"></a>NIO（二）-非阻塞式网络通信</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809113930.png" srcset="/img/loading.gif" alt=""></p><p>我们使用这个图首先来分析一下什么是阻塞式与非阻塞式网络通信。</p><h2 id="阻塞式和非阻塞式"><a href="#阻塞式和非阻塞式" class="headerlink" title="阻塞式和非阻塞式"></a>阻塞式和非阻塞式</h2><h4 id="阻塞式"><a href="#阻塞式" class="headerlink" title="阻塞式"></a>阻塞式</h4><p>什么是阻塞式叻？当Client发送一个请求给Server以后，如果Server无法确定Client发送的这个请求真实有效时，该线程会一直处于一个阻塞状态。</p><p>Server只有当Client发送一个有效数据后，才会开始工作，此时Server端的这个线程是什么都做不了的。</p><p>Client发送数据是先到内核地址空间，Server端就是判断在这个内核地址空间中有没有有效数据，如果没有数据Server就等待，线程阻塞。有数据后，就会把内核地址空间中的数据copy到用户地址空间中，然后就可以读到我们的程序中。</p><p>也正是因为会阻塞，当大量的请求来访问时，就会形成队列。CPU的资源无法很好的利用，导致性能下降。</p><p>怎么解决这个问题叻？</p><p>第一反应肯定是多线程，为我们每一个服务端访问建立一个独立的线程，这样一个线程的阻塞，其他的线程还可以运行，这样可以最大化的利用CPU的资源。</p><p>但是，即便我们使用了多线程，在一个服务器上的线程数量总是有限的，一样会出现阻塞后其他线程也调度不了的情况。</p><h4 id="非阻塞式"><a href="#非阻塞式" class="headerlink" title="非阻塞式"></a>非阻塞式</h4>]]></content>
     
     
     <categories>
