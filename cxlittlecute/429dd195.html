@@ -243,7 +243,7 @@
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200808210334.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="什么是面向缓冲区和面向流"><a href="#什么是面向缓冲区和面向流" class="headerlink" title="什么是面向缓冲区和面向流"></a>什么是面向缓冲区和面向流</h3><h4 id="对于IO"><a href="#对于IO" class="headerlink" title="对于IO"></a>对于IO</h4><p>原来我们操作IO的时候是面对里面字节数据的流动，好比自来水管道传输自来水一样。每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。</p>
 <p>而且传统的IO是单向的，比如目标文件传输数据到程序中，需要建立输入流，相反我们想要把程序中的数据，传输到其他地方去也需要另外建立一个输出流的管道。</p>
-<h3 id="对于NIO"><a href="#对于NIO" class="headerlink" title="对于NIO"></a>对于NIO</h3><p>和IO一样同样需要建立一个管道，但是我们称这个管道为[通道]。我们可以把这个通道理解为我们生活中的铁路，那么铁路能自己完成运输吗？当然不能，我们都知道铁路要想完成运输就必须要有火车。</p>
+<h4 id="对于NIO"><a href="#对于NIO" class="headerlink" title="对于NIO"></a>对于NIO</h4><p>和IO一样同样需要建立一个管道，但是我们称这个管道为[通道]。我们可以把这个通道理解为我们生活中的铁路，那么铁路能自己完成运输吗？当然不能，我们都知道铁路要想完成运输就必须要有火车。</p>
 <p>这里的通道只是目标地点和原地点的连接。通道没有能力单独传输任何数据，在NIO中要想传输数据就要依赖于[缓冲区],这个缓冲区就可以类比于运货的火车，并且它是双向运输的，我们就可以利用缓冲区进行数据的存或者取。</p>
 <h3 id="通道（Channel）与缓冲区（Buffer）"><a href="#通道（Channel）与缓冲区（Buffer）" class="headerlink" title="通道（Channel）与缓冲区（Buffer）"></a>通道（Channel）与缓冲区（Buffer）</h3><p>通过上面火车的描述，对通道和缓冲区已经有了一个认识了。NIO系统中通道和缓冲区就是两个核心。</p>
 <p>简言之，通道负责传输，缓冲区负责运输。</p>
@@ -282,7 +282,7 @@
 <li>get()：获取缓冲区中的数据。</li>
 </ul>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200808225446.png" srcset="/img/loading.gif" alt=""></p>
-<h5 id="四、缓冲区中的四个核心属性："><a href="#四、缓冲区中的四个核心属性：" class="headerlink" title="四、缓冲区中的四个核心属性："></a>四、缓冲区中的四个核心属性：</h5><p>我们知道所有缓冲区都是 Buffer 抽象类的子类。Buffer类中有四个核心属性概念需要我们掌握：</p>
+<h3 id="四、缓冲区中的四个核心属性："><a href="#四、缓冲区中的四个核心属性：" class="headerlink" title="四、缓冲区中的四个核心属性："></a>四、缓冲区中的四个核心属性：</h3><p>我们知道所有缓冲区都是 Buffer 抽象类的子类。Buffer类中有四个核心属性概念需要我们掌握：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Buffer</span> </span>&#123;
     <span class="hljs-comment">// Invariants:  mark &lt;= position &lt;= limit &lt;= capacity</span>
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;
