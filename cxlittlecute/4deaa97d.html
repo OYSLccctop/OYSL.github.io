@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      393 字
+      987 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      11
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月9日 中午
+                  本文最后更新于：2020年8月9日 下午
                 
               </p>
             
@@ -239,7 +239,81 @@
 <p>怎么解决这个问题叻？</p>
 <p>第一反应肯定是多线程，为我们每一个服务端访问建立一个独立的线程，这样一个线程的阻塞，其他的线程还可以运行，这样可以最大化的利用CPU的资源。</p>
 <p>但是，即便我们使用了多线程，在一个服务器上的线程数量总是有限的，一样会出现阻塞后其他线程也调度不了的情况。</p>
-<h4 id="非阻塞式"><a href="#非阻塞式" class="headerlink" title="非阻塞式"></a>非阻塞式</h4>
+<h4 id="非阻塞式"><a href="#非阻塞式" class="headerlink" title="非阻塞式"></a>非阻塞式</h4><p>上面我们已经分析了阻塞式IO会出现的问题，下面我们来看看非阻塞式IO又是怎么回事叻？</p>
+<p>NIO的非阻塞模式提出了一个很核心的东西-选择器。</p>
+<p>选择器会将客户端和服务端每一个传输数据的通道，都注册到选择器中。</p>
+<p>选择器的作用就是监控这些通道的IO状况。也就是说当某一个通道上，某一个请求事件，完全准备就绪时，那么选择器才会将这个任务分配到服务端的一个或多个线程上再去运行。</p>
+<p>也就是说你客户端的请求没有准备就绪时，你服务端的线程想干什么就干什么。（好比你在家等着收快递，快递没给你发短信，它还没有把快件给你准备好，你就一直在家等着）</p>
+<h2 id="使用NIO完成网络通信的三个核心"><a href="#使用NIO完成网络通信的三个核心" class="headerlink" title="使用NIO完成网络通信的三个核心"></a>使用NIO完成网络通信的三个核心</h2><ol>
+<li><p>通道（Channel）：负责连接。</p>
+<pre><code>java.nio.channels.Channel 接口：
+  |--SelectableChannel
+    |--SocketChannel（TCP）
+    |--ServerSocketChannel（TCP）
+    |--DatagramChannel（UDP）
+
+    |--Pipe.SinkChannel
+    |--Pipe.SourceChannel</code></pre></li>
+<li><p>缓冲区（Buffer）：负责数据的存取。</p>
+</li>
+<li><p>选择器（Selector）：是SelectableChannel 的多路复用器。用于监控SelectableChannel的IO状况。</p>
+</li>
+</ol>
+<p>我们首先来看阻塞式的代码演示：</p>
+<p>关键在于sChannel.shutdownOutput();否则线程一直处于阻塞状态。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Nio4</span> </span>&#123;
+    <span class="hljs-comment">// 客户端</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">client</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        SocketChannel sChannel = SocketChannel.open(<span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-string">"127.0.0.1"</span>, <span class="hljs-number">9898</span>));
+        FileChannel inChannel = FileChannel.open(Paths.get(<span class="hljs-string">"1.txt"</span>), StandardOpenOption.READ);
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+        <span class="hljs-keyword">while</span> (inChannel.read(buf) != -<span class="hljs-number">1</span>) &#123;
+            buf.flip();
+            sChannel.write(buf);
+            buf.clear();
+        &#125;
+        <span class="hljs-comment">// 如果不shutdown，服务端就结束不了，因为它不知道客户端有没有发送数据</span>
+        sChannel.shutdownOutput();
+
+        <span class="hljs-comment">// 接收服务端的反馈</span>
+        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// System.out.println(sChannel.read(buf));</span>
+        <span class="hljs-keyword">while</span> ((len = sChannel.read(buf)) != -<span class="hljs-number">1</span>) &#123;
+            buf.flip();
+            System.out.println(<span class="hljs-keyword">new</span> String(buf.array(), <span class="hljs-number">0</span>, len));
+            buf.clear();
+        &#125;
+        inChannel.close();
+        sChannel.close();
+    &#125;
+
+    <span class="hljs-comment">// 服务端</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">server</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        ServerSocketChannel ssChannel = ServerSocketChannel.open();
+        FileChannel outChannel = FileChannel.open(Paths.get(<span class="hljs-string">"2.txt"</span>), StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE);
+        ssChannel.bind(<span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-number">9898</span>));
+        SocketChannel sChannel = ssChannel.accept();
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+        <span class="hljs-keyword">while</span> (sChannel.read(buf) != -<span class="hljs-number">1</span>) &#123;
+            buf.flip();
+            outChannel.write(buf);
+            buf.clear();
+        &#125;
+        <span class="hljs-comment">//发送反馈给客户端</span>
+        buf.put(<span class="hljs-string">"服务端接收数据成功"</span>.getBytes());
+        buf.flip();<span class="hljs-comment">//给为读模式</span>
+        sChannel.write(buf);
+
+        sChannel.close();
+        outChannel.close();
+        ssChannel.close();
+    &#125;
+&#125;</code></pre>
+
+<p>我们看了上面线程阻塞的一种解决方式，那么我们还可以选择非阻塞线程来解决这个问题。</p>
+
             </article>
             <hr>
             <div>
