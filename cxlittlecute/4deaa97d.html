@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      1.8k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      23
        分钟
     </span>
   
@@ -266,6 +266,20 @@
 <li><p>选择器（Selector）：是SelectableChannel 的多路复用器。用于监控SelectableChannel的IO状况。</p>
 </li>
 </ol>
+<h3 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h3><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。</p>
+<p>操作步骤：</p>
+<ul>
+<li>打开 SocketChannel</li>
+<li>读写数据</li>
+<li>关闭 SocketChann</li>
+</ul>
+<p>Java NIO中的 ServerSocketChannel 是一个可以监听新进来的TCP连接的通道，就像标准IO中的ServerSocket一样.</p>
+<h3 id="DatagramChannel"><a href="#DatagramChannel" class="headerlink" title="DatagramChannel"></a>DatagramChannel</h3><p> Java NIO中的DatagramChannel是一个能收发UDP包的通道。</p>
+<p> 操作步骤：</p>
+<ul>
+<li>打开 DatagramChannel</li>
+<li>接收/发送数据</li>
+</ul>
 <h3 id="阻塞式IO演示"><a href="#阻塞式IO演示" class="headerlink" title="阻塞式IO演示"></a>阻塞式IO演示</h3><p>我们首先来看阻塞式的代码演示：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Nio4</span> </span>&#123;
     <span class="hljs-comment">// 客户端</span>
@@ -319,7 +333,7 @@
 &#125;</code></pre>
 
 <p>关键在于sChannel.shutdownOutput();否则线程一直处于阻塞状态。</p>
-<h3 id="非阻塞IO演示"><a href="#非阻塞IO演示" class="headerlink" title="非阻塞IO演示"></a>非阻塞IO演示</h3><h4 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h4><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。</p>
+<h3 id="非阻塞IO演示"><a href="#非阻塞IO演示" class="headerlink" title="非阻塞IO演示"></a>非阻塞IO演示</h3><h4 id="SocketChannel-1"><a href="#SocketChannel-1" class="headerlink" title="SocketChannel"></a>SocketChannel</h4><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。</p>
 <pre><code class="hljs java"><span class="hljs-comment">// 客户端</span>
 <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">client</span> </span>&#123;
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
