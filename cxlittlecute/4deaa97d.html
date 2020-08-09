@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      2.2k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      28
        分钟
     </span>
   
@@ -245,6 +245,10 @@
 <p>选择器的作用就是监控这些通道的IO状况。也就是说当某一个通道上，某一个请求事件，完全准备就绪时，那么选择器才会将这个任务分配到服务端的一个或多个线程上再去运行。</p>
 <p>也就是说你客户端的请求没有准备就绪时，你服务端的线程想干什么就干什么。（好比你在家等着收快递，快递没给你发短信，它还没有把快件给你准备好，你就一直在家等着）</p>
 <h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>选择器（Selector） 是 SelectableChannle 对象的多路复用器，Selector 可以同时监控多个 SelectableChannel 的 IO 状况，也就是说，利用 Selector可使一个单独的线程管理多个 Channel。</p>
+<h3 id="为什么使用选择器？"><a href="#为什么使用选择器？" class="headerlink" title="为什么使用选择器？"></a>为什么使用选择器？</h3><p>Selector允许单线程处理多个 Channel。对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。实际上我们可以使用选择器，只用一个线程处理所有的通道。</p>
+<p>这是在一个单线程中使用一个Selector处理3个Channel的图示：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809215808.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="如何使用选择器？"><a href="#如何使用选择器？" class="headerlink" title="如何使用选择器？"></a>如何使用选择器？</h3><p>要使用Selector，得向Selector注册Channel，然后调用它的select()方法。这个方法会一直阻塞到某个注册的通道有事件就绪。一旦这个方法返回，线程就可以处理这些事件，事件的例子有如新连接进来，数据接收等。</p>
 <h3 id="Selector-常用方法"><a href="#Selector-常用方法" class="headerlink" title="Selector 常用方法"></a>Selector 常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809190423.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="SelectableChannle-的结构如下图："><a href="#SelectableChannle-的结构如下图：" class="headerlink" title="SelectableChannle 的结构如下图："></a>SelectableChannle 的结构如下图：</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185431.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="选择器（Selector）的应用"><a href="#选择器（Selector）的应用" class="headerlink" title="选择器（Selector）的应用"></a>选择器（Selector）的应用</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185702.png" srcset="/img/loading.gif" alt=""></p>
@@ -478,6 +482,9 @@
         sinkChannel.close();
     &#125;
 &#125;</code></pre>
+
+<p>参考：<br><a href="http://ifeve.com/overview/" target="_blank" rel="noopener">http://ifeve.com/overview/</a></p>
+<p>建议大家都可以系统的读一下这个译文。比自己写的博客要细化很多。</p>
 
             </article>
             <hr>
