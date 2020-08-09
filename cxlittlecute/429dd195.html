@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>NIO - OYSL&#39;s blog</title>
+  <title>NIO（一）-标准输入输出 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -225,12 +225,12 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月9日 上午
+                  本文最后更新于：2020年8月9日 中午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h1><p>本篇文章主要是对NIO的一些知识点进行一个简单的总结回顾.</p>
+              <h1 id="NIO（一）-标准输入输出"><a href="#NIO（一）-标准输入输出" class="headerlink" title="NIO（一）-标准输入输出"></a>NIO（一）-标准输入输出</h1><p>本篇文章主要是对NIO的一些知识点进行一个简单的总结回顾.</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Java NIO（New IO或 Non Blocking IO）是从Java 1.4版本开始引入的一个新的IO API，可以替代标准的Java IO API。NIO支持面向缓冲区的、基于通道的IO操作。NIO将以更加高效的方式进行文件的读写操作。</p>
 <p>在Java API中提供了两套NIO，一套是针对标准输入输出NIO，另一套就是网络编程NIO</p>
 <h2 id="IO和NIO的区别"><a href="#IO和NIO的区别" class="headerlink" title="IO和NIO的区别"></a>IO和NIO的区别</h2><p>当然这是小伙伴们第一个想问的问题。</p>
@@ -486,7 +486,8 @@
     <span class="hljs-meta">@Test</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
         FileChannel inChannel = FileChannel.open(Paths.get(<span class="hljs-string">"1.txt"</span>), StandardOpenOption.READ);
-        FileChannel outChannel = FileChannel.open(Paths.get(<span class="hljs-string">"2.txt"</span>), StandardOpenOption.WRITE,StandardOpenOption.READ ,StandardOpenOption.CREATE);
+        FileChannel outChannel = FileChannel.open(Paths.get(<span class="hljs-string">"2.txt"</span>), StandardOpenOption.WRITE,
+                StandardOpenOption.READ ,StandardOpenOption.CREATE);
         <span class="hljs-comment">// 内存映射文件(只有byteBuffer支持)</span>
         MappedByteBuffer inMappedBuf = inChannel.map(FileChannel.MapMode.READ_ONLY, <span class="hljs-number">0</span>, inChannel.size());
         MappedByteBuffer outMappedBuf = outChannel.map(FileChannel.MapMode.READ_WRITE, <span class="hljs-number">0</span>, inChannel.size());
@@ -579,6 +580,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/cxlittlecute/4deaa97d.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NIO（二）-非阻塞式网络通信</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
@@ -999,7 +1006,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "NIO&nbsp;",
+        "NIO（一）-标准输入输出&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
