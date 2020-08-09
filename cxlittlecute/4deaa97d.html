@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      1.9k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      26
        分钟
     </span>
   
@@ -453,6 +453,31 @@
     &#125;
 &#125;</code></pre>
 
+<h3 id="管道-Pipe"><a href="#管道-Pipe" class="headerlink" title="管道 (Pipe)"></a>管道 (Pipe)</h3><p>Java NIO 管道是2个线程之间的单向数据连接。Pipe有一个source通道和一个sink通道。数据会被写到sink通道，从source通道读取。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809191053.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestPipe</span> </span>&#123;
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        <span class="hljs-comment">//1.获取管道 （等于两边有两个孔，一面是往外发，一面是往里接收）</span>
+        Pipe pipe = Pipe.open();
+
+        <span class="hljs-comment">//2.将缓冲区中的数据写入管道</span>
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+        Pipe.SinkChannel sinkChannel = pipe.sink();
+        buf.put(<span class="hljs-string">"通过单向通道发送数据"</span>.getBytes());
+        buf.flip();
+        sinkChannel.write(buf);
+
+        <span class="hljs-comment">//3.读取缓冲区中的数据</span>
+        Pipe.SourceChannel sourceChannel = pipe.source();
+        buf.flip();
+        <span class="hljs-keyword">int</span> len = sourceChannel.read(buf);
+        System.out.println(<span class="hljs-keyword">new</span> String(buf.array(),<span class="hljs-number">0</span>,len));
+
+        sourceChannel.close();
+        sinkChannel.close();
+    &#125;
+&#125;</code></pre>
 
             </article>
             <hr>
