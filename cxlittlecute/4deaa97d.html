@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      987 字
+      1.7k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      22
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月9日 下午
+                  本文最后更新于：2020年8月9日 晚上
                 
               </p>
             
@@ -244,6 +244,13 @@
 <p>选择器会将客户端和服务端每一个传输数据的通道，都注册到选择器中。</p>
 <p>选择器的作用就是监控这些通道的IO状况。也就是说当某一个通道上，某一个请求事件，完全准备就绪时，那么选择器才会将这个任务分配到服务端的一个或多个线程上再去运行。</p>
 <p>也就是说你客户端的请求没有准备就绪时，你服务端的线程想干什么就干什么。（好比你在家等着收快递，快递没给你发短信，它还没有把快件给你准备好，你就一直在家等着）</p>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><p>选择器（Selector） 是 SelectableChannle 对象的多路复用器，Selector 可以同时监控多个 SelectableChannel 的 IO 状况，也就是说，利用 Selector可使一个单独的线程管理多个 Channel。</p>
+<h3 id="Selector-的常用方法"><a href="#Selector-的常用方法" class="headerlink" title="Selector 的常用方法"></a>Selector 的常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809190423.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="SelectableChannle-的结构如下图："><a href="#SelectableChannle-的结构如下图：" class="headerlink" title="SelectableChannle 的结构如下图："></a>SelectableChannle 的结构如下图：</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185431.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="选择器（Selector）的应用"><a href="#选择器（Selector）的应用" class="headerlink" title="选择器（Selector）的应用"></a>选择器（Selector）的应用</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185702.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="SelectionKey"><a href="#SelectionKey" class="headerlink" title="SelectionKey"></a>SelectionKey</h3><p>表示 SelectableChannel 和 Selector 之间的注册关系。每次向选择器注册通道时就会选择一个事件(选择键)。选择键包含两个表示为整数值的操作集。操作集的每一位都表示该键的通道所支持的一类可选择操作。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809185810.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809190323.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="使用NIO完成网络通信的三个核心"><a href="#使用NIO完成网络通信的三个核心" class="headerlink" title="使用NIO完成网络通信的三个核心"></a>使用NIO完成网络通信的三个核心</h2><ol>
 <li><p>通道（Channel）：负责连接。</p>
 <pre><code>java.nio.channels.Channel 接口：
@@ -259,8 +266,7 @@
 <li><p>选择器（Selector）：是SelectableChannel 的多路复用器。用于监控SelectableChannel的IO状况。</p>
 </li>
 </ol>
-<p>我们首先来看阻塞式的代码演示：</p>
-<p>关键在于sChannel.shutdownOutput();否则线程一直处于阻塞状态。</p>
+<h3 id="阻塞式IO演示"><a href="#阻塞式IO演示" class="headerlink" title="阻塞式IO演示"></a>阻塞式IO演示</h3><p>我们首先来看阻塞式的代码演示：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Nio4</span> </span>&#123;
     <span class="hljs-comment">// 客户端</span>
     <span class="hljs-meta">@Test</span>
@@ -312,7 +318,127 @@
     &#125;
 &#125;</code></pre>
 
-<p>我们看了上面线程阻塞的一种解决方式，那么我们还可以选择非阻塞线程来解决这个问题。</p>
+<p>关键在于sChannel.shutdownOutput();否则线程一直处于阻塞状态。</p>
+<h3 id="非阻塞IO演示"><a href="#非阻塞IO演示" class="headerlink" title="非阻塞IO演示"></a>非阻塞IO演示</h3><h4 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h4><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 客户端</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">client</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        <span class="hljs-comment">//1.获取通道</span>
+        SocketChannel sChannel = SocketChannel.open(<span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-string">"127.0.0.1"</span>, <span class="hljs-number">9898</span>));
+        <span class="hljs-comment">//2.切换非阻塞模式</span>
+        sChannel.configureBlocking(<span class="hljs-keyword">false</span>);
+        <span class="hljs-comment">//3.分配指定大小的缓冲区</span>
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+        <span class="hljs-comment">// 4.发送数据给服务端</span>
+        Scanner scanner = <span class="hljs-keyword">new</span> Scanner(System.in);
+        <span class="hljs-keyword">while</span> (scanner.hasNext())&#123;
+            String str = scanner.next();
+            buf.put((LocalDateTime.now().toString() + <span class="hljs-string">"\n"</span> + str).getBytes());
+            buf.flip();
+            sChannel.write(buf);
+            buf.clear();
+        &#125;
+        buf.flip();
+        sChannel.write(buf);
+        buf.clear();
+        <span class="hljs-comment">// 5.关闭通道</span>
+        sChannel.close();
+    &#125;
+&#125;
+
+<span class="hljs-comment">// 服务端</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">server</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        <span class="hljs-comment">//1.获取通道</span>
+        ServerSocketChannel ssChannel = ServerSocketChannel.open();
+        <span class="hljs-comment">//2.切换非阻塞式模式</span>
+        ssChannel.configureBlocking(<span class="hljs-keyword">false</span>);
+        <span class="hljs-comment">//3.绑定连接</span>
+        ssChannel.bind(<span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-number">9898</span>));
+        <span class="hljs-comment">//4.获取选择器</span>
+        Selector selector = Selector.open();
+        <span class="hljs-comment">//5.将通道注册到选择器上，并且指定“监听接收事件”</span>
+        ssChannel.register(selector, SelectionKey.OP_ACCEPT);
+        <span class="hljs-comment">//6.轮询式的获取选择器上已经“准备就绪”的事件</span>
+        <span class="hljs-keyword">while</span> (selector.select() &gt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-comment">//7.获取当前选择器中所有注册的“选择键（已就绪的监听事件）”</span>
+            Iterator&lt;SelectionKey&gt; it = selector.selectedKeys().iterator();
+            <span class="hljs-keyword">while</span> (it.hasNext()) &#123;
+                <span class="hljs-comment">//8.获取准备“就绪”的事件</span>
+                SelectionKey sk = it.next();
+                <span class="hljs-comment">//9.判断具体是什么事件准备就绪</span>
+                <span class="hljs-keyword">if</span> (sk.isAcceptable()) &#123;
+                    <span class="hljs-comment">//10.若“接收就绪”，获取客户端连接</span>
+                    SocketChannel sChannel = ssChannel.accept();
+                    <span class="hljs-comment">//11.切换非阻塞模式</span>
+                    sChannel.configureBlocking(<span class="hljs-keyword">false</span>);
+                    <span class="hljs-comment">//12.将该通道注册到选择器上</span>
+                    sChannel.register(selector, SelectionKey.OP_READ);
+                &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sk.isReadable()) &#123;
+                    <span class="hljs-comment">//13.获取当前选择器上“读就绪”状态的通道</span>
+                    SocketChannel sChannel = (SocketChannel) sk.channel();
+                    <span class="hljs-comment">//14.读取数据</span>
+                    ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+                    <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">while</span> ((len = sChannel.read(buf)) &gt; <span class="hljs-number">0</span>) &#123;
+                        buf.flip();
+                        System.out.println(<span class="hljs-keyword">new</span> String(buf.array(), <span class="hljs-number">0</span>, len));
+                        buf.clear();
+                    &#125;
+                &#125;
+                <span class="hljs-comment">//15.取消选择键SelectionKey</span>
+                it.remove();
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestNonBlockingNIO4</span> </span>&#123;
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">send</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        DatagramChannel dc = DatagramChannel.open();
+
+        dc.configureBlocking(<span class="hljs-keyword">false</span>);
+
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+
+        Scanner sc = <span class="hljs-keyword">new</span> Scanner(System.in);
+
+        <span class="hljs-keyword">while</span> (sc.hasNext()) &#123;
+            String str = sc.next();
+            buf.put((<span class="hljs-keyword">new</span> Date().toString() + <span class="hljs-string">":\n"</span> + str).getBytes());
+            buf.flip();
+            dc.send(buf, <span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-string">"127.0.0.1"</span>, <span class="hljs-number">9898</span>));
+            buf.clear();
+        &#125;
+        dc.close();
+    &#125;
+
+    <span class="hljs-comment">//服务端</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">receive</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        DatagramChannel dc = DatagramChannel.open();
+        dc.configureBlocking(<span class="hljs-keyword">false</span>);
+        dc.bind(<span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-number">9898</span>));
+        Selector selector = Selector.open();
+        dc.register(selector, SelectionKey.OP_READ);
+        <span class="hljs-keyword">while</span> (selector.select() &gt; <span class="hljs-number">0</span>) &#123;
+            Iterator&lt;SelectionKey&gt; it = selector.selectedKeys().iterator();
+            <span class="hljs-keyword">while</span> (it.hasNext()) &#123;
+                SelectionKey sk = it.next();
+                <span class="hljs-keyword">if</span> (sk.isReadable()) &#123;
+                    ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+                    dc.receive(buf);
+                    buf.flip();
+                    System.out.println(<span class="hljs-keyword">new</span> String(buf.array(), <span class="hljs-number">0</span>, buf.limit()));
+                    buf.clear();
+                &#125;
+            &#125;
+            it.remove();
+        &#125;
+    &#125;
+&#125;</code></pre>
+
 
             </article>
             <hr>
