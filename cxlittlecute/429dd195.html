@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      3.1k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      38
        分钟
     </span>
   
@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月8日 晚上
+                  本文最后更新于：2020年8月9日 上午
                 
               </p>
             
@@ -255,8 +255,7 @@
 <li>缓冲区（Buffer）：一个用于特定[基本数据类型]的容器。由 java.nio 包定义的，所有缓冲区都是 Buffer 抽象类的子类。</li>
 <li>Java NIO 中的 Buffer 主要用于与 NIO 通道进行交互，数据是从通道读入缓冲区，从缓冲区写入通道中的。</li>
 </ul>
-<p>一、缓冲区（Buffer）：在Nio中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据（根据数据类型不同有对应类型的缓冲区）。</p>
-<p>根据数据类型不同（boolean除外），提供了相应类型的缓冲区。</p>
+<h5 id="一、缓冲区（Buffer）：在Nio中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据（根据数据类型不同有对应类型的缓冲区）。"><a href="#一、缓冲区（Buffer）：在Nio中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据（根据数据类型不同有对应类型的缓冲区）。" class="headerlink" title="一、缓冲区（Buffer）：在Nio中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据（根据数据类型不同有对应类型的缓冲区）。"></a>一、缓冲区（Buffer）：在Nio中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据（根据数据类型不同有对应类型的缓冲区）。</h5><p>根据数据类型不同（boolean除外），提供了相应类型的缓冲区。</p>
 <ul>
 <li>ByteBuffer（常用）</li>
 <li>CharBuffer</li>
@@ -273,12 +272,11 @@
     ByteBuffer buf= ByteBuffer.allocate(<span class="hljs-number">1024</span>);
 &#125;</code></pre>
 
-<p>二、缓冲区存取数据的两个核心方法：</p>
-<ul>
+<h5 id="二、缓冲区存取数据的两个核心方法："><a href="#二、缓冲区存取数据的两个核心方法：" class="headerlink" title="二、缓冲区存取数据的两个核心方法："></a>二、缓冲区存取数据的两个核心方法：</h5><ul>
 <li>put()：存入数据到缓冲区中。</li>
 <li>get()：获取缓冲区中的数据。</li>
 </ul>
-<p>三、缓冲区中的四个核心属性：<br>我们知道所有缓冲区都是 Buffer 抽象类的子类。Buffer类中有四个核心属性概念需要我们掌握：</p>
+<h5 id="三、缓冲区中的四个核心属性："><a href="#三、缓冲区中的四个核心属性：" class="headerlink" title="三、缓冲区中的四个核心属性："></a>三、缓冲区中的四个核心属性：</h5><p>我们知道所有缓冲区都是 Buffer 抽象类的子类。Buffer类中有四个核心属性概念需要我们掌握：</p>
 <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Buffer</span> </span>&#123;
     <span class="hljs-comment">// Invariants:  mark &lt;= position &lt;= limit &lt;= capacity</span>
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;
@@ -397,6 +395,123 @@
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200808225001.png" srcset="/img/loading.gif" alt=""></p>
 <p>缓冲区的数据操作：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200808225446.png" srcset="/img/loading.gif" alt=""></p>
+<h5 id="四、直接缓冲区和非直接缓冲区"><a href="#四、直接缓冲区和非直接缓冲区" class="headerlink" title="四、直接缓冲区和非直接缓冲区"></a>四、直接缓冲区和非直接缓冲区</h5><p>非直接缓冲区：通过allocate()方法分配缓冲区，将缓冲区建立在JVM的内存中。在每次调用基础操作系统的一个本机IO之前或者之后，虚拟机都会将缓冲区的内容复制到中间缓冲区（或者从中间缓冲区复制内容），缓冲区的内容驻留在JVM内，因此销毁容易，但是占用JVM内存开销，处理过程中有复制操作。</p>
+<p>直接缓冲区：通过allocateDirect()方法分配直接缓冲区，将缓冲区建立物理内存中。可以提高效率。它会在JVM内存外开辟内存，在每次调用基础操作系统的一个本机IO之前或者之后，虚拟机都会避免将缓冲区的内容复制到中间缓冲区（或者从中间缓冲区复制内容），缓冲区的内容驻留在物理内存内，会少一次复制过程。（还可以通过FileChannel 的 map() 方法 将文件区域直接映射到内存中来创建，在后面讲到）</p>
+<p>我们可以画图来体会两个缓冲区的不同：</p>
+<ul>
+<li><p>非直接缓冲区：<br><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809075124.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>直接缓冲区区：<br><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809075156.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ul>
+<p>我们可以看到非直接缓冲区，无论是read还是write操作的时候中间都会有一个copy的操作，这样是很耗费时间的。</p>
+<p>而在直接缓冲区中，我们在用户、内核地址空间之间在物理内存中直接开辟了一个缓冲区，这个缓冲区直接建立在操作系统的物理内存上。等于说这个物理内存的缓冲区直接面对磁盘和应用程序。所以效率就高了。</p>
+<p>当然直接缓冲区也有很大的弊端：</p>
+<ul>
+<li><p>消耗资源大。这样直接在物理内存开辟缓冲区，耗费消耗的资源大。</p>
+</li>
+<li><p>不易控制。并且当我们程序将数据写入物理内存映射文件后，这个文件的数据就不归我们管理了，什么时候写入磁盘就由操作系统去控制。由于不受控制，如果垃圾回收机制不及时回收，可能出现程序后停止的情况。</p>
+</li>
+</ul>
+<p>优缺点对比：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809082037.png" srcset="/img/loading.gif" alt=""></p>
+<p>什么时候选择直接缓冲区：主要分配给那些易受基础系统本机 I/O 操作影响的大型、持久的缓冲区.一般情况下，最好仅在直接缓冲区能在程序性能方面带来明显好处时分配它们.</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">//分配直接缓冲区</span>
+    ByteBuffer buf=ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+    System.out.println(buf.isDirect());<span class="hljs-comment">//false</span>
+    
+    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(<span class="hljs-number">1024</span>);
+    System.out.println(byteBuffer.isDirect()); <span class="hljs-comment">// true</span>
+&#125;</code></pre>
+
+<h2 id="通道（channel）"><a href="#通道（channel）" class="headerlink" title="通道（channel）"></a>通道（channel）</h2><p>表示IO源节点与目标节点的连接。负责缓冲区中数据的传输，本身不存储任何数据，要配合缓冲区进行传输。</p>
+<h4 id="通道的主要实现类"><a href="#通道的主要实现类" class="headerlink" title="通道的主要实现类"></a>通道的主要实现类</h4><p>通道在java.nio.channels.Channel接口下，主要实现类有以下几种：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809090415.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="1-获取通道"><a href="#1-获取通道" class="headerlink" title="(1)获取通道"></a>(1)获取通道</h4><ol>
+<li>Java支持通道的类提供了getChannel（）方法<br>本地IO：<br> FileInputStream/FileOutputStream<br> RandomAccessFile<br>网络IO：<br> Socket<br> ServerSocker<br> DatagramSocket<ol start="2">
+<li>在JDK 1.7 中的NIO.2 针对各个通道提供了静态方法 open（）</li>
+<li>在JDK 1.7 中的NIO.2 的Files工具类的newByteChannel（）</li>
+</ol>
+</li>
+</ol>
+<h4 id="2-通道的数据传输"><a href="#2-通道的数据传输" class="headerlink" title="(2)通道的数据传输"></a>(2)通道的数据传输</h4><ul>
+<li>将 Buffer 中数据写入 Channel.<br>int bytesWritten = inChannel.write(buf);</li>
+<li>从 Channel 读取数据到 Buffer.<br>int bytesRead = inChannel.read(buf);</li>
+</ul>
+<h4 id="3-通道之间的数据传输"><a href="#3-通道之间的数据传输" class="headerlink" title="(3)通道之间的数据传输"></a>(3)通道之间的数据传输</h4><p>transferFrom（）<br>transferTo（）</p>
+<h4 id="4-分散（Scatter）与聚集（Gather）"><a href="#4-分散（Scatter）与聚集（Gather）" class="headerlink" title="(4)分散（Scatter）与聚集（Gather）"></a>(4)分散（Scatter）与聚集（Gather）</h4><ul>
+<li>分散读取（Scattering Reads）：将通道中的数据分散到多个缓冲区中。</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809102843.png" srcset="/img/loading.gif" alt=""></p>
+<p>注意：按照缓冲区的顺序，从 Channel 中读取的数据依次将 Buffer 填满。</p>
+<ul>
+<li>聚集写入（Gathering Writes）：将多个缓冲区中的数据聚集到通道中。</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200809102957.png" srcset="/img/loading.gif" alt=""></p>
+<p>注意：按照缓冲区的顺序，写入 position 和 limit 之间的数据到Channel 。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Nio2</span> </span>&#123;
+
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-comment">//利用通道完成文件的复制(非直接缓冲区)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        FileInputStream fis = <span class="hljs-keyword">new</span> FileInputStream(<span class="hljs-string">"1.txt"</span>);
+        FileOutputStream fos = <span class="hljs-keyword">new</span> FileOutputStream(<span class="hljs-string">"2.txt"</span>);
+
+        <span class="hljs-comment">// 1. 获取通道</span>
+        FileChannel inChannel = fis.getChannel();
+        FileChannel outChannel = fos.getChannel();
+
+        <span class="hljs-comment">// 2. 分配指定大小的缓冲区</span>
+        ByteBuffer buf = ByteBuffer.allocate(<span class="hljs-number">1024</span>);
+
+        <span class="hljs-comment">// 3. 将通道中的数据存入缓冲区</span>
+        <span class="hljs-keyword">while</span> (inChannel.read(buf) != -<span class="hljs-number">1</span>) &#123;
+            buf.flip();<span class="hljs-comment">//切换读取数据的模式</span>
+            <span class="hljs-comment">//4.将缓冲区中的数据写入通道中</span>
+            outChannel.write(buf);
+            buf.clear();<span class="hljs-comment">//清空缓冲区</span>
+        &#125;
+        outChannel.close();
+        inChannel.close();
+        fos.close();
+        fis.close();
+    &#125;
+
+    <span class="hljs-comment">//使用直接缓冲区完成文件的复制(内存映射文件)</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        FileChannel inChannel = FileChannel.open(Paths.get(<span class="hljs-string">"1.txt"</span>), StandardOpenOption.READ);
+        FileChannel outChannel = FileChannel.open(Paths.get(<span class="hljs-string">"2.txt"</span>), StandardOpenOption.WRITE,StandardOpenOption.READ ,StandardOpenOption.CREATE);
+        <span class="hljs-comment">// 内存映射文件(只有byteBuffer支持)</span>
+        MappedByteBuffer inMappedBuf = inChannel.map(FileChannel.MapMode.READ_ONLY, <span class="hljs-number">0</span>, inChannel.size());
+        MappedByteBuffer outMappedBuf = outChannel.map(FileChannel.MapMode.READ_WRITE, <span class="hljs-number">0</span>, inChannel.size());
+        <span class="hljs-comment">// 直接对缓冲区进行数据的读写操作,之前的操作时通过通道去读写，现在的缓冲区直接在内存中，不需要通道</span>
+        <span class="hljs-keyword">byte</span>[] dst = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[inMappedBuf.limit()];
+        inMappedBuf.get(dst);
+        outMappedBuf.put(dst);
+
+        inChannel.close();
+        outChannel.close();
+    &#125;
+
+    <span class="hljs-comment">// 通道之间的数据传输（直接缓冲区）</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        FileChannel inChannel = FileChannel.open(Paths.get(<span class="hljs-string">"1.txt"</span>), StandardOpenOption.READ);
+        FileChannel outChannel = FileChannel.open(Paths.get(<span class="hljs-string">"2.txt"</span>), StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE);
+
+        inChannel.transferTo(<span class="hljs-number">0</span>, inChannel.size(), outChannel);
+        outChannel.transferFrom(inChannel, <span class="hljs-number">0</span>, inChannel.size());
+        inChannel.close();
+        outChannel.close();
+    &#125;
+    
+&#125;</code></pre>
+
+
+
 
             </article>
             <hr>
