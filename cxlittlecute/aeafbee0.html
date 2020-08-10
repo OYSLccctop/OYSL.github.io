@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>NIO（三）-Path Files - OYSL&#39;s blog</title>
+  <title>IO模型 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-08-10 06:42">
-      2020年8月10日 早上
+    <time datetime="2020-08-10 11:36">
+      2020年8月10日 中午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      499 字
+      1.7k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      18
        分钟
     </span>
   
@@ -225,38 +225,72 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月10日 早上
+                  本文最后更新于：2020年8月10日 下午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="NIO（三）-Path-Files"><a href="#NIO（三）-Path-Files" class="headerlink" title="NIO（三）-Path Files"></a>NIO（三）-Path Files</h1><h2 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h2><p>Path接口是java NIO2的一部分。首次在java 7中引入。Path接口在java.nio.file包下，所以全称是java.nio.file.Path。</p>
-<p>java中的Path表示文件系统的路径。可以指向文件或文件夹。也有相对路径和绝对路径之分。</p>
-<p>在很多方面，java.nio.file.Path接口和java.io.File有相似性，但也有一些细微的差别。在很多情况下，可以用Path来代替File类。</p>
-<h3 id="创建Path实例"><a href="#创建Path实例" class="headerlink" title="创建Path实例"></a>创建Path实例</h3><p>为了使用java.nio.file.Path实例，必须首先创建它。可以使用Paths 类的静态方法Paths.get()来产生一个实例。以下是示例：</p>
-<pre><code>Path path = Paths.get(&quot;1.txt&quot;);
-
-//在a-project目录后面的..符号，将指向的目录修改为projects目录，因此，最终path指向another-project目录。
-String path = &quot;d:\\data\\projects\\a-project\\..\\another-project&quot;;
-Path parentDir2 = Paths.get(path); //输出：d:\data\projects\another-project</code></pre><h4 id="Path-normalize"><a href="#Path-normalize" class="headerlink" title="Path.normalize()"></a>Path.normalize()</h4><p>Path 的normalize()方法可以标准化路径。标准化的含义是路径中的.和..都被去掉，指向真正的路径目录地址。下面是Path.normalize()示例：</p>
-<pre><code class="hljs java">String originalPath =<span class="hljs-string">"d:\\data\\projects\\a-project\\..\\another-project"</span>;
-
-Path path1 = Paths.get(originalPath);
-System.out.println(<span class="hljs-string">"path1 = "</span> + path1);
-
-Path path2 = path1.normalize();
-System.out.println(<span class="hljs-string">"path2 = "</span> + path2);</code></pre>
-<p>上文示例，首先创建了一个包含..字符的路径地址。之后输出此路径。</p>
-<p>之后，调用normalize方法，返回一个新的path对象。输出新对象的路径。</p>
-<p>输出结果：</p>
-<pre><code>path1 = d:\data\projects\a-project\..\another-project
-path2 = d:\data\projects\another-project
-// 标准化后的路径不再包含 a-project\..部分，因为它是多余的。</code></pre><h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810065713.png" srcset="/img/loading.gif" alt=""></p>
-<h2 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h2><p>java NIO Files类(java.nio.file.Files) 提供了操作文件的相关方法。它是用于操作文件或目录的工具类。</p>
-<p>java.nio.file.Files类需要和java.nio.file.Path一起使用，在学习Files类前，你需要掌握Path类的相关用法。</p>
-<p>Files类包含了很多方法，本篇文章主要是提出这两个新的API，更多方法请查询JavaDoc文档。</p>
-<h3 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810072328.png" srcset="/img/loading.gif" alt=""></p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810072417.png" srcset="/img/loading.gif" alt=""></p>
+              <h1 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h1><p>在网络环境下,通俗的讲,将IO分为两步: 第一步是等待 ; 第二步是数据搬迁.<br>如果想提高IO效率,主要就是降低等待时间,因此衍生出了下面的几种IO模型分类。</p>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><pre><code>1.阻塞IO模型
+2.非阻塞IO模型
+3.多路复用IO模型
+4.信号驱动IO模型
+5.异步IO模型</code></pre><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在分别介绍几个IO模型的时候我们需要先掌握以下几个概念。</p>
+<ol>
+<li><p>进程和线程是什么？</p>
+<pre><code>1.进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位。
+2.每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；
+  线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小。
+3.在操作系统中能同时运行多个进程（程序）；
+  而在同一个进程（程序）中有多个线程同时执行
+4.系统在运行的时候会为每个进程分配不同的内存空间;
+  而对线程而言，除了CPU外，系统不会为线程分配内存（线程所使用的资源来自其所属进程的资源），线程组之间只能共享资源。
+5.一个进程内有多个线程，线程是进程的一部分，所以线程也被称为轻权进程或者轻量级进程。</code></pre></li>
+<li><p>同步和异步是什么？</p>
+<pre><code>同步和异步的概念描述的是用户线程与内核的交互方式。
+同步是指用户线程发起IO请求后需要等待或者轮询内核IO操作完成后才能继续执行。
+而异步是指用户线程发起IO请求后仍继续执行，当内核IO操作完成后会通知用户线程，或者调用用户线程注册的回调函数。</code></pre></li>
+<li><p>阻塞和非阻塞是什么？</p>
+<pre><code>阻塞和非阻塞的概念描述的是用户线程调用内核IO操作的方式。
+阻塞是指IO操作需要彻底完成后才返回到用户空间。
+非阻塞是指IO操作被调用后立即返回给用户一个状态值，无需等到IO操作彻底完成。</code></pre></li>
+</ol>
+<p>接下来我们以IO操作的读操作作为示例。</p>
+<h2 id="一、阻塞IO模型"><a href="#一、阻塞IO模型" class="headerlink" title="一、阻塞IO模型"></a>一、阻塞IO模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810124543.png" srcset="/img/loading.gif" alt=""></p>
+<p>用户进程向系统内核发送请求后,在等待系统内核处理数据的这段时间,用户进程就会被阻塞,当前什么都不能干,就等待结果.当数据准备好了后,系统内核,将数据拷贝到用户内存,然后返回结果,用户进程才解决阻塞状态,重新运行起来。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810125016.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="二、非阻塞IO模型"><a href="#二、非阻塞IO模型" class="headerlink" title="二、非阻塞IO模型"></a>二、非阻塞IO模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810125213.png" srcset="/img/loading.gif" alt=""></p>
+<p>当用户进程发出请求后,如果内核中的数据还没准备好,那么他不会阻塞用户进程,而是立刻返回一个Error,当用户进程判断结果是一个Error时,他就知道数据还没准备好,于是它可以再次发送请求 ,就这样不停的轮询直到内核数据准备好了,并且再次收到了用户进程的请求,那么就会把数据拷贝到用户内存,然后返回。</p>
+<p>注意：在等待系统内核处理数据的时候,非阻塞IO会不停的轮询查看发起的请求是否有应答结果,但可以去处理其他事情。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810125358.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="三、多路复用IO模型"><a href="#三、多路复用IO模型" class="headerlink" title="三、多路复用IO模型"></a>三、多路复用IO模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810161943.png" srcset="/img/loading.gif" alt=""></p>
+<p>多个进程的IO可以注册到一个复用器(Selector)上,当用户进程调用该Selector,Selector会监听注册进来的所有IO,如果Selector监听所有的IO,在内核上缓冲区上都没有可读的数据时,select调用就会返回,而后select进行线程轮询自己或者通知注册到Selector上面的IO再次发起读取IO,读取内核中准备好的数据,多个进程注册IO后,只有一个select调用进程被阻塞。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810162643.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="四、信号驱动IO模型"><a href="#四、信号驱动IO模型" class="headerlink" title="四、信号驱动IO模型"></a>四、信号驱动IO模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810161309.png" srcset="/img/loading.gif" alt=""></p>
+<p>用户进程预先告知内核,向内核注册一个信号处理函数,然后用户进程返回不阻。,当内核数据就绪时会发送一个信号给进程,用户进程便在信号处理函数中调用IO读取数据。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810162725.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="五、异步IO模型"><a href="#五、异步IO模型" class="headerlink" title="五、异步IO模型"></a>五、异步IO模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810162913.png" srcset="/img/loading.gif" alt=""></p>
+<p>用户进程发起aio_read操作之后，给内核传递描述符、缓冲区指针、缓冲区大小等，告诉内核当整个操作完成时，如何通知进程，然后就立刻去做其他事情了。当内核收到aio_read后，会立刻返回，然后内核开始等待数据准备，数据准备好以后，直接把数据拷贝到用户控件，然后再通知进程本次IO已经完成。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200810162958.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="趣味描述"><a href="#趣味描述" class="headerlink" title="趣味描述"></a>趣味描述</h2><p>最后我们通过钓鱼的故事来描述这五个IO模型：</p>
+<ul>
+<li><p>阻塞IO模型:</p>
+<pre><code>我们钓鱼的时候，整个过程一直坐在鱼竿前，双手一直把着鱼竿，就静静的等着鱼儿咬钩。
+一旦手上感受到鱼的力道，就把鱼钓起来放入鱼篓中。然后再钓下一条鱼。</code></pre></li>
+<li><p>非阻塞IO模型：</p>
+<pre><code>我们钓鱼的时候，在等待鱼儿咬钩的过程中，我们可以做点别的事情，比如玩一把王者荣耀、看一集《延禧攻略》等等。
+但是，我们要时不时的去看一下鱼竿（轮询），一旦发现有鱼儿上钩了，就把鱼钓上来。</code></pre></li>
+<li><p>多路复用IO模型：</p>
+<pre><code>我们钓鱼的时候，为了保证可以最短的时间钓到最多的鱼，我们同一时间摆放多个鱼竿，同时钓鱼。
+然后哪个鱼竿有鱼儿咬钩了，我们就把哪个鱼竿上面的鱼钓起来。</code></pre></li>
+<li><p>信号驱动IO模型：</p>
+<pre><code>我们钓鱼的时候，为了避免自己一遍一遍的去查看鱼竿，我们可以给鱼竿安装一个报警器。
+当有鱼儿咬钩的时候立刻报警。然后我们再收到报警后，去把鱼钓起来。</code></pre></li>
+<li><p>异步IO模型：</p>
+<pre><code>我们钓鱼的时候，采用一种高科技钓鱼竿，即全自动钓鱼竿。可以自动感应鱼上钩，自动收竿，更厉害的可以自动把鱼放进鱼篓里。
+然后，通知我们鱼已经钓到了，他就继续去钓下一条鱼去了。</code></pre></li>
+</ul>
+<p>参考转载：<br><a href="https://blog.csdn.net/kuangsonghan/article/details/80674777" target="_blank" rel="noopener">https://blog.csdn.net/kuangsonghan/article/details/80674777</a><br><a href="https://blog.csdn.net/caoweifeng12/article/details/107902641" target="_blank" rel="noopener">https://blog.csdn.net/caoweifeng12/article/details/107902641</a><br><a href="https://mp.weixin.qq.com/s?__biz=Mzg3MjA4MTExMw==&amp;mid=2247484746&amp;idx=1&amp;sn=c0a7f9129d780786cabfcac0a8aa6bb7&amp;source=41&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MjA4MTExMw==&amp;mid=2247484746&amp;idx=1&amp;sn=c0a7f9129d780786cabfcac0a8aa6bb7&amp;source=41&amp;scene=21#wechat_redirect</a></p>
 
             </article>
             <hr>
@@ -287,18 +321,12 @@ path2 = d:\data\projects\another-project
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/aeafbee0.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">IO模型</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/4deaa97d.html">
-                        <span class="hidden-mobile">NIO（二）-非阻塞式网络通信</span>
+                      <a href="/cxlittlecute/a4bb995.html">
+                        <span class="hidden-mobile">NIO（三）-Path Files</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -618,7 +646,7 @@ path2 = d:\data\projects\another-project
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/a4bb995.html');
+          var target = decodeURI('/cxlittlecute/aeafbee0.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -712,7 +740,7 @@ path2 = d:\data\projects\another-project
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "NIO（三）-Path Files&nbsp;",
+        "IO模型&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
