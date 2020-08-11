@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Java内存区域与内存溢出异常（一）</title>
+    <link href="/cxlittlecute/4d26dbf4.html"/>
+    <url>/cxlittlecute/4d26dbf4.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Java内存区域与内存溢出异常（一）"><a href="#Java内存区域与内存溢出异常（一）" class="headerlink" title="Java内存区域与内存溢出异常（一）"></a>Java内存区域与内存溢出异常（一）</h1><p>本篇文章为这一系列的第一部分，我将描述分析：</p><pre><code>1. Java虚拟机内存各个区域的概念2. 各个区域的作用3. 服务的对象4. 其中可能会产生的问题</code></pre><h2 id="1-1-运行时数据区域"><a href="#1-1-运行时数据区域" class="headerlink" title="1.1 运行时数据区域"></a>1.1 运行时数据区域</h2><p>Java虚拟机在执行Java程序的过程中，会把它管理的内存划分为若干个不同的数据区域。</p><p>那么，根据《Java虚拟机规范的规定》，Java虚拟机所管理的内存将会分为以下几个运行时数据区域。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200811194629.png" srcset="/img/loading.gif" alt=""></p><p>所有线程共享的数据区：</p><pre><code>1.方法区2.堆3.执行引擎4.本地方法接口</code></pre><p>线程隔离的数据区：</p><pre><code>1.虚拟机栈VM Stack（Java栈）2.本地方法栈3.程序计数器</code></pre><h3 id="1-1-1-程序计数器"><a href="#1-1-1-程序计数器" class="headerlink" title="1.1.1 程序计数器"></a>1.1.1 程序计数器</h3>]]></content>
+    
+    
+    <categories>
+      
+      <category>JVM</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>JVM</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>IO模型</title>
     <link href="/cxlittlecute/aeafbee0.html"/>
     <url>/cxlittlecute/aeafbee0.html</url>
