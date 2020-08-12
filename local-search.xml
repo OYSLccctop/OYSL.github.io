@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Java内存区域与内存溢出异常（三）-实战：OOM异常</title>
+    <link href="/cxlittlecute/ffd7ad5b.html"/>
+    <url>/cxlittlecute/ffd7ad5b.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Java内存区域与内存溢出异常（三）-实战：OOM异常"><a href="#Java内存区域与内存溢出异常（三）-实战：OOM异常" class="headerlink" title="Java内存区域与内存溢出异常（三）-实战：OOM异常"></a>Java内存区域与内存溢出异常（三）-实战：OOM异常</h1><p>在Java虚拟机规范的描述中,除了程序计数器外,虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(下文称00M )异常的可能,本节将通过若干实例来验证异常发生的场景,并且会初步介绍几个与内存相关的最基本的虚拟机参数。</p><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><pre><code>1.通过代码验证《Java虚拟机规范》中描述的各个运行时区域存储的内容。2.在我们遇到实际内存溢出异常时，我们能根据异 常的信息快速判断是哪个区域的内存溢出，知道什么样的代码可能会导致这些区域内存溢出,以及出现这些异常后该如何处理。</code></pre><p>下文代码的开头都注释了执行时所需要设置的虚拟机启动参数(注释中“VM Args”后面跟着的参数),这些参数对实验的结果有直接影响,读者调试代码的时候千万不要忽略。</p><p>如果使用的是控制台命令来执行程序，那直接跟在Java命令之后书写就可以。</p><p>本文主要以IntelliJ IDEA作为操作工具。参数设置位置参考：</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200812153147.png" srcset="/img/loading.gif" alt=""></p><p>为了进行我们的JVM性能分析，我们选择JProfiler作为我们的性能分析工具。</p><p>JProfiler V11.0.2百度云链接：</p><p>同时我们需要在Idea中下载JProfiler的插件：</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200812161824.png" srcset="/img/loading.gif" alt=""></p><h2 id="1-1-Java堆溢出"><a href="#1-1-Java堆溢出" class="headerlink" title="1.1 Java堆溢出"></a>1.1 Java堆溢出</h2><p>Java堆用于储存对象实例，我们只要不断地创建对象，并且保证【GC Roots】到【对象】之间有【可达路径】来【避免垃圾回收机制】清除这些对象，就会在对象数量到达最大堆的容量限制后产生内存溢出异常。</p><p>下面代码中限制Java堆的大小为20MB，【不可扩展】（将堆的最小值-Xms参数与最大值-Xmx参数设置为一样即可避免堆自动扩展），通过参数-XX:+HeapDump OnOutOfMemoryError可以让虚拟机在出现内存溢出异常时【Dump】出当前的内存【堆转储快照】文件以便事后进行分析。</p><pre><code class="hljs java"><span class="hljs-comment">/**</span><span class="hljs-comment"> * VM Args：-Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError </span><span class="hljs-comment"> */</span> <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HeapOOM</span> </span>&#123;    <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OOMObject</span> </span>&#123;    &#125;    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;        List&lt;OOMObject&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;OOMObject&gt;();        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;            list.add(<span class="hljs-keyword">new</span> OOMObject());        &#125;    &#125;&#125;</code></pre><p>运行结果：</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200812153614.png" srcset="/img/loading.gif" alt=""></p><p>Java堆内存的OOM异常是实际应用中最常见的内存溢出异常情况。出现Java堆内存溢出时，异常堆栈信息“java.lang.OutOfMemoryError”会跟着进一步提示“Java heap space”。</p><h4 id="如何解决堆内存溢出异常？"><a href="#如何解决堆内存溢出异常？" class="headerlink" title="如何解决堆内存溢出异常？"></a>如何解决堆内存溢出异常？</h4><p>首先要确定内存中导致OOM的对象是否是必要的，也就是到底是【内存泄露】（Memory Leak）还是【内存溢出】(Memory Overflow)。</p><ul><li><p>如果是内存泄漏，可进一步通过工具查看【泄漏对象】到【GC Roots】的【引用链】。于是就能找到泄漏对象是通过怎样的【引用路径】，与哪些GC Roots【相关联】，才导致垃圾收集器无法自动回收它们，根据泄露对象的类型信息以及它到GC Roots引用链的信息，一般可以比较准确地定位到这些对象创建的位置，进而找出产生内存泄露的代码的具体位置。</p></li><li><p>如果不存在泄露,换句话说,就是内存中的对象确实都还必须存活着,那就应当检查虛拟机的堆参数(-Xmx与-Xms ) 设置,与机器物理内存对比，看是否还有向上调整的空间。再从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况,尝试减少程序运行期的内存消耗。</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>JVM</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>JVM</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘</title>
     <link href="/cxlittlecute/1b1cef79.html"/>
     <url>/cxlittlecute/1b1cef79.html</url>
