@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      979 字
+      2.5k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      27
        分钟
     </span>
   
@@ -273,7 +273,49 @@
 <li><p>如果不存在泄露,换句话说,就是内存中的对象确实都还必须存活着,那就应当检查虛拟机的堆参数(-Xmx与-Xms ) 设置,与机器物理内存对比，看是否还有向上调整的空间。再从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况,尝试减少程序运行期的内存消耗。</p>
 </li>
 </ul>
+<h2 id="1-2-虚拟机栈和本地方法栈"><a href="#1-2-虚拟机栈和本地方法栈" class="headerlink" title="1.2 虚拟机栈和本地方法栈"></a>1.2 虚拟机栈和本地方法栈</h2><p>由于在HotSpot虚拟机中并不区分虚拟机栈和本地方法栈，因此对于HotSpot来说，-Xoss参数（设置本地方法栈大小）虽然存在，但实际上是无效的，栈容量只由-Xss参数设定。关于虚拟机栈和本地方法栈，在Java虚拟机规范中描述了两种异常：</p>
+<pre><code>1.如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出 StackOverflowError 异常。
 
+2.如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出 OutOfMemoryError 异常。</code></pre><p>注意：HotSpot虚拟机是不支持栈的动态扩展的。</p>
+<p>所以，除非在【创建线程申请内存时】无法获得足够内存会出现OutOfMemoryError异常，否则线程在运行时不会因为扩展而导致内存溢出。</p>
+<p>笔者给了我们两个实验，让我们在单线程情况下，尝试下面两种行为是否导致HotSpot产生OutOfMemoryError。</p>
+<pre><code>- 使用-Xss参数减少栈内存容量
+- 定义大量的本地变量，增大此方法帧中本地变量表的长度。</code></pre><p>他们两的结果都为无法让虚拟机产生OutOfMemoryError异常,尝试的结果都是获得StackOverflowError异常，异常出现时输出的堆栈深度相应缩小。</p>
+<p>总结:在单个线程下,无论是由于栈帧（一个方法中包含的本地变量数）太大还是虚拟机栈容量（-Xss参数减少每个线程栈内存容量）太小,当内存无法分配的时候,虚拟机拋出的都是StackOverflowError异常。</p>
+<p>我们需要注意在多线程情况下，为每个线程的栈分配的内存越大，反而越容易产生内存溢出异常。因为每个线程分配到的栈容量越大,可以建立的线程数量自然就越少,建立线程时就越容易把剩下的内存耗尽。</p>
+<p>如果我们使用HotSpot虚拟机【默认参数】，栈深度在大多数情况下(因为每个方法压入栈的帧大小并不是一样的,所以只能说在大多数情况下)达到1000〜2000完全没有问题,对于正常的方法调用(包括递归),这个深度应该完全够用了。但是 ,如果是建立过多线程导致的内存溢出,在不能减少线程数或者更换64位虚拟机的情况下,就只能通过【减少最大堆】和【减少栈容量】来换取更多的线程。</p>
+<h2 id="1-3-方法区和运行时常量池溢出"><a href="#1-3-方法区和运行时常量池溢出" class="headerlink" title="1.3 方法区和运行时常量池溢出"></a>1.3 方法区和运行时常量池溢出</h2><p>首先我们要知道的是在JDK8中完全使用元空间代替永生代。</p>
+<p>然后我们再来了解一个本地方法String::intern()。</p>
+<p>该方法的作用是：如果字符串常量池中已经包含一个等于此String对象的字符串，则返回代表池中这个字符串的String对象的引用；否则，会将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。</p>
+<p>在JDK6之前，由于常量池分配在永生代中，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接限制其中常量池的容量。</p>
+<p>但是在JDK7起，原本放在永生代的字符串常量池被移植Java堆之中，溢出要看输出信息具体是哪个对象。</p>
+<p>书中有意思的便是下面这个例子：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuntimeConstantPoolOOM</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        String str1 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"中国"</span>).append(<span class="hljs-string">"钓鱼岛"</span>).toString();
+        System.out.println(str1.intern() == str1);
+
+        String str2 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"ja"</span>).append(<span class="hljs-string">"va"</span>).toString();
+        System.out.println(str2.intern() == str2);
+    &#125;   &#125;
+&#125;</code></pre>
+<p>这段代码在JDK 1.6中运行,会得到两个false,而在JDK 1.7中运行,会得到一个true和一 个false。</p>
+<pre><code>结论：原因就是JDK7起intern()方法不需要再拷贝字符串的实例到永生代了，
+字符串常量池已经移到了Java堆中，只需要在常量池中记录首次出现的实例引用即可，
+因此intern( ) 返回的引用和由StringBuilder(）创建的那个字符串实例是同一个。
+
+对str2比较返回false是因为“java”这个字符串在执行StringBuilder.toString ( ) 之前
+已经出现过（其他类已经加载过这个字符串进入常量池）,字符串常量池中已经有它的引用了,
+不符合“ 首次出现” 的原则,而“计算机软件”这个字符串则是首次出现的,因此返回true。</code></pre><p>方法区溢出也是一种常见的内存溢出异常,一个类要被垃圾收集器回收掉,判定条件是比较苛刻的。</p>
+<p>在经常动态生成大量Class的应用场景中,需要特别注意这些类的回收状况。这类场景除了上面提到的程序使用了CGLib字节码增强和动态语言之外,常见的还有:大量JSP或动态产生JSP文件的应用(JSP第一次运行时需要编译为Java类 )、基于OSGi的应用(即使是同一个类文件,被不同的加载器加载也会视为不同的类)等。</p>
+<p>HotSpot提供了一些参数作为元空间的防御措施：</p>
+<pre><code>-XX:MaxMetaspaceSize
+-XX:MetaspaceSize
+-XX:MinMetaspaceFreeRatio</code></pre><h2 id="1-4-本机直接内存溢出"><a href="#1-4-本机直接内存溢出" class="headerlink" title="1.4 本机直接内存溢出"></a>1.4 本机直接内存溢出</h2><p>DirectMemory容量可通过-XX : MaxDirectMemorySize指定,如果不指定,则默认与Java堆最大值(-Xmx指定)一样。</p>
+<p>由DirectMemory导致的内存溢出,一个明显的特征是在Heap Dump文件中不会看见明显的异常,如果读者发现OOM之后Dump文件很小,而程序中又直接或间接使用了NIO,那就可以考虑检查一下是不是这方面的原因。</p>
+<pre><code>参考图书：《深入理解Java虚拟机-Java高级特性与最佳实战》第3版</code></pre>
             </article>
             <hr>
             <div>
