@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>回溯问题解题思路框架</title>
+    <link href="/cxlittlecute/124e11.html"/>
+    <url>/cxlittlecute/124e11.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="回溯问题解题思路框架"><a href="#回溯问题解题思路框架" class="headerlink" title="回溯问题解题思路框架"></a>回溯问题解题思路框架</h1><p>最近学习了 labuladong博主（在我的友链中有他）关于回溯问题的解题思路。</p><p>自己下来也发现这个思路还是比较通用的，于是通过自己的理解再次记录其中的问题。</p><p>我们知道回溯问题就是对决策树的遍历问题，回溯”指的是“状态重置”，可以理解为“回到过去”，而且我们在这颗树上的遍历通常选用深度优先遍历。</p><p>我对博主的框架做了一定的修改如下：</p><pre><code class="hljs java">存放所有结果的集合(一般设置为静态变量)<span class="hljs-keyword">public</span> 存放所有结果的集合 permute(可选列表)     选择的路径集合    backtrack(可选列表,inList);<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(可选列表,选择的路径集合)</span></span><span class="hljs-function">    <span class="hljs-keyword">if</span> 满足结束条件:</span><span class="hljs-function">        result.<span class="hljs-title">add</span><span class="hljs-params">(路径)</span></span><span class="hljs-function">        return</span><span class="hljs-function"></span><span class="hljs-function">    <span class="hljs-keyword">for</span> 选择 in 选择列表:</span><span class="hljs-function">        排除不符合规定的选择</span><span class="hljs-function">        做选择</span><span class="hljs-function">        <span class="hljs-title">backtrack</span><span class="hljs-params">(路径, 选择列表)</span></span><span class="hljs-function">        撤销选择</span></code></pre><p>那么大致的框架已经给出了，那么我一一来分析其中的几个概念：</p><p>1、路径：也就是已经做出的选择。<br>2、可选列表：也就是你当前可以做的选择。<br>3、结束条件：也就是到达决策树底层，无法再做选择的条件。</p><p>那么我们就以LeeCode上<a href="https://leetcode-cn.com/problems/permutations/" target="_blank" rel="noopener">全排列</a>这个问题进行框架的套用。</p><pre><code class="hljs java"><span class="hljs-comment">// 存放所有结果的集合(一般设置为静态变量)</span>List&lt;List&lt;Integer&gt;&gt; outList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; permute(<span class="hljs-keyword">int</span>[] nums) &#123;    <span class="hljs-comment">// 选择的路径集合</span>    LinkedList&lt;Integer&gt; inList = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();    backtrack(nums,inList);    <span class="hljs-keyword">return</span> outList;&#125;<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, LinkedList&lt;Integer&gt; inList)</span> </span>&#123;    <span class="hljs-comment">// 结束条件</span>    <span class="hljs-keyword">if</span> (nums.length == inList.size())&#123;        outList.add(<span class="hljs-keyword">new</span> LinkedList&lt;&gt;(inList));        <span class="hljs-keyword">return</span>;    &#125;    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) &#123;        <span class="hljs-comment">// 排除不符合规定的选择</span>        <span class="hljs-keyword">if</span> (inList.contains(num))&#123;            <span class="hljs-keyword">continue</span>;        &#125;        <span class="hljs-comment">// 做选择</span>        inList.add(num);        <span class="hljs-comment">// 进入下一层决策树</span>        backtrack(nums, inList);        <span class="hljs-comment">// 取消选择</span>        inList.removeLast();    &#125;&#125;</code></pre><p>这里也强调一下:</p><pre><code class="hljs java">outList.add(<span class="hljs-keyword">new</span> LinkedList&lt;&gt;(inList));</code></pre><p>大家肯定疑问为什么这里，不直接将inList放入outList，而要在外面还要套一层（俄罗斯套娃）。</p><p>因为inList这个变量所指向的对象在递归的过程中只有一份，深度优先遍历完成以后，因为回到了根结点，回溯问题从深层结点回到浅层结点的时候，会有撤销的操作，因此inList这个变量回到根结点以后都为空。</p><p>同时我们需要注意的是，在Java中，因为都是值传递，对象类型变量在传参的过程中，复制的都是变量的地址。这些地址被添加到outList变量，但实际上指向的是同一块内存地址，你回溯过后就会把列表清空，得到空的对象集,解决办法就是想上面一样再做一次拷贝工作。</p><p>参考：<br><a href="https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/hui-su-suan-fa-xiang-jie-xiu-ding-ban" target="_blank" rel="noopener">https://labuladong.gitbook.io/algo/di-ling-zhang-bi-du-xi-lie/hui-su-suan-fa-xiang-jie-xiu-ding-ban</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据结构与算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java内存区域与内存溢出异常（三）-实战：OOM异常</title>
     <link href="/cxlittlecute/ffd7ad5b.html"/>
     <url>/cxlittlecute/ffd7ad5b.html</url>
