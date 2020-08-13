@@ -231,7 +231,7 @@
 安装教程：https://www.isharepc.com/14200.html</code></pre><p>同时我们需要在Idea中下载JProfiler的插件：</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200812161824.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="1-1-Java堆溢出"><a href="#1-1-Java堆溢出" class="headerlink" title="1.1 Java堆溢出"></a>1.1 Java堆溢出</h2><p>Java堆用于储存对象实例，我们只要不断地创建对象，并且保证【GC Roots】到【对象】之间有【可达路径】来【避免垃圾回收机制】清除这些对象，就会在对象数量到达最大堆的容量限制后产生内存溢出异常。</p>
-<p>下面代码中限制Java堆的大小为20MB，【不可扩展】（将堆的最小值-Xms参数与最大值-Xmx参数设置为一样即可避免堆自动扩展），通过参数-XX:+HeapDump OnOutOfMemoryError可以让虚拟机在出现内存溢出异常时【Dump】出当前的内存【堆转储快照】文件以便事后进行分析。</p>
+<p>下面代码中限制Java堆的大小为20MB，【不可扩展】（将堆的最小值-Xms参数与最大值-Xmx参数设置为一样即可避免堆自动扩展），通过参数-XX:+HeapDump OnOutOfMemoryError可以让虚拟机在出现内存溢出异常时【Dump】出当前的内存【堆转储快照】文件以便进行分析。</p>
 <pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * VM Args：-Xms20m -Xmx20m -XX:+HeapDumpOnOutOfMemoryError </span>
 <span class="hljs-comment"> */</span>
