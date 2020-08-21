@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>三种特殊数据类型</title>
+    <link href="/cxlittlecute/401a612a.html"/>
+    <url>/cxlittlecute/401a612a.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="三种特殊数据类型"><a href="#三种特殊数据类型" class="headerlink" title="三种特殊数据类型"></a>三种特殊数据类型</h1><h2 id="Geospatial-地理位置"><a href="#Geospatial-地理位置" class="headerlink" title="Geospatial 地理位置"></a>Geospatial 地理位置</h2><p>朋友的定位，附近的人，打车距离计算？</p><p>Redis 的 Geo 在Redis3.2 版本就推出了！ 这个功能可以推算地理位置的信息，两地之间的距离，方圆几里的人！</p><p><a href="http://www.redis.cn/commands/geoadd.html" target="_blank" rel="noopener">官方文档</a><br><a href="https://www.redis.net.cn/order/3685.html" target="_blank" rel="noopener">操作文档</a></p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200821170958.png" srcset="/img/loading.gif" alt=""></p><pre><code>geoadd</code></pre><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> getadd 添加地理位置</span><span class="hljs-meta">#</span><span class="bash"> 规则：两级(南极北极)无法直接添加，我们一般会下载城市数据，直接通过java程序一次性导入！</span><span class="hljs-meta">#</span><span class="bash"> 参数 key 值（纬度、经度、名称）</span><span class="hljs-meta">#</span><span class="bash"> 有效的经度从-180度到 180 度。</span><span class="hljs-meta">#</span><span class="bash"> 有效的纬度从-85.05112878度到85.05112878度。</span><span class="hljs-meta">#</span><span class="bash"> 当坐标位置超出上述指定范围时，该命令将会返回一个错误。</span><span class="hljs-meta">#</span><span class="bash"> 127.0.0.1:6379&gt; geoadd china:city 39.90 116.40 beijin</span>(error) ERR invalid longitude,latitude pair 39 .900000,116.400000<span class="hljs-meta">#</span><span class="bash"> 参数 key 值（）</span>127.0.0.1:6379&gt; geoadd china:city 116.40 39.90 beijing(integer) 1127.0.0.1:6379&gt; geoadd china:city 121.47 31.23 shanghai(integer) 1127.0.0.1:6379&gt; geoadd china:city 106.50 29.53 chongqi 114.05 22.52 shengzhen(integer) 2 127.0.0.1:6379&gt; geoadd china:city 120.16 30.24 hangzhou 108.96 34.26 xian(integer) 2</code></pre><pre><code>geopos</code></pre><p>获得当前定位：一定是一个坐标值！</p><pre><code class="hljs shell">127.0.0.1:6379&gt; GEOPOS china:city beijing  # 获取指定的城市的经度和纬度！1 ) 1 ) "116.39999896287918091"2 ) "39.90000009167092543"127.0.0.1:6379&gt; GEOPOS china:city beijing chongqi1 ) 1 ) "116.39999896287918091"2 ) "39.90000009167092543"2 ) 1 ) "106.49999767541885376"2 ) "29.52999957900659211"</code></pre><pre><code>GEODIST</code></pre><p>两人之间的距离！</p><p>单位：</p><ul><li>m 表示单位为米。</li><li>km 表示单位为千米。</li><li>mi 表示单位为英里。</li><li>ft 表示单位为英尺。</li></ul><pre><code class="hljs shell">127.0.0.1:6379&gt; GEODIST china:city beijing shanghai km  # 查看上海到北京的直线距离"1067.3788"127.0.0.1:6379&gt; GEODIST china:city beijing chongqi km # 查看重庆到北京的直线距离"1464.0708"</code></pre><pre><code>georadius 以给定的经纬度为中心， 找出某一半径内的元素</code></pre><p>我附近的人？ （获得所有附近的人的地址，定位！）通过半径来查询！获得指定数量的人，200.</p><p>所有数据应该都录入：china:city ，才会让结果更加请求！</p><pre><code class="hljs shell">127.0.0.1:6379&gt; GEORADIUS china:city 110 30 1000 km  # 以 110 ， 30 这个经纬度为中心，寻找方圆1000km内的城市1 ) "chongqi"2 ) "xian"3 ) "shengzhen"4 ) "hangzhou"127.0.0.1:6379&gt; GEORADIUS china:city 110 30 500 km1 ) "chongqi"2 ) "xian"127.0.0.1:6379&gt; GEORADIUS china:city 110 30 500 km withdist  # 显示到中心距离的位置1 ) 1 ) "chongqi"2 ) "341.9374"2 ) 1 ) "xian"2 ) "483.8340"127.0.0.1:6379&gt; GEORADIUS china:city 110 30 500 km withcoord  # 显示他人的定位信息（经度纬度）1 ) 1 ) "chongqi"2 ) 1 ) "106.49999767541885376" 2 ) "29.52999957900659211"2 ) 1 ) "xian"2 ) 1 ) "108.96000176668167114" 2 ) "34.25999964418929977"127.0.0.1:6379&gt; GEORADIUS china:city 110 30 500 km withdist withcoord count 1 #筛选出指定的结果！1 ) 1 ) "chongqi"2 ) "341.9374"3 ) 1 ) "106.49999767541885376" 2 ) "29.52999957900659211"127.0.0.1:6379&gt; GEORADIUS china:city 110 30 500 km withdist withcoord count 21 ) 1 ) "chongqi"2 ) "341.9374"3 ) 1 ) "106.49999767541885376" 2 ) "29.52999957900659211"2 ) 1 ) "xian"2 ) "483.8340"3 ) 1 ) "108.96000176668167114" 2 ) "34.25999964418929977"</code></pre><pre><code>GEORADIUSBYMEMBER</code></pre><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 找出位于指定元素周围的其他元素！</span>127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city beijing 1000 km1 ) "beijing"2 ) "xian"127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city shanghai 400 km1 ) "hangzhou"2 ) "shanghai"</code></pre><pre><code>GEOHASH 命令 - 返回一个或多个位置元素的 Geohash 表示</code></pre><p>该命令将返回 11 个字符的Geohash字符串!</p><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 将二维的经纬度转换为一维的字符串，如果两个字符串越接近，那么则距离越近！</span>127.0.0.1:6379&gt; geohash china:city beijing chongqi1 ) "wx4fbxxfke0"2 ) "wm5xzrybty0"</code></pre><pre><code>GEO 底层的实现原理其实就是 Zset！我们可以使用Zset命令来操作geo！</code></pre><pre><code class="hljs shell">127.0.0.1:6379&gt; ZRANGE china:city 0 -1 # 查看地图中全部的元素1 ) "chongqi"2 ) "xian"3 ) "shengzhen"4 ) "hangzhou"5 ) "shanghai"6 ) "beijing"127.0.0.1:6379&gt; zrem china:city beijing  # 移除指定元素！(integer) 1127.0.0.1:6379&gt; ZRANGE china:city 0 -11 ) "chongqi"2 ) "xian"3 ) "shengzhen"4 ) "hangzhou"5 ) "shanghai"</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Redis</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Redis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>五大数据类型</title>
     <link href="/cxlittlecute/3dc4f105.html"/>
     <url>/cxlittlecute/3dc4f105.html</url>
