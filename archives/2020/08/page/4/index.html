@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>标签 - Redis - OYSL&#39;s blog</title>
+  <title>归档 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -42,7 +42,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -172,73 +172,37 @@
                 
 
 <div class="list-group">
-  <p class="h4">共计 10 篇文章</p>
+  <p class="h4">共计 69 篇文章</p>
   <hr>
   
     
       
       <p class="h5">2020</p>
     
-    <a href="/cxlittlecute/7f3ad76a.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis发布订阅</span>
-      <span style="float: right;">08-23</span>
+    <a href="/cxlittlecute/6e27786d.html" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Elasticsearch（六）-映射&amp;数据迁移</span>
+      <span style="float: right;">08-01</span>
     </a>
   
     
-    <a href="/cxlittlecute/119ed1dc.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis持久化</span>
-      <span style="float: right;">08-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/c4e0e521.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis.conf</span>
-      <span style="float: right;">08-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4ebad2d4.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">SpringBoot整合Redis</span>
-      <span style="float: right;">08-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/ea742350.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Jedis</span>
-      <span style="float: right;">08-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/4d5e325c.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis事务</span>
-      <span style="float: right;">08-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/401a612a.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis三种特殊数据类型</span>
-      <span style="float: right;">08-21</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/3dc4f105.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis五大数据类型</span>
-      <span style="float: right;">08-21</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/6a343b7f.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Redis入门</span>
-      <span style="float: right;">08-20</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/5d70f88d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Nosql概述</span>
-      <span style="float: right;">08-20</span>
+    <a href="/cxlittlecute/6765e78b.html" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Elasticsearch（五）-聚合分析</span>
+      <span style="float: right;">08-01</span>
     </a>
   
 </div>
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/archives/2020/08/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/08/">1</a><a class="page-number" href="/archives/2020/08/page/2/">2</a><a class="page-number" href="/archives/2020/08/page/3/">3</a><span class="page-number current">4</span>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
@@ -505,7 +469,7 @@
       if ('false' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/tags/Redis/index.html');
+          var target = decodeURI('/archives/2020/08/page/4/index.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -574,7 +538,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "标签 - Redis&nbsp;",
+        "归档&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
