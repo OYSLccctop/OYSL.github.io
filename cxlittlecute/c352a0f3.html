@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.5k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      19
        分钟
     </span>
   
@@ -329,11 +329,46 @@ ensureCapcity（int minCapcity）：确保列表中含有minCapcity的最小容�
     &#125;
 &#125;</code></pre>
 
+<p>8、将下标索引var1的数据删除</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">fastRemove</span><span class="hljs-params">(<span class="hljs-keyword">int</span> var1)</span> </span>&#123;
+    ++<span class="hljs-keyword">this</span>.modCount;
+    <span class="hljs-keyword">int</span> var2 = <span class="hljs-keyword">this</span>.size - var1 - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span> (var2 &gt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-comment">//如果var1大于ArrayList中数据数量，将下标索引var1后面的数据前移一位</span>
+        System.arraycopy(<span class="hljs-keyword">this</span>.elementData, var1 + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.elementData, var1, var2);
+    &#125;
+
+    <span class="hljs-keyword">this</span>.elementData[--<span class="hljs-keyword">this</span>.size] = <span class="hljs-keyword">null</span>;<span class="hljs-comment">//将最后一个数据设置为null</span>
+&#125;</code></pre>
+
+<p>9、清空ArrayList中数据</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">clear</span><span class="hljs-params">()</span> </span>&#123;
+    ++<span class="hljs-keyword">this</span>.modCount;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var1 = <span class="hljs-number">0</span>; var1 &lt; <span class="hljs-keyword">this</span>.size; ++var1) &#123;
+        <span class="hljs-keyword">this</span>.elementData[var1] = <span class="hljs-keyword">null</span>;<span class="hljs-comment">//将数据容器中数据赋值为null</span>
+    &#125;
+
+    <span class="hljs-keyword">this</span>.size = <span class="hljs-number">0</span>;<span class="hljs-comment">//将ArrayList中数据数量赋值为0</span>
+&#125;</code></pre>
+
+<p>10、将集合var1中数据添加到ArrayList末尾</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">addAll</span><span class="hljs-params">(Collection&lt;? extends E&gt; var1)</span> </span>&#123;
+    Object[] var2 = var1.toArray();<span class="hljs-comment">//将集合var1转化为对象数组</span>
+    <span class="hljs-keyword">int</span> var3 = var2.length;
+    <span class="hljs-keyword">this</span>.ensureCapacityInternal(<span class="hljs-keyword">this</span>.size + var3);<span class="hljs-comment">//扩大ArrayList数据容器大小</span>
+    System.arraycopy(var2, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.elementData, <span class="hljs-keyword">this</span>.size, var3);<span class="hljs-comment">//将对象数组var2中数据复制到ArrayList的数据容器末尾</span>
+    <span class="hljs-keyword">this</span>.size += var3;
+    <span class="hljs-keyword">return</span> var3 != <span class="hljs-number">0</span>;
+&#125;</code></pre>
+
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1、关于ArrayList扩容，首次扩容是增长到原容量的1.5倍，如果仍不够就以新数组的长度为最新的容量。</p>
 <p>2、优化扩容：由于底层是数组，我们应尽可能减少扩容，因为数组的扩容效率比较低下，建议在使用的时候预估元素的个数，给定一个初始容量。</p>
 <p>3、<br>数组的优点：检索效率比较高。（在数组中每个元素占用的空间大小相同，内存地址是连续的，知道首元素内存地址，然后知道下标，通过数学表达式计算出元素的内存地址，所以检索效率最高）</p>
 <p>数组的缺点：随机增删元素效率比较低。（但是向数组末尾添加元素的效率还是很高的）另外数组很难找到一块非常巨大的连续的内存空间。</p>
 <p>4、总的来说ArrayList是我们平常使用的最多的集合，因为往数组末尾添加元素，效率不受影响，另外，我们检索/查找某个元素的操作比较多。</p>
+<p>5、数组的长度不是没有上限的,如果超过2147483639就会报OOM。</p>
+<p>6、ArrayList自己实现了序列化和反序列化的方法，因为它自己实现了private void writeObject(java.io.ObjectOutputStream s)、private void readObject(java.io.ObjectInputStream s) 方法。</p>
 
             </article>
             <hr>
