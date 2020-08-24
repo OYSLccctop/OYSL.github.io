@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>contains()和remove()源码分析</title>
+    <link href="/cxlittlecute/5b7502b5.html"/>
+    <url>/cxlittlecute/5b7502b5.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="contains-和remove-源码分析"><a href="#contains-和remove-源码分析" class="headerlink" title="contains()和remove()源码分析"></a>contains()和remove()源码分析</h1><h2 id="contains"><a href="#contains" class="headerlink" title="contains()"></a>contains()</h2><h3 id="代码片段"><a href="#代码片段" class="headerlink" title="代码片段"></a>代码片段</h3><p>我们首先来看一下这样的一段代码结果是什么</p><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;    List&lt;String&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();    String s1 = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"abc"</span>);    String s2 = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"def"</span>);    list.add(s1);    list.add(s2);    String x = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"abc"</span>);    System.out.println(list.contains(x)); <span class="hljs-comment">// 结果是多少</span>&#125;</code></pre><h3 id="JVM中的结构演示"><a href="#JVM中的结构演示" class="headerlink" title="JVM中的结构演示"></a>JVM中的结构演示</h3><p>得出结果之前我们首先来看一下，这段代码在JVM的结构是怎么样的。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824165345.png" srcset="/img/loading.gif" alt=""></p><p>我们可以看出它确实不存于我们的集合中，但是这里我们就需要思考contains（）底层是如何进行比较的。于是我们可以进入contains方法去看一下。</p><h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>1、在ArrayList集合中实现的contains调用了IndexOf方法</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824165905.png" srcset="/img/loading.gif" alt=""></p><p>2、我们接着进去这个IndexOf方法。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824170456.png" srcset="/img/loading.gif" alt=""></p><p>3、这里我们可以看到底层调用的是equals方法，我们知道在我们String类中重写了equals（），比较的是内容。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824170803.png" srcset="/img/loading.gif" alt=""></p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>contains方法判断集合中是否包含某个元素是调用equals方法进行比对的。<br>如果我们的对象重写了equals方法并设置为值比较那么就是值比较。如果没有重写那么就是继承的Object的equals方法比较的是地址，等于==。</p><p>所以存放在集合中的类型一定要重写equals方法</p><h2 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h2><h3 id="代码片段-1"><a href="#代码片段-1" class="headerlink" title="代码片段"></a>代码片段</h3><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;    List&lt;String&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();    String s1 = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"abc"</span>);    String s2 = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"abc"</span>);    list.add(s1);    list.remove(s2);    System.out.println(list.size());&#125;</code></pre><h3 id="源码分析-1"><a href="#源码分析-1" class="headerlink" title="源码分析"></a>源码分析</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824181220.png" srcset="/img/loading.gif" alt=""></p><p>同样调用的是equals方法</p><p>分析和上面的contains（）类似这里就不展开进行分析了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>集合继承图分析</title>
+    <link href="/cxlittlecute/be62119f.html"/>
+    <url>/cxlittlecute/be62119f.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="集合继承图分析"><a href="#集合继承图分析" class="headerlink" title="集合继承图分析"></a>集合继承图分析</h1><p>从本篇文章开始，将回顾Java中集合这一块的知识。</p><p>首先我们可以把Java中的集合分为两大类：</p><ul><li>单个方式存储的元素，这一类集合中的超级父接口：java.util.Collection</li><li>键值对方式存储元素，这一类集合中的超级父接口：java.util.Map</li></ul><h2 id="Collection的继承结构"><a href="#Collection的继承结构" class="headerlink" title="Collection的继承结构"></a>Collection的继承结构</h2><p>我们主要看的是List和Set子接口。通过下面这个结构图的分析我们可以很清楚的理解它们之间的关系。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824120612.png" srcset="/img/loading.gif" alt=""></p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824122416.png" srcset="/img/loading.gif" alt=""></p><p>补充：</p><ul><li>SortedSet集合存储元素的特点是，由于继承了Set集合，它的特点也是无序不可重复，但是放在SortedSet集合中的元素可以自动排序。我们称为可排序集合。放到该集合中的元素是自动按照大小顺序排序的。</li></ul><h3 id="部分源码"><a href="#部分源码" class="headerlink" title="部分源码"></a>部分源码</h3><ul><li>1、Collection继承Iterable接口：</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824140825.png" srcset="/img/loading.gif" alt=""></p><ul><li>2、ArrayList和Vector底层都是数组：</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824141209.png" srcset="/img/loading.gif" alt=""></p><ul><li>3、HashSet底层创建的是HashMap集合</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824141522.png" srcset="/img/loading.gif" alt=""></p><ul><li>4、TreeSet底层new的是TreeMap，同时它实现的接口继承了SortedSet</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824141924.png" srcset="/img/loading.gif" alt=""></p><h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824152348.png" srcset="/img/loading.gif" alt=""></p><h2 id="Map的继承结构"><a href="#Map的继承结构" class="headerlink" title="Map的继承结构"></a>Map的继承结构</h2><p>首先我们需要认识到，我们Map接口是一个独立的接口，和我们的Collection接口是没有关系的。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824143531.png" srcset="/img/loading.gif" alt=""></p><h3 id="部分源码分析"><a href="#部分源码分析" class="headerlink" title="部分源码分析"></a>部分源码分析</h3><ul><li><p>我们来理解一下Map集合的Key和Set集合存储元素特点相同。（也就是说不可以重复）</p><p>  在HashSet中：</p></li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200824143213.png" srcset="/img/loading.gif" alt=""></p><h2 id="总结-部分的实现类"><a href="#总结-部分的实现类" class="headerlink" title="总结(部分的实现类)"></a>总结(部分的实现类)</h2><ul><li>ArrayList：底层是数组。</li><li>LinkedList：底层是双向链表。</li><li>Vector：底层是数组，线程安全的，效率较低，使用较少。</li><li>HashSet：底层是HashMap，放到HashSet中的元素等同于放到HashMap集合key部分了。</li><li>TreeSet：底层是TreeMap，放到TreeSet中的元素等同于放到TreeMap集合key部分了。</li><li>HashMap：底层是哈希表。</li><li>Hashtable：底层也是哈希表，只不过是线程安全的，效率较低，使用较少。</li><li>Properties：线程安全的，并且key和value只能存储字符串String。</li><li>TreeMap：底层是二叉树。TreeMap集合的key可以自动按照大小顺序排序。</li></ul><p><strong>List集合存储元素的特点：</strong></p><p>有序可重复<br>有序：指存进去和取出来的顺序相同，每一个元素都有下标。<br>可重复：存进去的元素可以重复。</p><p><strong>Set集合存储元素的特点：</strong><br>无序不可重复<br>无序：存进去和取出来的顺序不相同，每一个元素没有下标。<br>不可重复：存进去一个元素，就不能再次存进去一个相同的元素。</p><p><strong>SortedSet(SortedMap)集合存储元素的特点：</strong><br>无序不可重复，但是SortedSet集合中的元素是可排序的。<br>无序：存进去和取出来的顺序不相同，每一个元素没有下标。<br>不可重复：存进去一个元素，就不能再次存进去一个相同的元素。<br>可排序：可以按照大小顺序排序。</p><p>注意：集合中不能存储基本数据类型，也不能存储Java对象，只是存储Java对象的内存地址。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java8</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Redis缓存穿透、击穿与雪崩</title>
     <link href="/cxlittlecute/143a556.html"/>
     <url>/cxlittlecute/143a556.html</url>
