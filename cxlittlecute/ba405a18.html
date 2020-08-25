@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>HashSet源码分析 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-08-25 10:50">
+      2020年8月25日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      684 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,103 +213,176 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 77 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/e494e2f9.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">图的DFS和BFS</span>
-      <span style="float: right;">07-25</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/f1a8c9e2.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">图的遍历</span>
-      <span style="float: right;">07-24</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/ee040603.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">图</span>
-      <span style="float: right;">07-24</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/3d4e4ac2.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">KMP实现</span>
-      <span style="float: right;">07-24</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/b1c49b5c.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">浅谈StringBuilder和StringBuffer</span>
-      <span style="float: right;">07-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/459fe412.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">创建多线程的四种方式</span>
-      <span style="float: right;">07-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8a035673.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">基本数据类型 包装类 String之间的相互转换</span>
-      <span style="float: right;">07-22</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/f30662c7.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">== 和 equals的区别</span>
-      <span style="float: right;">07-21</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/60f59bbd.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">对POP、OOP、AOP、FP的理解</span>
-      <span style="float: right;">07-21</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/f368ac2a.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Comparable、Comparator、compareTo 、compare的区别和联系</span>
-      <span style="float: right;">07-21</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/archives/page/7/">7</a><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/7/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年8月25日 晚上
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="HashSet源码分析"><a href="#HashSet源码分析" class="headerlink" title="HashSet源码分析"></a>HashSet源码分析</h1><h2 id="HashSet分析"><a href="#HashSet分析" class="headerlink" title="HashSet分析"></a>HashSet分析</h2><p>1、类的继承实现关系</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HashSet</span>&lt;<span class="hljs-title">E</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractSet</span>&lt;<span class="hljs-title">E</span>&gt; </span>
+<span class="hljs-class">    <span class="hljs-keyword">implements</span> <span class="hljs-title">Set</span>&lt;<span class="hljs-title">E</span>&gt;, <span class="hljs-title">Cloneable</span>, <span class="hljs-title">Serializable</span> </span>&#123;&#125;</code></pre>
+
+<p>1、核心成员变量</p>
+<pre><code class="hljs java"><span class="hljs-comment">//HashSet底层是基于HashMap存储数据，该map的key就是HashSet要存放的数据</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> HashMap&lt;E,Object&gt; map;
+<span class="hljs-comment">//该变量用来填充上一个map的value字段，因为HashSet关注的是map的Key</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Object PRESENT = <span class="hljs-keyword">new</span> Object();</code></pre>
+<p>2、构造函数</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 默认初始化一个HashMap对象</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HashSet</span><span class="hljs-params">()</span> </span>&#123;
+    map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+&#125;
+
+<span class="hljs-comment">//这个构造函数允许传入集合进行初始化</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HashSet</span><span class="hljs-params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;
+    <span class="hljs-comment">//直接通过集合大小和默认负载比推算出应该初始化的容量，+1是为了防止出现小数向上取整</span>
+    map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(Math.max((<span class="hljs-keyword">int</span>) (c.size()/.<span class="hljs-number">75f</span>) + <span class="hljs-number">1</span>, <span class="hljs-number">16</span>));
+    <span class="hljs-comment">//添加元素</span>
+    addAll(c);
+&#125;
+
+<span class="hljs-comment">// 可指定大小和负载比，但实际还是初始化一个hashmap对象</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HashSet</span><span class="hljs-params">(<span class="hljs-keyword">int</span> initialCapacity, <span class="hljs-keyword">float</span> loadFactor)</span> </span>&#123;
+    map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(initialCapacity, loadFactor);
+&#125;
+
+<span class="hljs-comment">// 可指定容量大小，但初始化的还是hashmap对象</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HashSet</span><span class="hljs-params">(<span class="hljs-keyword">int</span> initialCapacity)</span> </span>&#123;
+    map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;(initialCapacity);
+&#125;
+
+<span class="hljs-comment">// 这次初始化的是一个linkedhashmap对象，可以看出最后一个参数暂时没用，</span>
+<span class="hljs-comment">// 但是有这个参数，就可以初始化为linkedhashmap对象</span>
+<span class="hljs-comment">// 注意该构造方法不是public的，且注释中已经说该构造方法只会被LinkedHashSet使用，</span>
+<span class="hljs-comment">// 所以平常我们new HashSet的时候是不能用的</span>
+HashSet(<span class="hljs-keyword">int</span> initialCapacity, <span class="hljs-keyword">float</span> loadFactor, <span class="hljs-keyword">boolean</span> dummy) &#123;
+    map = <span class="hljs-keyword">new</span> LinkedHashMap&lt;&gt;(initialCapacity, loadFactor);
+&#125;</code></pre>
+<p>3、添加方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 可见内部还是调用的hashmap的put方法实现，我们知道HashMap的put方法,</span>
+<span class="hljs-comment">// 如果该位置已经存在一个一样的Key，会用新的value替换原来的旧的value，</span>
+<span class="hljs-comment">// 并且返回旧的value，所以对于HashSet而言第一次插入返回null就代表成功，</span>
+<span class="hljs-comment">// 添加一个元素，如果该元素不存在，则返回true，如果存在，则返回false</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">add</span><span class="hljs-params">(E e)</span> </span>&#123;
+    <span class="hljs-comment">//往map中添加元素，返回null，说明是第一个往map中添加该key</span>
+    <span class="hljs-keyword">return</span> map.put(e, PRESENT)==<span class="hljs-keyword">null</span>;
+&#125;</code></pre>
+<p>4、删除方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">//也是调用的hashmap的移除方法，同添加一样，通过返回的值判断是否删除成功</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">remove</span><span class="hljs-params">(Object var1)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.map.remove(var1) == PRESENT;
+&#125;</code></pre>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1、hashSet底层是基于hashMap实现的，hashSet存储的元素对应hashMap的key，因为hashMap不能存储重复的Key，所以hashSet不能存放重复元素。<br>2、由于hashMap的key是基于hashCode存储对象的，所以hashSet中存放的对象也是无序的。<br>3、hashSet也没有提供get方法，可以通过Iterator迭代器获取数据。<br>4、HashSet中允许有一个null元素，因为HashMap允许key为null。<br>5、HashSet是非线程安全的。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">集合源码分析</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">集合源码分析</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/5a9972d1.html">
+                        <span class="hidden-mobile">Vector源码分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -514,10 +638,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/page/6/index.html');
+          var target = decodeURI('/cxlittlecute/ba405a18.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -579,6 +703,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -586,7 +735,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "HashSet源码分析&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -601,6 +750,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -614,6 +778,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
