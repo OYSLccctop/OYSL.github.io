@@ -316,7 +316,7 @@
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span><span class="hljs-params">(K key, V value)</span> </span>&#123;
     <span class="hljs-keyword">return</span> putVal(hash(key), key, value, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>);
 &#125;</code></pre>
-<p>==在put方法中有两个方法很重要一个是hash另一个是putVal==.下面我们就先展开来分析这两个方法。</p>
+<p><strong>在put方法中有两个方法很重要一个是hash另一个是putVal</strong>.下面我们就先展开来分析这两个方法。</p>
 <hr>
 <h3 id="6、hash（key"><a href="#6、hash（key" class="headerlink" title="6、hash（key)"></a>6、hash（key)</h3><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hash</span><span class="hljs-params">(Object key)</span> </span>&#123;
     <span class="hljs-keyword">int</span> h;
@@ -525,7 +525,7 @@
     &#125;
     <span class="hljs-keyword">return</span> newTab;
 &#125;</code></pre>
-<p>总的来说resize的步骤如下：<br>1.首先会判断table数组长度，如果大于0说明已经被初始化过了，==那么按照当前table数组长度的2倍进行扩容，同时阀值也变为原来的2倍==。<br>2.若table数组未被初始化过，且threshold（阀值）大于0，==说明调用了HashMap(initialCapacity,loadFactor)构造方法==，那么就把数组大小设置为threshold。<br>3.若table数组未被初始化，且threshold为0说明==调用HashMap（）构造方法==，那么就把数组的大小设置为==16==,threshold设为==16*0.75==。<br>4.接着判断的是如果不是第一次进行初始化，那么扩容之后，需要重新计算键值对的位置，并把它们移动到合适的位置上去，如果结点是红黑树类型需要进行==红黑树的拆分==。</p>
+<p>总的来说resize的步骤如下：<br>1.首先会判断table数组长度，如果大于0说明已经被初始化过了，<strong>那么按照当前table数组长度的2倍进行扩容，同时阀值也变为原来的2倍</strong>。<br>2.若table数组未被初始化过，且threshold（阀值）大于0，<strong>说明调用了HashMap(initialCapacity,loadFactor)构造方法</strong>，那么就把数组大小设置为threshold。<br>3.若table数组未被初始化，且threshold为0说明<strong>调用HashMap（）构造方法</strong>，那么就把数组的大小设置为<strong>16</strong>,threshold设为<strong>16*0.75</strong>。<br>4.接着判断的是如果不是第一次进行初始化，那么扩容之后，需要重新计算键值对的位置，并把它们移动到合适的位置上去，如果结点是红黑树类型需要进行<strong>红黑树的拆分</strong>。</p>
 <hr>
 <h3 id="9、链表拆分"><a href="#9、链表拆分" class="headerlink" title="9、链表拆分"></a>9、链表拆分</h3><p>这里再补充一下链表的拆分：转载  <a href="https://blog.csdn.net/weixin_41565013/article/details/93190786" target="_blank" rel="noopener">深入理解HashMap</a><br>我们可以看到链表的拆分定义了4个变量：loHead, loTail ,hiHead , hiTail，这四个变量从字面意思可以看出应该是两个头节点，两个尾节点。</p>
 <p>那么为什么需要两个链表的头尾节点呢？因为这两个链表的作用就是保存原链表拆分成的两个链表。看原博主画的这个图就明白了。（你出现的位置只可能是当前位置或者当前位置+oldCap）</p>
