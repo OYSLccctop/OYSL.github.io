@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.2k 字
+      4.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      53
+      54
        分钟
     </span>
   
@@ -348,7 +348,8 @@
         <span class="hljs-comment">// 利用resize生成对应的tab[]数组（下面我们再来看看resize（））</span>
         n = (tab = resize()).length;
     <span class="hljs-comment">// 计算数组索引，获取该索引位置的首节点，如果为null，则新的节点放在这个位置</span>
-    <span class="hljs-keyword">if</span> ((p = tab[i = (n - <span class="hljs-number">1</span>) &amp; hash]) == <span class="hljs-keyword">null</span>)
+    <span class="hljs-keyword">if</span> ((p = tab[i = (n - <span class="hljs-number">1</span>) &amp; hash]) == <span class="hljs-keyword">null</span>) <span class="hljs-comment">// 这里也是为什么HashMap的数组长度是2的N次幂(n-1除最高为0其余都是1)</span>
+    <span class="hljs-comment">// 不同key通过位运算获取的数组下标冲突的几率会比较小</span>
         tab[i] = newNode(hash, key, value, <span class="hljs-keyword">null</span>);
     <span class="hljs-comment">// 以下的else中的逻辑表示确定的该位置不是空</span>
     <span class="hljs-keyword">else</span> &#123;
