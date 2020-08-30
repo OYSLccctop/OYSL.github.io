@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.2k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      12
        分钟
     </span>
   
@@ -273,6 +273,17 @@
 <h4 id="TIME-WAITING-超时等待状态"><a href="#TIME-WAITING-超时等待状态" class="headerlink" title="TIME_WAITING 超时等待状态"></a>TIME_WAITING 超时等待状态</h4><p>当运行中的线程调用sleep(time)、wait、join、parkNanos、parkUntil时，就会进入该状态；<br>它和WAITNG一样是主动进入的，不是请求不到资源，并且进入后需要其他线程唤醒。<br>进入该状态后释放CPU执行权 和 占有的资源。<br>与等待状态的区别：到了超时时间后自行返回，自动进入运行状态，开始竞争锁。</p>
 <h4 id="TERMINATED-终止状态"><a href="#TERMINATED-终止状态" class="headerlink" title="TERMINATED 终止状态"></a>TERMINATED 终止状态</h4><p>表示当前线程已经执行完毕。</p>
 <h2 id="5、线程状态图"><a href="#5、线程状态图" class="headerlink" title="5、线程状态图"></a>5、线程状态图</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200830193307.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="6、Daemon线程"><a href="#6、Daemon线程" class="headerlink" title="6、Daemon线程"></a>6、Daemon线程</h2><p>Daemon线程是一种支持性线程，它主要被用作程序中后台调度以及支持性工作。</p>
+<p>通过Tread.setDaemon(true)将线程设置为Daemon线程。</p>
+<p>注意：</p>
+<ul>
+<li><p>Daemon属性需要在启动线程之前设置，不能在启动线程之后设置。</p>
+</li>
+<li><p>当所有的非守护线程终止时，不论存不存在守护线程，虚拟机都会Kill掉守护线程从而终止程序。</p>
+</li>
+<li><p>在构建Daemon线程时，不能依靠finally块中的内容来关闭和清理资源。</p>
+</li>
+</ul>
 
             </article>
             <hr>
