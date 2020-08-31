@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      13 字
+      1.9k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      22
        分钟
     </span>
   
@@ -225,12 +225,205 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月31日 下午
+                  本文最后更新于：2020年8月31日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（三）-启动和终止线程"><a href="#Java并发系列（三）-启动和终止线程" class="headerlink" title="Java并发系列（三）-启动和终止线程"></a>Java并发系列（三）-启动和终止线程</h1>
+              <h1 id="Java并发系列（三）-启动和终止线程"><a href="#Java并发系列（三）-启动和终止线程" class="headerlink" title="Java并发系列（三）-启动和终止线程"></a>Java并发系列（三）-启动和终止线程</h1><p>本章我们继续从以下几个方面，来学习有关线程的启动和终止：</p>
+<ul>
+<li>构造线程</li>
+<li>启动线程</li>
+<li>理解中断</li>
+<li>过期的suspend（）、resume（）和stop（）</li>
+<li>安全地终止线程</li>
+</ul>
+<h2 id="1、构建线程"><a href="#1、构建线程" class="headerlink" title="1、构建线程"></a>1、构建线程</h2><p>构建线程有很多种方法，在我的另一篇博客 <a href="http://ccctop.cn/cxlittlecute/459fe412.html" target="_blank" rel="noopener">创建多线程的四种方式</a>中，有讲到创建多线程的方法。</p>
+<p>那么我们需要注意的是，执行线程前需要构建好我们的线程，也就是需要提供线程所需要的属性，比如：</p>
+<ul>
+<li>线程所属的线程组</li>
+<li>线程优先级</li>
+<li>是否是daemon线程等信息</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(ThreadGroup g, Runnable target, String name,<span class="hljs-keyword">long</span> stackSize)</span> </span>&#123;
+       <span class="hljs-comment">// 如果新线程名字为null，抛出异常</span>
+       <span class="hljs-keyword">if</span> (name == <span class="hljs-keyword">null</span>) &#123;
+           <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NullPointerException(<span class="hljs-string">"name cannot be null"</span>);
+       &#125;
+       <span class="hljs-comment">// 获取该线程的父线程</span>
+       Thread parent = currentThread();
+       <span class="hljs-comment">// 获取安全管理组件</span>
+       SecurityManager security = System.getSecurityManager();
+       <span class="hljs-keyword">if</span> (g == <span class="hljs-keyword">null</span>) &#123;
+           <span class="hljs-comment">// 如果安全组件不为空，就调用SecurityManager的线程组</span>
+           <span class="hljs-keyword">if</span> (security != <span class="hljs-keyword">null</span>) &#123;
+               g = security.getThreadGroup();
+           &#125;
+           <span class="hljs-comment">// 如果SecurityManager为空，并且该线程的线程组也为空，则调用其父线程的线程组</span>
+           <span class="hljs-keyword">if</span> (g == <span class="hljs-keyword">null</span>) &#123;
+               g = parent.getThreadGroup();
+           &#125;
+       &#125;
+       <span class="hljs-comment">// 显示通过 允许线程访问线程组</span>
+       g.checkAccess();
+ 
+       <span class="hljs-comment">// 检查访问权限</span>
+       <span class="hljs-keyword">if</span> (security != <span class="hljs-keyword">null</span>) &#123;
+           <span class="hljs-keyword">if</span> (isCCLOverridden(getClass())) &#123;
+               security.checkPermission(SUBCLASS_IMPLEMENTATION_PERMISSION);
+           &#125;
+       &#125;
+       <span class="hljs-comment">// 对线程组中未使用的线程计数器+1</span>
+       g.addUnstarted();
+       <span class="hljs-comment">// 调用父线程的线程组</span>
+       <span class="hljs-keyword">this</span>.group = g;
+       <span class="hljs-comment">// 调用父线程守护线程</span>
+       <span class="hljs-keyword">this</span>.daemon = parent.isDaemon();
+       <span class="hljs-comment">// 调用父线程的优先级</span>
+       <span class="hljs-keyword">this</span>.priority = parent.getPriority();
+       <span class="hljs-comment">// 将字符串转换为新的字符数组</span>
+       <span class="hljs-keyword">this</span>.name = name.toCharArray();
+       <span class="hljs-comment">// 加载父线程的ContextClassLoader</span>
+       <span class="hljs-keyword">if</span> (security == <span class="hljs-keyword">null</span> || isCCLOverridden(parent.getClass()))
+           <span class="hljs-keyword">this</span>.contextClassLoader = parent.getContextClassLoader();
+       <span class="hljs-keyword">else</span>
+           <span class="hljs-keyword">this</span>.contextClassLoader = parent.contextClassLoader;
+       <span class="hljs-keyword">this</span>.inheritedAccessControlContext = AccessController.getContext();
+       <span class="hljs-keyword">this</span>.target = target;
+       setPriority(priority);
+       <span class="hljs-comment">// 加载父线程的ThreadLoad</span>
+       <span class="hljs-keyword">if</span> (parent.inheritableThreadLocals != <span class="hljs-keyword">null</span>)
+           <span class="hljs-keyword">this</span>.inheritableThreadLocals = ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
+       <span class="hljs-comment">// 指定堆栈大小</span>
+       <span class="hljs-keyword">this</span>.stackSize = stackSize;
+       <span class="hljs-comment">// 设置线程ID</span>
+       tid = nextThreadID();
+   &#125;</code></pre>
+
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h4><ul>
+<li>构建该线程的线程就是新线程的父线程。</li>
+<li>并且子线程会继承父线程是否为Daemon、优先级和加载资源的contextClassLoader以及可继承的ThreadLocal</li>
+<li>子线程会分配到唯一的ID标识自己</li>
+</ul>
+<h2 id="2、启动线程"><a href="#2、启动线程" class="headerlink" title="2、启动线程"></a>2、启动线程</h2><p>我们需要注意在启动线程的时候，最好给我们的线程设置线程名称，这样才能在线程出现问题的时候更好的排查出问题。</p>
+<p>我们都知道启动线程是调用线程对象的start（）方法，那么它的语义是什么了？</p>
+<p>线程的start（）方法的含义：当前线程（parent线程）同步告知JVM，只要线程规划器空闲，就应该立即启动调用start（）方法的线程。</p>
+<h2 id="3、中断"><a href="#3、中断" class="headerlink" title="3、中断"></a>3、中断</h2><p>中断理解为线程的标识位属性。它表示一个运行中的线程是否被其他线程进行了中断操作！</p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><pre><code>中断：</code></pre><p>其他线程通过调用该线程的interrupt()方法对其进行中断操作。如果是阻塞时（wait、sleep以及jion引起的阻塞）调用就会抛出异常。</p>
+<pre><code>检查自身是否被中断</code></pre><p>自身线程通过方法isInterrupted()来进行判断，不会对状态进行修改。</p>
+<pre><code>进行中断标识位复位</code></pre><p>调用静态方法Thread.interrupted()对当前线程的中断标识位进行复位。</p>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><p>两种情况调用interrupted()时依旧会返回false</p>
+<ul>
+<li>该线程已终结，再通过该对象调用此方法仍是false。</li>
+<li>抛出InterruptedException（例如：Thread.sleep(long millis)方法）异常之前，虚拟机会先将该线程中断标识位清除。</li>
+</ul>
+<h4 id="补充：interrupted和isInterrupted的区别"><a href="#补充：interrupted和isInterrupted的区别" class="headerlink" title="补充：interrupted和isInterrupted的区别"></a>补充：interrupted和isInterrupted的区别</h4><p>我们首先分别来看一下它们的源码：</p>
+<ul>
+<li><p>interrupted()</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">interrupted</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> currentThread().isInterrupted(<span class="hljs-keyword">true</span>);
+&#125;</code></pre>
+</li>
+<li><p>isInterrupted()</p>
+</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isInterrupted</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.isInterrupted(<span class="hljs-keyword">false</span>);
+&#125;</code></pre>
+
+<p>根据源码我们可以很明显的看出它们的区别：</p>
+<ul>
+<li>interrupted 是作用于当前线程，isInterrupted 作用于调用该方法的线程对象所对应的线程。</li>
+<li>这两个方法最终都会调用同一个方法—–isInterrupted( Boolean 参数)，，只不过参数固定为一个是true，一个是false。</li>
+</ul>
+<p>（注：isInterrupted( Boolean 参数)是isInterrupted( )的重载方法）</p>
+<p>那么我们接着来看看isInterrupted(boolean arg)方法：</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">native</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isInterrupted</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> ClearInterrupted)</span></span>;</code></pre>
+
+<p>这是个本地方法，表示是否清除状态位。</p>
+<p>如果这个参数为true，会重置当前线程的中断状态。</p>
+<p>这个参数为false，就是直接返回线程的状态位，不会重置当前线程的中断状态。</p>
+<h2 id="4、过期的suspend-、resume（）、stop（）"><a href="#4、过期的suspend-、resume（）、stop（）" class="headerlink" title="4、过期的suspend()、resume（）、stop（）"></a>4、过期的suspend()、resume（）、stop（）</h2><p>书中使用了一种生活中的一种事物来描述着三个过程。</p>
+<p>它们分别代表着：CD机的暂停、恢复、停止。</p>
+<p>线程与之对应：</p>
+<pre><code>暂停-suspend（）
+恢复-resume（）
+停止-stop（）</code></pre><p>我们需要注意的是我们的标题对它们的描述是–过期。</p>
+<h4 id="过期的原因"><a href="#过期的原因" class="headerlink" title="过期的原因"></a>过期的原因</h4><p>那么我们看到这里肯定就会想，过期肯定是因为这三个api在调用上存在着风险，具体原因是什么了，我们立即来看看。</p>
+<pre><code>对于suspend（）</code></pre><p>在调用它后，线程不会释放占用的资源（比如锁），而是占用着资源进行着睡眠状态，这样就容易产生死锁的问题。</p>
+<pre><code>对于stop（）</code></pre><p>首先这个方法属于暴力终止线程的方法，它不会保证线程资源的正常释放，就会导致有很多不确定性。</p>
+<h4 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h4><p>由于上面三个方法带来了很多副作用，所以这些方法被标注为过期的方法，在后面我们可以使用【等待/通知】机制来代替。</p>
+<h2 id="5、安全地终止线程"><a href="#5、安全地终止线程" class="headerlink" title="5、安全地终止线程"></a>5、安全地终止线程</h2><p>通过看书得知能安全地终止线程主要包含以下两种方式：</p>
+<ul>
+<li>使用中断操作，线程中断可以看做线程间的交互，所以它适合用来【取消】或【停止】任务。</li>
+<li>我们还可以使用共享变量的方式，来控制是否需要停止任务并终止该线程。</li>
+</ul>
+<h4 id="中断和共享变量实现"><a href="#中断和共享变量实现" class="headerlink" title="中断和共享变量实现"></a>中断和共享变量实现</h4><p>参考：<a href="https://www.cnblogs.com/normalandy/p/12408347.html" target="_blank" rel="noopener">java程序中，如何安全的结束一个正在运行的线程</a></p>
+<p>那么我们接下来再来看看他们分别在代码中是如何实现的：</p>
+<ul>
+<li>共享变量</li>
+</ul>
+<p>之所以引入共享变量，是因为该变量可以被多个执行相同任务的线程用来作为是否中断的信号（变量作为标识），通知中断线程的执行。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadFlag</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">boolean</span> exit = <span class="hljs-keyword">false</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (!exit) ;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        ThreadFlag thread = <span class="hljs-keyword">new</span> ThreadFlag();
+        thread.start();
+        sleep(<span class="hljs-number">3000</span>); <span class="hljs-comment">// 主线程延迟3秒</span>
+        thread.exit = <span class="hljs-keyword">true</span>;  <span class="hljs-comment">// 终止线程thread</span>
+        thread.join();
+        System.out.println(<span class="hljs-string">"线程退出!"</span>);
+    &#125;
+&#125;</code></pre>
+
+<ul>
+<li>使用中断interrupt()方法</li>
+</ul>
+<p>如果线程由于某个事件发生了阻塞，那么我们可以使用interrupt()进行中断。该方法不会中断一个正在运行的线程，但是它可以使一个被阻塞的线程抛出一个中断异常，从而使线程提前结束阻塞状态，退出堵塞代码。</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>&#123;
+    <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">boolean</span> stop = <span class="hljs-keyword">false</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">while</span> (!stop) &#123;
+            System.out.println(getName() + <span class="hljs-string">" is running"</span>);
+            <span class="hljs-keyword">try</span> &#123;
+                sleep(<span class="hljs-number">1000</span>);
+            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123; <span class="hljs-comment">// 捕获阻塞异常</span>
+                System.out.println(<span class="hljs-string">"week up from blcok..."</span>);
+                stop = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// 在异常处理代码中修改共享变量的状态</span>
+            &#125;
+        &#125;
+        System.out.println(getName() + <span class="hljs-string">" is exiting..."</span>);
+    &#125;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InterruptThreadDemo3</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+        MyThread m1 = <span class="hljs-keyword">new</span> MyThread();
+        System.out.println(<span class="hljs-string">"Starting thread..."</span>);
+        m1.start();
+        System.currentTimeMillis();
+        Thread.sleep(<span class="hljs-number">3000</span>);
+        System.out.println(<span class="hljs-string">"Interrupt thread...: "</span> + m1.getName());
+        m1.stop = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// 设置共享变量为true</span>
+        m1.interrupt(); <span class="hljs-comment">// 阻塞时退出阻塞状态</span>
+        Thread.sleep(<span class="hljs-number">3000</span>); <span class="hljs-comment">// 主线程休眠3秒以便观察线程m1的中断情况</span>
+        System.out.println(<span class="hljs-string">"Stopping application..."</span>);
+    &#125;
+&#125;</code></pre>
+
+
+
+
+
+
+
+
             </article>
             <hr>
             <div>
