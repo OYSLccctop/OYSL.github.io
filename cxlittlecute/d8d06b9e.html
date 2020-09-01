@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Java并发系列（三）-启动和终止线程 - OYSL&#39;s blog</title>
+  <title>Java并发系列（四）-线程间通信 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-08-31 15:55">
-      2020年8月31日 下午
+    <time datetime="2020-09-01 06:44">
+      2020年9月1日 早上
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      2.2k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      23
        分钟
     </span>
   
@@ -225,204 +225,141 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月1日 早上
+                  本文最后更新于：2020年9月1日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（三）-启动和终止线程"><a href="#Java并发系列（三）-启动和终止线程" class="headerlink" title="Java并发系列（三）-启动和终止线程"></a>Java并发系列（三）-启动和终止线程</h1><p>本章我们继续从以下几个方面，来学习有关线程的启动和终止：</p>
+              <h1 id="Java并发系列（四）-线程间通信"><a href="#Java并发系列（四）-线程间通信" class="headerlink" title="Java并发系列（四）-线程间通信"></a>Java并发系列（四）-线程间通信</h1><p>本篇开始进一步深入总结我们的线程间的通信，记得刚开始接触Java多线程的时候，我对线程的通信比较容易记混，那么今天我们再次来学习一下线程的通信，将这部分做一个总结。</p>
+<p>本篇主要分为以下六个方面：</p>
 <ul>
-<li>构造线程</li>
-<li>启动线程</li>
-<li>理解中断</li>
-<li>过期的suspend（）、resume（）和stop（）</li>
-<li>安全地终止线程</li>
+<li>volatile和synchronized关键字</li>
+<li>等待/通知机制</li>
+<li>等待/通知的经典范式</li>
+<li>管道输入/输出流</li>
+<li>Thread.join（）的使用</li>
+<li>ThreadLocal的使用</li>
 </ul>
-<h2 id="1、构建线程"><a href="#1、构建线程" class="headerlink" title="1、构建线程"></a>1、构建线程</h2><p>构建线程有很多种方法，在我的另一篇博客 <a href="http://ccctop.cn/cxlittlecute/459fe412.html" target="_blank" rel="noopener">创建多线程的四种方式</a>中，有讲到创建多线程的方法。</p>
-<p>那么我们需要注意的是，执行线程前需要构建好我们的线程，也就是需要提供线程所需要的属性，比如：</p>
+<h2 id="1、为什么要有线程通信？"><a href="#1、为什么要有线程通信？" class="headerlink" title="1、为什么要有线程通信？"></a>1、为什么要有线程通信？</h2><p>在进入本篇的正式内容之前，请读者思考一下，为什么需要有线程通信？</p>
+<p>我们知道线程有独立的虚拟机栈空间，它可以独立运行，那么如果仅仅是孤独的运行，那么效率一定很低下；如果我们能让线程间很好的配合起来工作，那么就会产生巨大的价值，为了更好的配合工作等于他们之间就要有沟通，所以便有了线程通信。</p>
+<hr>
+<h2 id="2、volatile和synchronized关键字"><a href="#2、volatile和synchronized关键字" class="headerlink" title="2、volatile和synchronized关键字"></a>2、volatile和synchronized关键字</h2><p>这两个关键字是在多线程中最常见的，那么接下来我们来分别分析一下他们的原理和作用。</p>
+<hr>
+<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>关键字volatile可以修饰字段（成员变量），它就是为了告知程序，任何对该变量的访问均需要从共享内存（主存）中获取，而对它的改变（发生在本地内存中）必须同步刷新到共享内存中，它能保证该变量对其他线程的可见性。</p>
+<pre><code>简言之：对被volatile关键字修饰变量的访问和修改都以共享内存为主。</code></pre><h4 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h4><p>被volatile修饰的变量会在汇编代码中，产生Lock前缀的指令。</p>
+<p>这个指令会有两个作用（也是volatile实现的原则）：</p>
 <ul>
-<li>线程所属的线程组</li>
-<li>线程优先级</li>
-<li>是否是daemon线程等信息</li>
+<li>将当前处理器缓存行的数据写回到系统内存。</li>
+<li>这个写回的操作，会导致其他CPU中缓存了该内存空间的数据无效。</li>
 </ul>
-<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(ThreadGroup g, Runnable target, String name,<span class="hljs-keyword">long</span> stackSize)</span> </span>&#123;
-       <span class="hljs-comment">// 如果新线程名字为null，抛出异常</span>
-       <span class="hljs-keyword">if</span> (name == <span class="hljs-keyword">null</span>) &#123;
-           <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NullPointerException(<span class="hljs-string">"name cannot be null"</span>);
-       &#125;
-       <span class="hljs-comment">// 获取该线程的父线程</span>
-       Thread parent = currentThread();
-       <span class="hljs-comment">// 获取安全管理组件</span>
-       SecurityManager security = System.getSecurityManager();
-       <span class="hljs-keyword">if</span> (g == <span class="hljs-keyword">null</span>) &#123;
-           <span class="hljs-comment">// 如果安全组件不为空，就调用SecurityManager的线程组</span>
-           <span class="hljs-keyword">if</span> (security != <span class="hljs-keyword">null</span>) &#123;
-               g = security.getThreadGroup();
-           &#125;
-           <span class="hljs-comment">// 如果SecurityManager为空，并且该线程的线程组也为空，则调用其父线程的线程组</span>
-           <span class="hljs-keyword">if</span> (g == <span class="hljs-keyword">null</span>) &#123;
-               g = parent.getThreadGroup();
-           &#125;
-       &#125;
-       <span class="hljs-comment">// 显示通过 允许线程访问线程组</span>
-       g.checkAccess();
- 
-       <span class="hljs-comment">// 检查访问权限</span>
-       <span class="hljs-keyword">if</span> (security != <span class="hljs-keyword">null</span>) &#123;
-           <span class="hljs-keyword">if</span> (isCCLOverridden(getClass())) &#123;
-               security.checkPermission(SUBCLASS_IMPLEMENTATION_PERMISSION);
-           &#125;
-       &#125;
-       <span class="hljs-comment">// 对线程组中未使用的线程计数器+1</span>
-       g.addUnstarted();
-       <span class="hljs-comment">// 调用父线程的线程组</span>
-       <span class="hljs-keyword">this</span>.group = g;
-       <span class="hljs-comment">// 调用父线程守护线程</span>
-       <span class="hljs-keyword">this</span>.daemon = parent.isDaemon();
-       <span class="hljs-comment">// 调用父线程的优先级</span>
-       <span class="hljs-keyword">this</span>.priority = parent.getPriority();
-       <span class="hljs-comment">// 将字符串转换为新的字符数组</span>
-       <span class="hljs-keyword">this</span>.name = name.toCharArray();
-       <span class="hljs-comment">// 加载父线程的ContextClassLoader</span>
-       <span class="hljs-keyword">if</span> (security == <span class="hljs-keyword">null</span> || isCCLOverridden(parent.getClass()))
-           <span class="hljs-keyword">this</span>.contextClassLoader = parent.getContextClassLoader();
-       <span class="hljs-keyword">else</span>
-           <span class="hljs-keyword">this</span>.contextClassLoader = parent.contextClassLoader;
-       <span class="hljs-keyword">this</span>.inheritedAccessControlContext = AccessController.getContext();
-       <span class="hljs-keyword">this</span>.target = target;
-       setPriority(priority);
-       <span class="hljs-comment">// 加载父线程的ThreadLoad</span>
-       <span class="hljs-keyword">if</span> (parent.inheritableThreadLocals != <span class="hljs-keyword">null</span>)
-           <span class="hljs-keyword">this</span>.inheritableThreadLocals = ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);
-       <span class="hljs-comment">// 指定堆栈大小</span>
-       <span class="hljs-keyword">this</span>.stackSize = stackSize;
-       <span class="hljs-comment">// 设置线程ID</span>
-       tid = nextThreadID();
-   &#125;</code></pre>
-
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h4><ul>
-<li>构建该线程的线程就是新线程的父线程。</li>
-<li>并且子线程会继承父线程是否为Daemon、优先级和加载资源的contextClassLoader以及可继承的ThreadLocal</li>
-<li>子线程会分配到唯一的ID标识自己</li>
-</ul>
-<h2 id="2、启动线程"><a href="#2、启动线程" class="headerlink" title="2、启动线程"></a>2、启动线程</h2><p>我们需要注意在启动线程的时候，最好给我们的线程设置线程名称，这样才能在线程出现问题的时候更好的排查出问题。</p>
-<p>我们都知道启动线程是调用线程对象的start（）方法，那么它的语义是什么了？</p>
-<p>线程的start（）方法的含义：当前线程（parent线程）同步告知JVM，只要线程规划器空闲，就应该立即启动调用start（）方法的线程。</p>
-<h2 id="3、中断"><a href="#3、中断" class="headerlink" title="3、中断"></a>3、中断</h2><p>中断理解为线程的标识位属性。它表示一个运行中的线程是否被其他线程进行了中断操作！</p>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><pre><code>1.中断：</code></pre><p>其他线程通过调用该线程的interrupt()方法对其进行中断操作。如果是阻塞时（wait、sleep以及jion引起的阻塞）调用就会抛出异常。</p>
-<pre><code>2.检查自身是否被中断</code></pre><p>自身线程通过方法isInterrupted()来进行判断，不会对状态进行修改。</p>
-<pre><code>3.进行中断标识位复位</code></pre><p>调用静态方法Thread.interrupted()对当前线程的中断标识位进行复位。</p>
-<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><p>两种情况调用interrupted()时依旧会返回false</p>
+<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><pre><code>JVM发送一条LOCK指令给CPU-&gt;保证各个处理器的缓存一致-&gt;
+    发现被修改-&gt;导致其他线程该内存地址缓存失效-&gt;重新读取缓存</code></pre><h4 id="volitile的使用优化"><a href="#volitile的使用优化" class="headerlink" title="volitile的使用优化"></a>volitile的使用优化</h4><p>在JDK 7的并发包中新增了一个队列集合类LinkedTransferQueue，它在使用volatile变量时，用【追加字节的方式来优化】队列出队和入队的性能。</p>
+<p><strong>追加字节能提升性能的原因是：</strong></p>
+<pre><code>能够避免将头结点和尾结点加载到同一个缓存行，
+使头结点和尾结点在修改时不会出互相锁定的情况</code></pre><p><strong>并不是在使用volitile变量时都需要追加到64字节，对于下面两种场景列外：</strong></p>
 <ul>
-<li>该线程已终结，再通过该对象调用此方法仍是false。</li>
-<li>抛出InterruptedException（例如：Thread.sleep(long millis)方法）异常之前，虚拟机会先将该线程中断标识位清除。</li>
+<li>缓存行非64字节宽的处理器</li>
+<li>共享变量不会频繁地写</li>
 </ul>
-<h4 id="补充：interrupted和isInterrupted的区别"><a href="#补充：interrupted和isInterrupted的区别" class="headerlink" title="补充：interrupted和isInterrupted的区别"></a>补充：interrupted和isInterrupted的区别</h4><p>我们首先分别来看一下它们的源码：</p>
+<hr>
+<h3 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a>synchronized关键字</h3><h4 id="实现同步的基础"><a href="#实现同步的基础" class="headerlink" title="实现同步的基础"></a>实现同步的基础</h4><p>Java中的每一个对象都可以作为锁</p>
+<h4 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h4><p>确保多个线程在同一时刻，只有一个线程处于方法或者同步代码块中，确保线程对变量的可见性和排他性。</p>
+<h4 id="表现形式"><a href="#表现形式" class="headerlink" title="表现形式"></a>表现形式</h4><ul>
+<li>对于普通同步方法，锁是当前的实例对象</li>
+<li>对于静态同步方法，锁是当前类的Class对象</li>
+<li>对于同步方法块，锁是Synchronized括号中的对象</li>
+</ul>
+<h4 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h4><pre><code>在JVM中实现【方法同步】和【代码块同步】是基于JVM【进入和退出】Monitor对象来实现的！</code></pre><p>需要注意的是方法同步和代码块同步的实现细节是不一样的。</p>
 <ul>
-<li><p>interrupted()</p>
-<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">interrupted</span><span class="hljs-params">()</span> </span>&#123;
-    <span class="hljs-keyword">return</span> currentThread().isInterrupted(<span class="hljs-keyword">true</span>);
-&#125;</code></pre>
+<li><p>代码块同步：monitorenter 和 monitorexit 指令实现的。</p>
 </li>
-<li><p>isInterrupted()</p>
-</li>
+<li><p>方法同步：依靠方法修饰符上的ACC_SYNCHRONIZED完成，方法同步仍然可以使用上面的两个指令实现。</p>
+<pre><code>注意：monitorenter 和 monitorexit 指令都是成对出现的。
+无论采取哪种方式，其本质都是对一个对象的monitor进行获取。</code></pre></li>
 </ul>
-<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isInterrupted</span><span class="hljs-params">()</span> </span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.isInterrupted(<span class="hljs-keyword">false</span>);
-&#125;</code></pre>
-
-<p>根据源码我们可以很明显的看出它们的区别：</p>
+<p>代码块同步:</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200901151408.png" srcset="/img/loading.gif" alt=""></p>
+<p>方法同步：</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200901153156.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="执行流程-1"><a href="#执行流程-1" class="headerlink" title="执行流程"></a>执行流程</h4><p>每一个对象都有一个monitor，一个线程持有一个对象的monitor，这个线程就会获取到monitor的所有权，也就是持有锁;其他线程执行到monitorenter指令时，将会尝试获取对象所对应的monitor的所有权，即尝试获取锁，如果没有获取到monitor的线程，将会被阻塞，进入BLOCKED状态。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200901153303.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h2 id="3、等待-通知机制"><a href="#3、等待-通知机制" class="headerlink" title="3、等待/通知机制"></a>3、等待/通知机制</h2><pre><code>对于等待/通知机制，我们首先要明确的是它是任何Java对象都具备的，
+因为这些方法被定义在java.lang.Object超类中！</code></pre><h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>指的是线程A调用对象O的wait（）方法进入等待状态，而另一个线程B调用O的notify(或和notifyAll()，线程A收到通知后，从对象O的wait（）方法返回，执行后序操作。</p>
+<h3 id="wait-、notify-、notifyAll-使用细节"><a href="#wait-、notify-、notifyAll-使用细节" class="headerlink" title="wait()、notify()、notifyAll()使用细节"></a>wait()、notify()、notifyAll()使用细节</h3><ul>
+<li>使用wait()、notify()、notifyAll()时需要【先对调用对象加锁】。</li>
+<li>调用wait()方法，线程状态由Runnable变为【Waiting】,并且当前线程放置到对象的【等待队列】。</li>
+<li>notify()或notifyAll()方法调用后，等待线程依然不会从wait（）中返回，需要调用方法的线程释放锁后，等待线程才有机会从wait返回。</li>
+<li>notify()方法是将等待队列中的一个等待线程从等待队列中移到同步队列中，而notifyAll()方法是将等待队列中的所有等待线程从等待队列中移到同步队列中，被移动的线程状态由Waitiong变成了Blocked。</li>
+<li>从wait()方法返回的前提是获取到调用对象的锁(monitor)。</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200901170112.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code>我们可以看到等待/通知机制依托于同步机制。
+目的：确保等待线程从wait()方法返回时，能够感知到通知线程对变量的修改。</code></pre><hr>
+<h2 id="4、等待-通知的经典范式"><a href="#4、等待-通知的经典范式" class="headerlink" title="4、等待/通知的经典范式"></a>4、等待/通知的经典范式</h2><p>范式分为两部分：</p>
 <ul>
-<li>interrupted 是作用于当前线程，isInterrupted 作用于调用该方法的线程对象所对应的线程。</li>
-<li>这两个方法最终都会调用同一个方法—–isInterrupted( Boolean 参数)，，只不过参数固定为一个是true，一个是false。</li>
+<li><p>等待方（消费者）</p>
+<pre><code>1.获取对象的锁
+2.如果条件不满足，那么调用对象的wait()方法
+3.被通知后仍要检查条件
+4.条件满足则执行相应的逻辑</code></pre></li>
 </ul>
-<p>（注：isInterrupted( Boolean 参数)是isInterrupted( )的重载方法）</p>
-<p>那么我们接着来看看isInterrupted(boolean arg)方法：</p>
-<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">native</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isInterrupted</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> ClearInterrupted)</span></span>;</code></pre>
-
-<p>这是个本地方法，表示是否清除状态位。</p>
-<p>如果这个参数为true，会重置当前线程的中断状态。</p>
-<p>这个参数为false，就是直接返回线程的状态位，不会重置当前线程的中断状态。</p>
-<h2 id="4、过期的suspend-、resume（）、stop（）"><a href="#4、过期的suspend-、resume（）、stop（）" class="headerlink" title="4、过期的suspend()、resume（）、stop（）"></a>4、过期的suspend()、resume（）、stop（）</h2><p>书中使用了一种生活中的一种事物来描述着三个过程。</p>
-<p>它们分别代表着：CD机的暂停、恢复、停止。</p>
-<p>线程与之对应：</p>
-<pre><code>暂停-suspend（）
-恢复-resume（）
-停止-stop（）</code></pre><p>我们需要注意的是我们的标题对它们的描述是–过期。</p>
-<h4 id="过期的原因"><a href="#过期的原因" class="headerlink" title="过期的原因"></a>过期的原因</h4><p>那么我们看到这里肯定就会想，过期肯定是因为这三个api在调用上存在着风险，具体原因是什么了，我们立即来看看。</p>
-<pre><code>对于suspend（）</code></pre><p>在调用它后，线程不会释放占用的资源（比如锁），而是占用着资源进行着睡眠状态，这样就容易产生死锁的问题。</p>
-<pre><code>对于stop（）</code></pre><p>首先这个方法属于暴力终止线程的方法，它不会保证线程资源的正常释放，就会导致有很多不确定性。</p>
-<h4 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h4><p>由于上面三个方法带来了很多副作用，所以这些方法被标注为过期的方法，在后面我们可以使用【等待/通知】机制来代替。</p>
-<h2 id="5、安全地终止线程"><a href="#5、安全地终止线程" class="headerlink" title="5、安全地终止线程"></a>5、安全地终止线程</h2><p>通过看书得知能安全地终止线程主要包含以下两种方式：</p>
-<ul>
-<li>使用中断操作，线程中断可以看做线程间的交互，所以它适合用来【取消】或【停止】任务。</li>
-<li>我们还可以使用共享变量的方式，来控制是否需要停止任务并终止该线程。</li>
-</ul>
-<h4 id="中断和共享变量实现"><a href="#中断和共享变量实现" class="headerlink" title="中断和共享变量实现"></a>中断和共享变量实现</h4><p>参考：<a href="https://www.cnblogs.com/normalandy/p/12408347.html" target="_blank" rel="noopener">java程序中，如何安全的结束一个正在运行的线程</a></p>
-<p>那么我们接下来再来看看他们分别在代码中是如何实现的：</p>
-<ul>
-<li>共享变量</li>
-</ul>
-<p>之所以引入共享变量，是因为该变量可以被多个执行相同任务的线程用来作为是否中断的信号（变量作为标识），通知中断线程的执行。</p>
-<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadFlag</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">boolean</span> exit = <span class="hljs-keyword">false</span>;
-
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">while</span> (!exit) ;
+<pre><code class="hljs java"><span class="hljs-keyword">synchronized</span>(对象) &#123;
+    <span class="hljs-keyword">while</span>(条件不满足) &#123;
+        对象.wait();
     &#125;
-
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
-        ThreadFlag thread = <span class="hljs-keyword">new</span> ThreadFlag();
-        thread.start();
-        sleep(<span class="hljs-number">3000</span>); <span class="hljs-comment">// 主线程延迟3秒</span>
-        thread.exit = <span class="hljs-keyword">true</span>;  <span class="hljs-comment">// 终止线程thread</span>
-        thread.join();
-        System.out.println(<span class="hljs-string">"线程退出!"</span>);
-    &#125;
+    对应的处理逻辑
 &#125;</code></pre>
 
 <ul>
-<li>使用中断interrupt()方法</li>
+<li><p>通知方（生产方）</p>
+<pre><code>1.获取对象的锁
+2.改变条件
+3.通知所有等待在对象上的线程</code></pre></li>
 </ul>
-<p>如果线程由于某个事件发生了阻塞，那么我们可以使用interrupt()进行中断。该方法不会中断一个正在运行的线程，但是它可以使一个被阻塞的线程抛出一个中断异常，从而使线程提前结束阻塞状态，退出堵塞代码。</p>
-<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span> </span>&#123;
-    <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">boolean</span> stop = <span class="hljs-keyword">false</span>;
+<pre><code class="hljs java"><span class="hljs-keyword">synchronized</span>(对象) &#123;
+    改变条件
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">while</span> (!stop) &#123;
-            System.out.println(getName() + <span class="hljs-string">" is running"</span>);
-            <span class="hljs-keyword">try</span> &#123;
-                sleep(<span class="hljs-number">1000</span>);
-            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123; <span class="hljs-comment">// 捕获阻塞异常</span>
-                System.out.println(<span class="hljs-string">"week up from blcok..."</span>);
-                stop = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// 在异常处理代码中修改共享变量的状态</span>
-            &#125;
-        &#125;
-        System.out.println(getName() + <span class="hljs-string">" is exiting..."</span>);
-    &#125;
-&#125;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InterruptThreadDemo3</span> </span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
-        MyThread m1 = <span class="hljs-keyword">new</span> MyThread();
-        System.out.println(<span class="hljs-string">"Starting thread..."</span>);
-        m1.start();
-        System.currentTimeMillis();
-        Thread.sleep(<span class="hljs-number">3000</span>);
-        System.out.println(<span class="hljs-string">"Interrupt thread...: "</span> + m1.getName());
-        m1.stop = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// 设置共享变量为true</span>
-        m1.interrupt(); <span class="hljs-comment">// 阻塞时退出阻塞状态</span>
-        Thread.sleep(<span class="hljs-number">3000</span>); <span class="hljs-comment">// 主线程休眠3秒以便观察线程m1的中断情况</span>
-        System.out.println(<span class="hljs-string">"Stopping application..."</span>);
-    &#125;
+    对象.notifyAll();
 &#125;</code></pre>
 
+<hr>
+<h2 id="5、管道输入-输出流"><a href="#5、管道输入-输出流" class="headerlink" title="5、管道输入/输出流"></a>5、管道输入/输出流</h2><h3 id="是什么-1"><a href="#是什么-1" class="headerlink" title="是什么"></a>是什么</h3><pre><code>管道输入/输出流主要用于线程之间的数据传输，而传输的媒介为内存。</code></pre><h3 id="具体的实现"><a href="#具体的实现" class="headerlink" title="具体的实现"></a>具体的实现</h3><pre><code>面向字节：
+1.PipedOutputStream
+2.PipedInputStream
+面向字符：
+3.PipedReader
+4.PipedWriter</code></pre><pre><code class="hljs java">PipedWriter out = <span class="hljs-keyword">new</span> PipedWriter();
+PipedReader in = <span class="hljs-keyword">new</span> PipedReader();
+out.connect(in); <span class="hljs-comment">// 将输入流和输出流进行连接，否则在使用时会抛出IOException；</span></code></pre>
 
+<h2 id="6、Thread-join-的使用"><a href="#6、Thread-join-的使用" class="headerlink" title="6、Thread.join()的使用"></a>6、Thread.join()的使用</h2><h3 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h3><p>如果一个线程A执行Thread.join()，它表示的含义是当前线程A等待thread线程终止之后才从thread.join()返回。</p>
+<p>还提供了两个具备超时特性的方法，join(long millis)和join(long millis,int nanos)。</p>
+<p>表示如果线程thread再给定时间内没有终止，那么将会从该超时方法中返回。</p>
+<pre><code>简而言之：一个线程要等到另一个线程执行完毕后才会从thread.join()返回。</code></pre><h3 id="实现原理-2"><a href="#实现原理-2" class="headerlink" title="实现原理"></a>实现原理</h3><p>Thread.join()其实底层是通过wait/notifyall来实现线程的通信达到线程阻塞的目的。</p>
+<p>当线程执行结束以后，会触发两个事情:</p>
+<ul>
+<li>第一个是设置native线程对象为null</li>
+<li>第二个是通过notifyall方法，让等待在previousThread对象锁上的线程被唤醒。</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 加锁当前线程对象</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">join</span><span class="hljs-params">(<span class="hljs-keyword">long</span> millis)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    <span class="hljs-comment">// 条件不满足，继续等待</span>
+    <span class="hljs-keyword">while</span>(isAlive()) &#123;
+        wait(<span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-comment">// 条件符合，方法返回</span>
+&#125;</code></pre>
 
-
-
-
-
+<pre><code>我们可以看出和等待/通知范式的结构一致，都是加锁、循环判断和处理逻辑三个步骤。</code></pre><h2 id="7、ThreadLocal的使用"><a href="#7、ThreadLocal的使用" class="headerlink" title="7、ThreadLocal的使用"></a>7、ThreadLocal的使用</h2><h3 id="是什么-2"><a href="#是什么-2" class="headerlink" title="是什么"></a>是什么</h3><p>ThreadLocal（线程变量）</p>
+<pre><code>以ThreadLocal对象为键、任意对象为值得存储结构。</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>我们将这个结构绑定在线程上，然后可以根据ThreadLocal对象查询到绑定在这个线程上的值。</p>
+<p>通过set（T）设置值，然后在线程下通过get()方法获取值。</p>
+<h3 id="源码总结"><a href="#源码总结" class="headerlink" title="源码总结"></a>源码总结</h3><ul>
+<li>每个Thread维护着一个ThreadLocalMap的引用</li>
+<li>ThreadLocalMap是ThreadLocal的内部类，用Entry来进行存储</li>
+<li>ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。</li>
+<li>在进行get之前，必须先set，否则会报空指针异常，当然也可以初始化一个，但是必须重写initialValue()方法。</li>
+</ul>
 
             </article>
             <hr>
@@ -432,7 +369,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                      <a class="hover-with-bg" href="/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/">Java并发编程之美</a>
                     
                   </div>
                 
@@ -440,7 +377,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                      <a class="hover-with-bg" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/">Java并发编程之美</a>
                     
                   </div>
                 
@@ -453,18 +390,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/d8d06b9e.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java并发系列（四）-线程间通信</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/33edb2ad.html">
-                        <span class="hidden-mobile">Java并发系列（二）-线程简介</span>
+                      <a href="/cxlittlecute/cf326bf7.html">
+                        <span class="hidden-mobile">Java并发系列（三）-启动和终止线程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -784,7 +715,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/cf326bf7.html');
+          var target = decodeURI('/cxlittlecute/d8d06b9e.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -878,7 +809,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Java并发系列（三）-启动和终止线程&nbsp;",
+        "Java并发系列（四）-线程间通信&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
