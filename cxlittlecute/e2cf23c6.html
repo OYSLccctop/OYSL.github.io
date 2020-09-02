@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      979 字
+      980 字
     </span>
   
 
@@ -259,7 +259,7 @@
 <li>轻量锁状态</li>
 <li>重量锁状态</li>
 </ul>
-<pre><code>注意：锁可以升级但不能降级。
+<pre><code>注意：锁可以升级但是不能降级。
 目的：提高获取和释放锁的效率。</code></pre><hr>
 <h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><h4 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h4><p>锁总是被对象头和栈帧中锁记录的偏向线程所占有。（锁总是被偏向的线程占有，在对象头中会有记录）</p>
 <h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>当一个线程访问同步块获取锁时，会在对象头和栈帧的锁记录中存储锁偏向的线程ID。</p>
