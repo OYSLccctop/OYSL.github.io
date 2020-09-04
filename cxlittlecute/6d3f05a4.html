@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Java并发系列（五）-对象头、锁的升级与对比 - OYSL&#39;s blog</title>
+  <title>Java并发系列（六）-原子操作的实现原理 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-02 08:43">
-      2020年9月2日 早上
+    <time datetime="2020-09-03 15:04">
+      2020年9月3日 下午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      980 字
+      1.4k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      14
        分钟
     </span>
   
@@ -225,101 +225,101 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月2日 晚上
+                  本文最后更新于：2020年9月4日 下午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（五）-对象头、锁的升级与对比"><a href="#Java并发系列（五）-对象头、锁的升级与对比" class="headerlink" title="Java并发系列（五）-对象头、锁的升级与对比"></a>Java并发系列（五）-对象头、锁的升级与对比</h1><p>通过本章我们来看一看Java中每个对象的锁都存在什么地方，以及锁的类型和区别。</p>
-<hr>
-<h2 id="1、对象头"><a href="#1、对象头" class="headerlink" title="1、对象头"></a>1、对象头</h2><p>首先我们需要知道的是Java对象头是保存我们对象锁信息的区域。</p>
-<h3 id="对象头长度"><a href="#对象头长度" class="headerlink" title="对象头长度"></a>对象头长度</h3><ul>
-<li><p>数组类型：3个字宽存储对象头</p>
-</li>
-<li><p>非数组类型：2个字宽存储对象头</p>
-<p>  注：64位虚拟机中1字宽为8字节，32为虚拟机1字宽为4字节。</p>
-</li>
-</ul>
-<h3 id="对象头中的内容"><a href="#对象头中的内容" class="headerlink" title="对象头中的内容"></a>对象头中的内容</h3><p>数组类型分为3个部分，费数组类型分为2个部分。</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200902085518.png" srcset="/img/loading.gif" alt=""></p>
-<h3 id="Mark-Word的基本结构"><a href="#Mark-Word的基本结构" class="headerlink" title="Mark Word的基本结构"></a>Mark Word的基本结构</h3><p>Java对象头中的mark word默认存储对象的hashcode、分代年龄和锁标记位。</p>
+              <h1 id="Java并发系列（六）-原子操作的实现原理"><a href="#Java并发系列（六）-原子操作的实现原理" class="headerlink" title="Java并发系列（六）-原子操作的实现原理"></a>Java并发系列（六）-原子操作的实现原理</h1><p>本篇开始我们来理解一下我们时常听见的几个概念：</p>
 <ul>
-<li><strong>32位JVM的Mark Word默认存储结构表：</strong></li>
+<li>原子</li>
+<li>原子操作</li>
+<li>CAS操作是什么</li>
+<li>如何实现原子操作</li>
+<li>CAS操作出现的问题</li>
 </ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200902090236.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h2 id="1、原子"><a href="#1、原子" class="headerlink" title="1、原子"></a>1、原子</h2><pre><code>原子就是不可分割的最小粒子。</code></pre><hr>
+<h2 id="2、原子操作"><a href="#2、原子操作" class="headerlink" title="2、原子操作"></a>2、原子操作</h2><pre><code>一个或者一系列不可中断的操作。</code></pre><hr>
+<h2 id="3、CAS操作是什么"><a href="#3、CAS操作是什么" class="headerlink" title="3、CAS操作是什么"></a>3、CAS操作是什么</h2><p>CAS（Compare and Swap比较并交换），一个旧值（期望操作前的值）和一个新值，在操作期间先比较旧值有没有变化，如果没有发生变化，才交换新值，发生变化则不交换。</p>
+<hr>
+<h2 id="4、如何实现原子操作"><a href="#4、如何实现原子操作" class="headerlink" title="4、如何实现原子操作"></a>4、如何实现原子操作</h2><p>我们接下来分别来看看处理器和Java中是如何实现原子操作的。</p>
+<h3 id="在处理器中实现原子操作"><a href="#在处理器中实现原子操作" class="headerlink" title="在处理器中实现原子操作"></a>在处理器中实现原子操作</h3><h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><p>处理器提供了两个机制来保证复杂内存操作的原子性：</p>
 <ul>
-<li><strong>64位JVM的Mark Word默认存储结构表：</strong></li>
+<li>总线锁定</li>
+<li>缓存锁定</li>
 </ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200902090921.png" srcset="/img/loading.gif" alt=""></p>
-<hr>
-<h2 id="2、锁的升级"><a href="#2、锁的升级" class="headerlink" title="2、锁的升级"></a>2、锁的升级</h2><p>在Java 1.6中，锁一共有4种状态：</p>
+<h4 id="总线锁定"><a href="#总线锁定" class="headerlink" title="总线锁定"></a>总线锁定</h4><p>总线锁就是使用处理器提供的一个LOCK#信号，当一个处理器在总线上输出此信号时，其他处理器的请求将被阻塞，那么该处理器可以独占共享内存。</p>
+<p>缺点：</p>
+<p>总线锁定把CPU和内存之间的通信锁定了，使得锁定期间，其他处理器不能操作其他内存地址的数据，导致开销很大。</p>
+<h4 id="缓存锁定"><a href="#缓存锁定" class="headerlink" title="缓存锁定"></a>缓存锁定</h4><p>我们有时不需要对总线进行锁定，我们只需要保证对某个内存地址的操作是原子性即可。</p>
+<p>缓存锁定就是在【内存区域】【被缓存】到【缓存行】【Lock操作】锁定期间，在执行锁操作回写到内存时，处理器不在总线上声言LOCK#信号，而是修改内部的内存地址，使用缓存一致性机制保证操作的原子性。（内存区域会被缓存到缓存行中，所以只需要修改缓存区域就行）</p>
+<p>缓存锁定是某个CPU对缓存数据进行更改时，会通知缓存了该数据的其他CPU抛弃缓存的数据或者从内存重新读取。</p>
+<h5 id="不会出现缓存锁定的情况"><a href="#不会出现缓存锁定的情况" class="headerlink" title="不会出现缓存锁定的情况"></a>不会出现缓存锁定的情况</h5><ul>
+<li>操作的数据不能被缓存在处理器内部（都不缓存在内部怎么出现缓存锁定）</li>
+<li>操作的数据跨多个缓存行时，需要调用总线锁定</li>
+<li>处理器本身不支持缓存锁定</li>
+</ul>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><pre><code>在我们的Inter处理器中，上面的总线锁定和缓存锁定都是靠很多Lock前缀的指令来实现的。
+被这些指令操作的内存区域就会加锁，导致其他处理器不能同时访问它。</code></pre><hr>
+<h3 id="在Java中实现原子操作"><a href="#在Java中实现原子操作" class="headerlink" title="在Java中实现原子操作"></a>在Java中实现原子操作</h3><h4 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a>实现方式</h4><p>在Java中有两种方式实现原子操作：</p>
 <ul>
-<li>无锁状态</li>
-<li>偏向锁状态</li>
-<li>轻量锁状态</li>
-<li>重量锁状态</li>
+<li>锁</li>
+<li>循环CAS</li>
 </ul>
-<pre><code>注意：锁可以升级但是不能降级。
-目的：提高获取和释放锁的效率。</code></pre><hr>
-<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><h4 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h4><p>锁总是被对象头和栈帧中锁记录的偏向线程所占有。（锁总是被偏向的线程占有，在对象头中会有记录）</p>
-<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>当一个线程访问同步块获取锁时，会在对象头和栈帧的锁记录中存储锁偏向的线程ID。</p>
-<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><ul>
-<li>测试对象头的Mark Word里是否存储着指向当前线程的偏向锁（线程ID）。<ul>
-<li>成功：线程已经获取了锁</li>
-<li>失败：判断对象的Mark Word中偏向锁的表示是否设置为1（表示当前为偏向锁）<ul>
-<li>没有设置，使用CAS竞争锁</li>
-<li>已设置，尝试使用CAS将对象头的偏向锁指向当前线程</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<h5 id="锁机制实现原子操作"><a href="#锁机制实现原子操作" class="headerlink" title="锁机制实现原子操作"></a>锁机制实现原子操作</h5><p>锁机制保证了只有获得锁的线程才能操作锁定的内存区域。</p>
+<pre><code>注意：除了偏向锁，JVM实现锁的方式都是循环CAS。
+即当一个线程想进入同步块的时候，先使用循环CAS的方式来获取锁，当它退出同步块的时候使用循环CAS释放锁。</code></pre><h5 id="循环CAS实现原理"><a href="#循环CAS实现原理" class="headerlink" title="循环CAS实现原理"></a>循环CAS实现原理</h5><p>JVM中的CAS操作利用的是处理器提供的CMPXCHG指令实现的。</p>
+<p>自旋CAS就是一直循环的进行CAS操作直到成功完成为止。</p>
+<p>示例代码：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> </span>&#123;
+    <span class="hljs-keyword">private</span> AtomicInteger atomic = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">0</span>);
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">safeCount</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (;;)&#123;
+            <span class="hljs-keyword">int</span> i = atomic.get();
+            <span class="hljs-keyword">boolean</span> suc = atomic.compareAndSet(i,++i);
+            <span class="hljs-keyword">if</span> (suc)&#123;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
 <hr>
-<h3 id="偏向锁的撤销"><a href="#偏向锁的撤销" class="headerlink" title="偏向锁的撤销"></a>偏向锁的撤销</h3><h4 id="如何撤销"><a href="#如何撤销" class="headerlink" title="如何撤销"></a>如何撤销</h4><p>当有其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁。</p>
-<pre><code>撤销的关键：需要等待全局安全点（在这个时间点上没有正在执行的字节码）</code></pre><h4 id="撤销过程"><a href="#撤销过程" class="headerlink" title="撤销过程"></a>撤销过程</h4><ul>
-<li>首先暂停拥有偏向锁的线程，然后检查持有偏向锁的线程是否活着。<ul>
-<li>不处于活动状态：将对象头设置为无锁状态</li>
-<li>处于活动状态：拥有偏向锁的栈会被执行。栈中的锁记录和对象头的Mark Word有两种情况：<ul>
-<li>1、要么偏向于其他线程</li>
-<li>2、要么恢复到无锁或者标记对象为不适合作为偏向锁</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>最后唤醒暂停的线程。</li>
-</ul>
-<h4 id="关闭偏向锁"><a href="#关闭偏向锁" class="headerlink" title="关闭偏向锁"></a>关闭偏向锁</h4><ul>
-<li><p>如果程序中所有的锁都处于竞争状态，可通过设置JVM参数关闭偏向锁,关闭后默认进入轻量级锁状态：</p>
-<pre><code>-XX:-UseBiasedLocking = false</code></pre></li>
-<li><p>偏向锁的激活有延迟，可通过参数进行关闭：</p>
-<pre><code>-XX:BiasedLockingStartupDelay = 0</code></pre></li>
-</ul>
-<hr>
-<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><h4 id="加锁过程"><a href="#加锁过程" class="headerlink" title="加锁过程"></a>加锁过程</h4><ul>
-<li><p>线程在执行同步块之前，JVM会先将当前线程的栈帧中创建用于存储锁记录的空间(Displaced Mark Word)。</p>
-</li>
-<li><p>然后将对象头的Mark Word复制到线程的锁记录中。</p>
-</li>
-<li><p>接着线程使用CAS将对象头中的Mark Word替换为指向锁记录的指针。</p>
+<h2 id="5、CAS操作出现的问题"><a href="#5、CAS操作出现的问题" class="headerlink" title="5、CAS操作出现的问题"></a>5、CAS操作出现的问题</h2><p>我们需要认识到，虽然我们的CAS操作效率很高，但是依然存在着三个问题：</p>
 <ul>
-<li><p>成功：当前线程获取锁。</p>
-</li>
-<li><p>失败：其他线程获取锁，当前线程使用自旋获取锁。自旋失败，则膨胀成为重量级锁，并把锁标志位变为10。</p>
-<pre><code>1.线程栈帧中的锁记录空间 --复制--&gt; 对象头的MarkWord
-2.线程的锁记录指针 --CAS替换--&gt;对象头Mark Word</code></pre></li>
+<li>ABA问题</li>
+<li>循环时间长开销大</li>
+<li>只能保证一个共享变量的原子操作</li>
 </ul>
-</li>
+<h3 id="ABA问题"><a href="#ABA问题" class="headerlink" title="ABA问题"></a>ABA问题</h3><h4 id="ABA问题是什么"><a href="#ABA问题是什么" class="headerlink" title="ABA问题是什么"></a>ABA问题是什么</h4><p>我们知道在CAS操作时，是检查值是否发生变化，但是如果我们将一个值变成了A，然后变成B，又变成A，这样CAS在检查的时候就不会发现它的值是否有变化。（也就是说值变了又变回来）</p>
+<h4 id="ABA问题解决办法"><a href="#ABA问题解决办法" class="headerlink" title="ABA问题解决办法"></a>ABA问题解决办法</h4><pre><code>使用版本号（同时比较预期引用和标记）</code></pre><p>在Java中Atomic包中提供了一个类AtomicStampedReference来解决ABA问题。</p>
+<p>它主要检查两个方面：</p>
+<ul>
+<li>当前引用是否等于预期引用</li>
+<li>当前标志是否等于预期标志</li>
 </ul>
-<h4 id="解锁过程"><a href="#解锁过程" class="headerlink" title="解锁过程"></a>解锁过程</h4><ul>
-<li>将线程栈帧的锁记录(Displaced Mark Word) –通过CAS操作–&gt; 替换回对象头。<ul>
-<li>成功：没有竞争发生。</li>
-<li>失败：存在竞争，锁膨胀为重量级锁。此时释放锁之后，还要唤醒等待的线程。</li>
+<p>只有当全部相等时，则以原子的方式将该引用和标志修改设置为给定的更新值。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> AtomicStampedReference &#123;
+    V expectedReference; <span class="hljs-comment">// 预期引用</span>
+    V newReference; <span class="hljs-comment">// 更新后的引用</span>
+    <span class="hljs-keyword">int</span> expectedStamp; <span class="hljs-comment">// 预期标志</span>
+    <span class="hljs-keyword">int</span> newStamp; <span class="hljs-comment">// 更新后的标志</span>
+&#125;</code></pre>
+
+<h3 id="循环时间长开销大"><a href="#循环时间长开销大" class="headerlink" title="循环时间长开销大"></a>循环时间长开销大</h3><p>也就是说自旋CAS长时间不成功，就会给CPU非常大的执行开销。</p>
+<h4 id="循环时间长解决办法"><a href="#循环时间长解决办法" class="headerlink" title="循环时间长解决办法"></a>循环时间长解决办法</h4><p>使用JVM中的pause指令，会提高效率。</p>
+<p>原因：</p>
+<ul>
+<li>它可以延时流水线去执行指令（减少CPU的消耗）</li>
+<li>它可以避免在退出循环的时候，因内存冲突而引起CPU流水线被清空。</li>
 </ul>
-</li>
+<h4 id="只能保证一个共享变量的原子操作"><a href="#只能保证一个共享变量的原子操作" class="headerlink" title="只能保证一个共享变量的原子操作"></a>只能保证一个共享变量的原子操作</h4><h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><ul>
+<li>锁</li>
+<li>共享变量合并</li>
 </ul>
-<hr>
-<p>3、 锁的优缺点对比</p>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200902191825.png" srcset="/img/loading.gif" alt=""></p>
+<p>在Java中提供了AtomicReference类，保证引用对象之间的原子性，可以把多个变量放到一个对象中进行CAS操作。</p>
 
             </article>
             <hr>
@@ -350,18 +350,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/6d3f05a4.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java并发系列（六）-原子操作的实现原理</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/d8d06b9e.html">
-                        <span class="hidden-mobile">Java并发系列（四）-线程间通信</span>
+                      <a href="/cxlittlecute/e2cf23c6.html">
+                        <span class="hidden-mobile">Java并发系列（五）-对象头、锁的升级与对比</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -681,7 +675,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/e2cf23c6.html');
+          var target = decodeURI('/cxlittlecute/6d3f05a4.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -775,7 +769,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Java并发系列（五）-对象头、锁的升级与对比&nbsp;",
+        "Java并发系列（六）-原子操作的实现原理&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

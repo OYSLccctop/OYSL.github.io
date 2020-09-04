@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Java并发系列（六）-原子操作的实现原理</title>
+    <link href="/cxlittlecute/6d3f05a4.html"/>
+    <url>/cxlittlecute/6d3f05a4.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Java并发系列（六）-原子操作的实现原理"><a href="#Java并发系列（六）-原子操作的实现原理" class="headerlink" title="Java并发系列（六）-原子操作的实现原理"></a>Java并发系列（六）-原子操作的实现原理</h1><p>本篇开始我们来理解一下我们时常听见的几个概念：</p><ul><li>原子</li><li>原子操作</li><li>CAS操作是什么</li><li>如何实现原子操作</li><li>CAS操作出现的问题</li></ul><hr><h2 id="1、原子"><a href="#1、原子" class="headerlink" title="1、原子"></a>1、原子</h2><pre><code>原子就是不可分割的最小粒子。</code></pre><hr><h2 id="2、原子操作"><a href="#2、原子操作" class="headerlink" title="2、原子操作"></a>2、原子操作</h2><pre><code>一个或者一系列不可中断的操作。</code></pre><hr><h2 id="3、CAS操作是什么"><a href="#3、CAS操作是什么" class="headerlink" title="3、CAS操作是什么"></a>3、CAS操作是什么</h2><p>CAS（Compare and Swap比较并交换），一个旧值（期望操作前的值）和一个新值，在操作期间先比较旧值有没有变化，如果没有发生变化，才交换新值，发生变化则不交换。</p><hr><h2 id="4、如何实现原子操作"><a href="#4、如何实现原子操作" class="headerlink" title="4、如何实现原子操作"></a>4、如何实现原子操作</h2><p>我们接下来分别来看看处理器和Java中是如何实现原子操作的。</p><h3 id="在处理器中实现原子操作"><a href="#在处理器中实现原子操作" class="headerlink" title="在处理器中实现原子操作"></a>在处理器中实现原子操作</h3><h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><p>处理器提供了两个机制来保证复杂内存操作的原子性：</p><ul><li>总线锁定</li><li>缓存锁定</li></ul><h4 id="总线锁定"><a href="#总线锁定" class="headerlink" title="总线锁定"></a>总线锁定</h4><p>总线锁就是使用处理器提供的一个LOCK#信号，当一个处理器在总线上输出此信号时，其他处理器的请求将被阻塞，那么该处理器可以独占共享内存。</p><p>缺点：</p><p>总线锁定把CPU和内存之间的通信锁定了，使得锁定期间，其他处理器不能操作其他内存地址的数据，导致开销很大。</p><h4 id="缓存锁定"><a href="#缓存锁定" class="headerlink" title="缓存锁定"></a>缓存锁定</h4><p>我们有时不需要对总线进行锁定，我们只需要保证对某个内存地址的操作是原子性即可。</p><p>缓存锁定就是在【内存区域】【被缓存】到【缓存行】【Lock操作】锁定期间，在执行锁操作回写到内存时，处理器不在总线上声言LOCK#信号，而是修改内部的内存地址，使用缓存一致性机制保证操作的原子性。（内存区域会被缓存到缓存行中，所以只需要修改缓存区域就行）</p><p>缓存锁定是某个CPU对缓存数据进行更改时，会通知缓存了该数据的其他CPU抛弃缓存的数据或者从内存重新读取。</p><h5 id="不会出现缓存锁定的情况"><a href="#不会出现缓存锁定的情况" class="headerlink" title="不会出现缓存锁定的情况"></a>不会出现缓存锁定的情况</h5><ul><li>操作的数据不能被缓存在处理器内部（都不缓存在内部怎么出现缓存锁定）</li><li>操作的数据跨多个缓存行时，需要调用总线锁定</li><li>处理器本身不支持缓存锁定</li></ul><h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><pre><code>在我们的Inter处理器中，上面的总线锁定和缓存锁定都是靠很多Lock前缀的指令来实现的。被这些指令操作的内存区域就会加锁，导致其他处理器不能同时访问它。</code></pre><hr><h3 id="在Java中实现原子操作"><a href="#在Java中实现原子操作" class="headerlink" title="在Java中实现原子操作"></a>在Java中实现原子操作</h3><h4 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a>实现方式</h4><p>在Java中有两种方式实现原子操作：</p><ul><li>锁</li><li>循环CAS</li></ul><h5 id="锁机制实现原子操作"><a href="#锁机制实现原子操作" class="headerlink" title="锁机制实现原子操作"></a>锁机制实现原子操作</h5><p>锁机制保证了只有获得锁的线程才能操作锁定的内存区域。</p><pre><code>注意：除了偏向锁，JVM实现锁的方式都是循环CAS。即当一个线程想进入同步块的时候，先使用循环CAS的方式来获取锁，当它退出同步块的时候使用循环CAS释放锁。</code></pre><h5 id="循环CAS实现原理"><a href="#循环CAS实现原理" class="headerlink" title="循环CAS实现原理"></a>循环CAS实现原理</h5><p>JVM中的CAS操作利用的是处理器提供的CMPXCHG指令实现的。</p><p>自旋CAS就是一直循环的进行CAS操作直到成功完成为止。</p><p>示例代码：</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> </span>&#123;    <span class="hljs-keyword">private</span> AtomicInteger atomic = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">0</span>);    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">safeCount</span><span class="hljs-params">()</span> </span>&#123;        <span class="hljs-keyword">for</span> (;;)&#123;            <span class="hljs-keyword">int</span> i = atomic.get();            <span class="hljs-keyword">boolean</span> suc = atomic.compareAndSet(i,++i);            <span class="hljs-keyword">if</span> (suc)&#123;                <span class="hljs-keyword">break</span>;            &#125;        &#125;    &#125;&#125;</code></pre><hr><h2 id="5、CAS操作出现的问题"><a href="#5、CAS操作出现的问题" class="headerlink" title="5、CAS操作出现的问题"></a>5、CAS操作出现的问题</h2><p>我们需要认识到，虽然我们的CAS操作效率很高，但是依然存在着三个问题：</p><ul><li>ABA问题</li><li>循环时间长开销大</li><li>只能保证一个共享变量的原子操作</li></ul><h3 id="ABA问题"><a href="#ABA问题" class="headerlink" title="ABA问题"></a>ABA问题</h3><h4 id="ABA问题是什么"><a href="#ABA问题是什么" class="headerlink" title="ABA问题是什么"></a>ABA问题是什么</h4><p>我们知道在CAS操作时，是检查值是否发生变化，但是如果我们将一个值变成了A，然后变成B，又变成A，这样CAS在检查的时候就不会发现它的值是否有变化。（也就是说值变了又变回来）</p><h4 id="ABA问题解决办法"><a href="#ABA问题解决办法" class="headerlink" title="ABA问题解决办法"></a>ABA问题解决办法</h4><pre><code>使用版本号（同时比较预期引用和标记）</code></pre><p>在Java中Atomic包中提供了一个类AtomicStampedReference来解决ABA问题。</p><p>它主要检查两个方面：</p><ul><li>当前引用是否等于预期引用</li><li>当前标志是否等于预期标志</li></ul><p>只有当全部相等时，则以原子的方式将该引用和标志修改设置为给定的更新值。</p><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> AtomicStampedReference &#123;    V expectedReference; <span class="hljs-comment">// 预期引用</span>    V newReference; <span class="hljs-comment">// 更新后的引用</span>    <span class="hljs-keyword">int</span> expectedStamp; <span class="hljs-comment">// 预期标志</span>    <span class="hljs-keyword">int</span> newStamp; <span class="hljs-comment">// 更新后的标志</span>&#125;</code></pre><h3 id="循环时间长开销大"><a href="#循环时间长开销大" class="headerlink" title="循环时间长开销大"></a>循环时间长开销大</h3><p>也就是说自旋CAS长时间不成功，就会给CPU非常大的执行开销。</p><h4 id="循环时间长解决办法"><a href="#循环时间长解决办法" class="headerlink" title="循环时间长解决办法"></a>循环时间长解决办法</h4><p>使用JVM中的pause指令，会提高效率。</p><p>原因：</p><ul><li>它可以延时流水线去执行指令（减少CPU的消耗）</li><li>它可以避免在退出循环的时候，因内存冲突而引起CPU流水线被清空。</li></ul><h4 id="只能保证一个共享变量的原子操作"><a href="#只能保证一个共享变量的原子操作" class="headerlink" title="只能保证一个共享变量的原子操作"></a>只能保证一个共享变量的原子操作</h4><h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><ul><li>锁</li><li>共享变量合并</li></ul><p>在Java中提供了AtomicReference类，保证引用对象之间的原子性，可以把多个变量放到一个对象中进行CAS操作。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java并发编程之美</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java并发编程之美</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java并发系列（五）-对象头、锁的升级与对比</title>
     <link href="/cxlittlecute/e2cf23c6.html"/>
     <url>/cxlittlecute/e2cf23c6.html</url>
