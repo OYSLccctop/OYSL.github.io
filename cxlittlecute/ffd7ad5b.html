@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Java内存区域与内存溢出异常（三）-实战：OOM异常 - OYSL&#39;s blog</title>
+  <title>JVM系列（三）-实战：OOM异常 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -225,12 +225,12 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月13日 上午
+                  本文最后更新于：2020年9月5日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java内存区域与内存溢出异常（三）-实战：OOM异常"><a href="#Java内存区域与内存溢出异常（三）-实战：OOM异常" class="headerlink" title="Java内存区域与内存溢出异常（三）-实战：OOM异常"></a>Java内存区域与内存溢出异常（三）-实战：OOM异常</h1><p>在Java虚拟机规范的描述中,除了程序计数器外,虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(下文称00M )异常的可能,本节将通过若干实例来验证异常发生的场景,并且会初步介绍几个与内存相关的最基本的虚拟机参数。</p>
+              <h1 id="JVM系列（三）-实战：OOM异常"><a href="#JVM系列（三）-实战：OOM异常" class="headerlink" title="JVM系列（三）-实战：OOM异常"></a>JVM系列（三）-实战：OOM异常</h1><p>在Java虚拟机规范的描述中,除了程序计数器外,虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(下文称00M )异常的可能,本节将通过若干实例来验证异常发生的场景,并且会初步介绍几个与内存相关的最基本的虚拟机参数。</p>
 <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><pre><code>1.通过代码验证《Java虚拟机规范》中描述的各个运行时区域存储的内容。
 2.在我们遇到实际内存溢出异常时，我们能根据异 常的信息快速判断是哪个区域的内存溢出，
 知道什么样的代码可能会导致这些区域内存溢出,以及出现这些异常后该如何处理。</code></pre><p>下文代码的开头都注释了执行时所需要设置的虚拟机启动参数(注释中“VM Args”后面跟着的参数),这些参数对实验的结果有直接影响,读者调试代码的时候千万不要忽略。</p>
@@ -356,7 +356,7 @@
                     
                     
                       <a href="/cxlittlecute/1b1cef79.html">
-                        <span class="hidden-mobile">Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘</span>
+                        <span class="hidden-mobile">JVM系列（二）-HotSpot虚拟机对象探秘</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -770,7 +770,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Java内存区域与内存溢出异常（三）-实战：OOM异常&nbsp;",
+        "JVM系列（三）-实战：OOM异常&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

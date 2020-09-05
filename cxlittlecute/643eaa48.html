@@ -225,7 +225,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月5日 下午
+                  本文最后更新于：2020年9月5日 晚上
                 
               </p>
             
@@ -274,7 +274,7 @@
 <h2 id="5、内存屏障"><a href="#5、内存屏障" class="headerlink" title="5、内存屏障"></a>5、内存屏障</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>写内存屏障（Store Memory Barrier）：处理器将存储缓存值写回主存（阻塞方式）。</p>
 <p>读内存屏障（Load Memory Barrier）：处理器将内存存储的数据拷贝到处理器的缓存中（阻塞方式）。</p>
 <hr>
-<h2 id="6、happens-before"><a href="#6、happens-before" class="headerlink" title="6、happens-before"></a>6、happens-before</h2><h3 id="happens-before是什么"><a href="#happens-before是什么" class="headerlink" title="happens-before是什么"></a>happens-before是什么</h3><p>happens-before就是阐述操作之间的内存可见性，定义一些禁止编译器和处理器重排序优化的场景，来保证并发编程的正确性。</p>
+<h2 id="6、happens-before关系"><a href="#6、happens-before关系" class="headerlink" title="6、happens-before关系"></a>6、happens-before关系</h2><h3 id="happens-before是什么"><a href="#happens-before是什么" class="headerlink" title="happens-before是什么"></a>happens-before是什么</h3><p>happens-before就是阐述操作之间的内存可见性，定义一些禁止编译器和处理器重排序优化的场景，来保证并发编程的正确性。</p>
 <p>在JMM中，happens-before的关系出现在，一个线程操作的结果对另一个线程可见的情况下，这两个操作之间必须存在happens-before关系。</p>
 <h3 id="常见的happens-before规则"><a href="#常见的happens-before规则" class="headerlink" title="常见的happens-before规则"></a>常见的happens-before规则</h3><p>这里可以再看一下<a href="https://www.jianshu.com/p/9464bf340234" target="_blank" rel="noopener">这篇博客</a></p>
 <ul>
@@ -318,6 +318,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/cxlittlecute/20dd4267.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM系列（四）-GC如何判断对象是否存活</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘 - OYSL&#39;s blog</title>
+  <title>JVM系列（二）-HotSpot虚拟机对象探秘 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -225,12 +225,12 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年8月12日 中午
+                  本文最后更新于：2020年9月5日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘"><a href="#Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘" class="headerlink" title="Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘"></a>Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘</h1><p>在我们了解完Java虚拟机的运行时数据区域之后，我们肯定想要进一步了解虚拟机内存中数据的其他细节，比如它们是【如何创建】、【如何布局】以及【如何访问】的。</p>
+              <h1 id="JVM系列（二）-HotSpot虚拟机对象探秘"><a href="#JVM系列（二）-HotSpot虚拟机对象探秘" class="headerlink" title="JVM系列（二）-HotSpot虚拟机对象探秘"></a>JVM系列（二）-HotSpot虚拟机对象探秘</h1><p>在我们了解完Java虚拟机的运行时数据区域之后，我们肯定想要进一步了解虚拟机内存中数据的其他细节，比如它们是【如何创建】、【如何布局】以及【如何访问】的。</p>
 <p>接下来我们就以HotSpot虚拟机来讨论它在Java堆中对象分配、布局和访问的全过程。</p>
 <h2 id="1-1-对象的创建"><a href="#1-1-对象的创建" class="headerlink" title="1.1 对象的创建"></a>1.1 对象的创建</h2><p>当Java虚拟机遇到一条字节码new指令时：</p>
 <ul>
@@ -314,7 +314,7 @@
                     
                       <a href="/cxlittlecute/ffd7ad5b.html">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java内存区域与内存溢出异常（三）-实战：OOM异常</span>
+                        <span class="hidden-mobile">JVM系列（三）-实战：OOM异常</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -323,7 +323,7 @@
                     
                     
                       <a href="/cxlittlecute/4d26dbf4.html">
-                        <span class="hidden-mobile">Java内存区域与内存溢出异常（一）-运行时数据区域</span>
+                        <span class="hidden-mobile">JVM系列（一）-运行时数据区域</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -737,7 +737,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Java内存区域与内存溢出异常（二）-HotSpot虚拟机对象探秘&nbsp;",
+        "JVM系列（二）-HotSpot虚拟机对象探秘&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
