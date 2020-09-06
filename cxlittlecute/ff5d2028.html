@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>计算机网络系列（三）-计算机网络的结构 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-06 15:56">
+      2020年9月6日 下午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      441 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      4
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,79 +213,149 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 91 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/f61655ea.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">DockerFile</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/d367fe76.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker具名和匿名挂载</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/c8b964af.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker常用命令（转载）</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/3cc92c66.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（七）-分词</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/6e27786d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（六）-映射&amp;数据迁移</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/6765e78b.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（五）-聚合分析</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/08/page/4/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/08/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2020/08/page/3/">3</a><a class="page-number" href="/archives/2020/08/page/4/">4</a><span class="page-number current">5</span>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年9月6日 下午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="计算机网络系列（三）-计算机网络的结构"><a href="#计算机网络系列（三）-计算机网络的结构" class="headerlink" title="计算机网络系列（三）-计算机网络的结构"></a>计算机网络系列（三）-计算机网络的结构</h1><h2 id="1、计算机网络分类"><a href="#1、计算机网络分类" class="headerlink" title="1、计算机网络分类"></a>1、计算机网络分类</h2><ul>
+<li>网络边缘（处于网络边缘的这些计算机和主机）。</li>
+<li>接入网络或者物理介质（有线或无线通信链路）</li>
+<li>核心网络（路由器和分组交换机设备）</li>
+</ul>
+<p>这样就构成了网络的互联。</p>
+<hr>
+<h2 id="2、网络边缘"><a href="#2、网络边缘" class="headerlink" title="2、网络边缘"></a>2、网络边缘</h2><h3 id="由什么构成"><a href="#由什么构成" class="headerlink" title="由什么构成"></a>由什么构成</h3><pre><code>由主机和端系统构成,主机和端系统运行网络应用程序。</code></pre><h3 id="主机上的网络应用通信方式是什么"><a href="#主机上的网络应用通信方式是什么" class="headerlink" title="主机上的网络应用通信方式是什么"></a>主机上的网络应用通信方式是什么</h3><pre><code>通信方式主要有两类：
+- 客户/服务器(client/server)应用模型
+        ·客户发送请求，服务器接收请求
+        ·web应用、文件FTP应用
+
+- 对等（peer-peer,P2P）应用模型
+        `通信在对象的实体间进行，没有专用服务器
+        ·QQ、Skype</code></pre><hr>
+<h2 id="3、接入网络"><a href="#3、接入网络" class="headerlink" title="3、接入网络"></a>3、接入网络</h2><h3 id="接入网络的作用"><a href="#接入网络的作用" class="headerlink" title="接入网络的作用"></a>接入网络的作用</h3><pre><code>接入网络的作用就是把我们网络边缘的一些主机，连接到我们核心网络中。</code></pre><h3 id="接入网络的类型"><a href="#接入网络的类型" class="headerlink" title="接入网络的类型"></a>接入网络的类型</h3><pre><code>- 家庭接入网络
+- 机构接入网络
+- 移动接入网络
+- 无线接入网络</code></pre><h3 id="关于接入网络用户关心什么"><a href="#关于接入网络用户关心什么" class="headerlink" title="关于接入网络用户关心什么"></a>关于接入网络用户关心什么</h3><pre><code>- 带宽（bandwidth）(bps)(数据传输速率)
+- 接入方式是独占还是共享的</code></pre><h3 id="接入网络的代表"><a href="#接入网络的代表" class="headerlink" title="接入网络的代表"></a>接入网络的代表</h3><pre><code>- 数字用户线路（DSL）（独占）
+
+- 电缆网络（共享）
+    频分多路复用：在不同频带（载波）上传输不同频道。</code></pre><hr>
+<h2 id="4、-网络核心"><a href="#4、-网络核心" class="headerlink" title="4、 网络核心"></a>4、 网络核心</h2><h3 id="网络核心的关键"><a href="#网络核心的关键" class="headerlink" title="网络核心的关键"></a>网络核心的关键</h3><pre><code>路由+转发
+
+路由（routing）：确定分组从源主机到目的主机的传输路径（IP的寻址）。
+
+转发（forwarding）：将分组从路由器输入端口交换到正确的输出端口。
+
+从源主机到目的主机的实现就是通过：数据交换</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/d098b0dc.html">
+                        <span class="hidden-mobile">计算机网络系列（二）-什么是网络协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -490,10 +611,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/08/page/5/index.html');
+          var target = decodeURI('/cxlittlecute/ff5d2028.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -555,6 +676,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -562,7 +708,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "计算机网络系列（三）-计算机网络的结构&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -577,6 +723,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -590,6 +751,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 

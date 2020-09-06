@@ -4,6 +4,81 @@
   
   
   <entry>
+    <title>计算机网络系列（三）-计算机网络的结构</title>
+    <link href="/cxlittlecute/ff5d2028.html"/>
+    <url>/cxlittlecute/ff5d2028.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（三）-计算机网络的结构"><a href="#计算机网络系列（三）-计算机网络的结构" class="headerlink" title="计算机网络系列（三）-计算机网络的结构"></a>计算机网络系列（三）-计算机网络的结构</h1><h2 id="1、计算机网络分类"><a href="#1、计算机网络分类" class="headerlink" title="1、计算机网络分类"></a>1、计算机网络分类</h2><ul><li>网络边缘（处于网络边缘的这些计算机和主机）。</li><li>接入网络或者物理介质（有线或无线通信链路）</li><li>核心网络（路由器和分组交换机设备）</li></ul><p>这样就构成了网络的互联。</p><hr><h2 id="2、网络边缘"><a href="#2、网络边缘" class="headerlink" title="2、网络边缘"></a>2、网络边缘</h2><h3 id="由什么构成"><a href="#由什么构成" class="headerlink" title="由什么构成"></a>由什么构成</h3><pre><code>由主机和端系统构成,主机和端系统运行网络应用程序。</code></pre><h3 id="主机上的网络应用通信方式是什么"><a href="#主机上的网络应用通信方式是什么" class="headerlink" title="主机上的网络应用通信方式是什么"></a>主机上的网络应用通信方式是什么</h3><pre><code>通信方式主要有两类：- 客户/服务器(client/server)应用模型        ·客户发送请求，服务器接收请求        ·web应用、文件FTP应用- 对等（peer-peer,P2P）应用模型        `通信在对象的实体间进行，没有专用服务器        ·QQ、Skype</code></pre><hr><h2 id="3、接入网络"><a href="#3、接入网络" class="headerlink" title="3、接入网络"></a>3、接入网络</h2><h3 id="接入网络的作用"><a href="#接入网络的作用" class="headerlink" title="接入网络的作用"></a>接入网络的作用</h3><pre><code>接入网络的作用就是把我们网络边缘的一些主机，连接到我们核心网络中。</code></pre><h3 id="接入网络的类型"><a href="#接入网络的类型" class="headerlink" title="接入网络的类型"></a>接入网络的类型</h3><pre><code>- 家庭接入网络- 机构接入网络- 移动接入网络- 无线接入网络</code></pre><h3 id="关于接入网络用户关心什么"><a href="#关于接入网络用户关心什么" class="headerlink" title="关于接入网络用户关心什么"></a>关于接入网络用户关心什么</h3><pre><code>- 带宽（bandwidth）(bps)(数据传输速率)- 接入方式是独占还是共享的</code></pre><h3 id="接入网络的代表"><a href="#接入网络的代表" class="headerlink" title="接入网络的代表"></a>接入网络的代表</h3><pre><code>- 数字用户线路（DSL）（独占）- 电缆网络（共享）    频分多路复用：在不同频带（载波）上传输不同频道。</code></pre><hr><h2 id="4、-网络核心"><a href="#4、-网络核心" class="headerlink" title="4、 网络核心"></a>4、 网络核心</h2><h3 id="网络核心的关键"><a href="#网络核心的关键" class="headerlink" title="网络核心的关键"></a>网络核心的关键</h3><pre><code>路由+转发路由（routing）：确定分组从源主机到目的主机的传输路径（IP的寻址）。转发（forwarding）：将分组从路由器输入端口交换到正确的输出端口。从源主机到目的主机的实现就是通过：数据交换</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>计算机网络系列（二）-什么是网络协议</title>
+    <link href="/cxlittlecute/d098b0dc.html"/>
+    <url>/cxlittlecute/d098b0dc.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（二）-什么是网络协议"><a href="#计算机网络系列（二）-什么是网络协议" class="headerlink" title="计算机网络系列（二）-什么是网络协议"></a>计算机网络系列（二）-什么是网络协议</h1><p>首先我们需要认识到的是，只有硬件和链路的连接是不能保证Internet顺畅运行的。因为还需要协议的支持，接下来我们就来看看网络协议是什么。</p><h2 id="1、什么是网络协议"><a href="#1、什么是网络协议" class="headerlink" title="1、什么是网络协议"></a>1、什么是网络协议</h2><p>网络协议就是计算机网络中数据交换的<strong>规则和约定</strong>，硬件是计算机网络的基础。（就好比交通规则）</p><h2 id="2、什么是协议的规则"><a href="#2、什么是协议的规则" class="headerlink" title="2、什么是协议的规则"></a>2、什么是协议的规则</h2><p>任何通信和信息交流的过程都需要规则，必须发出特定的消息，才会有对应特定的动作进行回应。</p><p>协议规定了通信实体间交换信息的<strong>格式、意义、顺序以及响应的动作</strong>。</p><h2 id="3、协议的三要素"><a href="#3、协议的三要素" class="headerlink" title="3、协议的三要素"></a>3、协议的三要素</h2><ul><li>语法<ul><li>交换信息的结构和格式</li><li>信号电平</li></ul></li><li>语义<ul><li>需要发处什么样的信息</li><li>接收信息后作出什么响应</li><li>差错控制</li></ul></li><li>时序<ul><li>事件顺序</li><li>速度匹配</li></ul></li></ul><h2 id="4、协议的作用"><a href="#4、协议的作用" class="headerlink" title="4、协议的作用"></a>4、协议的作用</h2><p>规范了计算机网络中的发送和接收过程。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>计算机网络系列（一）-计算机网络简介</title>
+    <link href="/cxlittlecute/9c71691b.html"/>
+    <url>/cxlittlecute/9c71691b.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（一）-计算机网络简介"><a href="#计算机网络系列（一）-计算机网络简介" class="headerlink" title="计算机网络系列（一）-计算机网络简介"></a>计算机网络系列（一）-计算机网络简介</h1><p>今天开始学习总结一个新的系列，计算机网络哈工大课程。</p><h2 id="1、计算机网络是什么"><a href="#1、计算机网络是什么" class="headerlink" title="1、计算机网络是什么"></a>1、计算机网络是什么</h2><p>计算机网络是【通讯技术】和【计算机技术】结合的产物。<br>计算机网络就是一种特殊的通信网络。<br>计算机网络是互连（通过通信链路互联互通）的、自治（无主从关系）的计算机集合。</p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200906114104.png" srcset="/img/loading.gif" alt=""></p><hr><h2 id="2、通讯系统的模型"><a href="#2、通讯系统的模型" class="headerlink" title="2、通讯系统的模型"></a>2、通讯系统的模型</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200906113610.png" srcset="/img/loading.gif" alt=""></p><hr><h2 id="3、如何保证距离远、数量大的互联"><a href="#3、如何保证距离远、数量大的互联" class="headerlink" title="3、如何保证距离远、数量大的互联"></a>3、如何保证距离远、数量大的互联</h2><p>如果使用直接链路去连接肯定是不可行的。</p><h3 id="远距离数量大互联方式"><a href="#远距离数量大互联方式" class="headerlink" title="远距离数量大互联方式"></a>远距离数量大互联方式</h3><pre><code>通过交换网络互联主机。</code></pre><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200906124432.png" srcset="/img/loading.gif" alt=""></p><hr><h2 id="4、Internet网络组成细节"><a href="#4、Internet网络组成细节" class="headerlink" title="4、Internet网络组成细节"></a>4、Internet网络组成细节</h2><ul><li>Internet是世界上最大的互联网络（ISP），它也是数以百计互连设备的集合</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200906134628.png" srcset="/img/loading.gif" alt=""></p><p>我们可以根据图看出：</p><pre><code>- ISP网络就是网络与网络的互连。    - 我们可以在这些端系统上运行各种网络应用，他们之间通过通信链路连接。    由于我们不能使用通信链路直连所有的网络！所以我们需要有交换网络（由路由设备构成）。    - 分组交换：分组转发（数据包）        · 路由器(routers)和交换机(switches)</code></pre><hr><h2 id="5、Internet服务角度"><a href="#5、Internet服务角度" class="headerlink" title="5、Internet服务角度"></a>5、Internet服务角度</h2><p>我们从服务的角度来看一看Internet做了什么事情。</p><ul><li>Internet为网络应用，提供通讯服务的基础设施。（Web、email）</li><li>Internet为网络应用，提供应用编程接口（API）。（连接Internet发送接收数据）</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>JVM系列（四）-GC如何判断对象是否存活</title>
     <link href="/cxlittlecute/20dd4267.html"/>
     <url>/cxlittlecute/20dd4267.html</url>

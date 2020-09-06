@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>计算机网络系列（二）-什么是网络协议 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-06 14:47">
+      2020年9月6日 下午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      281 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      2
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,79 +213,149 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 91 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/f61655ea.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">DockerFile</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/d367fe76.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker具名和匿名挂载</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/c8b964af.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker常用命令（转载）</span>
-      <span style="float: right;">08-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/3cc92c66.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（七）-分词</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/6e27786d.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（六）-映射&amp;数据迁移</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/6765e78b.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch（五）-聚合分析</span>
-      <span style="float: right;">08-01</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/08/page/4/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/08/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2020/08/page/3/">3</a><a class="page-number" href="/archives/2020/08/page/4/">4</a><span class="page-number current">5</span>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年9月6日 下午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="计算机网络系列（二）-什么是网络协议"><a href="#计算机网络系列（二）-什么是网络协议" class="headerlink" title="计算机网络系列（二）-什么是网络协议"></a>计算机网络系列（二）-什么是网络协议</h1><p>首先我们需要认识到的是，只有硬件和链路的连接是不能保证Internet顺畅运行的。因为还需要协议的支持，接下来我们就来看看网络协议是什么。</p>
+<h2 id="1、什么是网络协议"><a href="#1、什么是网络协议" class="headerlink" title="1、什么是网络协议"></a>1、什么是网络协议</h2><p>网络协议就是计算机网络中数据交换的<strong>规则和约定</strong>，硬件是计算机网络的基础。（就好比交通规则）</p>
+<h2 id="2、什么是协议的规则"><a href="#2、什么是协议的规则" class="headerlink" title="2、什么是协议的规则"></a>2、什么是协议的规则</h2><p>任何通信和信息交流的过程都需要规则，必须发出特定的消息，才会有对应特定的动作进行回应。</p>
+<p>协议规定了通信实体间交换信息的<strong>格式、意义、顺序以及响应的动作</strong>。</p>
+<h2 id="3、协议的三要素"><a href="#3、协议的三要素" class="headerlink" title="3、协议的三要素"></a>3、协议的三要素</h2><ul>
+<li>语法<ul>
+<li>交换信息的结构和格式</li>
+<li>信号电平</li>
+</ul>
+</li>
+<li>语义<ul>
+<li>需要发处什么样的信息</li>
+<li>接收信息后作出什么响应</li>
+<li>差错控制</li>
+</ul>
+</li>
+<li>时序<ul>
+<li>事件顺序</li>
+<li>速度匹配</li>
+</ul>
+</li>
+</ul>
+<h2 id="4、协议的作用"><a href="#4、协议的作用" class="headerlink" title="4、协议的作用"></a>4、协议的作用</h2><p>规范了计算机网络中的发送和接收过程。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/cxlittlecute/ff5d2028.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络系列（三）-计算机网络的结构</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/9c71691b.html">
+                        <span class="hidden-mobile">计算机网络系列（一）-计算机网络简介</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -490,10 +611,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/08/page/5/index.html');
+          var target = decodeURI('/cxlittlecute/d098b0dc.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -555,6 +676,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -562,7 +708,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "计算机网络系列（二）-什么是网络协议&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -577,6 +723,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -590,6 +751,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
