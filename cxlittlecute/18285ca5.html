@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>计算机网络系列（三）-计算机网络的结构 - OYSL&#39;s blog</title>
+  <title>计算机网络系列（四）-Internet结构 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-06 15:56">
-      2020年9月6日 下午
+    <time datetime="2020-09-06 20:28">
+      2020年9月6日 晚上
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      441 字
+      245 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      2
        分钟
     </span>
   
@@ -230,36 +230,30 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="计算机网络系列（三）-计算机网络的结构"><a href="#计算机网络系列（三）-计算机网络的结构" class="headerlink" title="计算机网络系列（三）-计算机网络的结构"></a>计算机网络系列（三）-计算机网络的结构</h1><h2 id="1、计算机网络分类"><a href="#1、计算机网络分类" class="headerlink" title="1、计算机网络分类"></a>1、计算机网络分类</h2><ul>
-<li>网络边缘（处于网络边缘的这些计算机和主机）。</li>
-<li>接入网络或者物理介质（有线或无线通信链路）</li>
-<li>核心网络（路由器和分组交换机设备）</li>
-</ul>
-<p>这样就构成了网络的互联。</p>
-<hr>
-<h2 id="2、网络边缘"><a href="#2、网络边缘" class="headerlink" title="2、网络边缘"></a>2、网络边缘</h2><h3 id="由什么构成"><a href="#由什么构成" class="headerlink" title="由什么构成"></a>由什么构成</h3><pre><code>由主机和端系统构成,主机和端系统运行网络应用程序。</code></pre><h3 id="主机上的网络应用通信方式是什么"><a href="#主机上的网络应用通信方式是什么" class="headerlink" title="主机上的网络应用通信方式是什么"></a>主机上的网络应用通信方式是什么</h3><pre><code>通信方式主要有两类：
-- 客户/服务器(client/server)应用模型
-        ·客户发送请求，服务器接收请求
-        ·web应用、文件FTP应用
+              <h1 id="计算机网络系列（四）-Internet结构"><a href="#计算机网络系列（四）-Internet结构" class="headerlink" title="计算机网络系列（四）-Internet结构"></a>计算机网络系列（四）-Internet结构</h1><h2 id="1、端系统是如何连接到Internet的"><a href="#1、端系统是如何连接到Internet的" class="headerlink" title="1、端系统是如何连接到Internet的"></a>1、端系统是如何连接到Internet的</h2><pre><code>端系统通过接入ISP（access ISPs）连接到Internet。
 
-- 对等（peer-peer,P2P）应用模型
-        `通信在对象的实体间进行，没有专用服务器
-        ·QQ、Skype</code></pre><hr>
-<h2 id="3、接入网络"><a href="#3、接入网络" class="headerlink" title="3、接入网络"></a>3、接入网络</h2><h3 id="接入网络的作用"><a href="#接入网络的作用" class="headerlink" title="接入网络的作用"></a>接入网络的作用</h3><pre><code>接入网络的作用就是把我们网络边缘的一些主机，连接到我们核心网络中。</code></pre><h3 id="接入网络的类型"><a href="#接入网络的类型" class="headerlink" title="接入网络的类型"></a>接入网络的类型</h3><pre><code>- 家庭接入网络
-- 机构接入网络
-- 移动接入网络
-- 无线接入网络</code></pre><h3 id="关于接入网络用户关心什么"><a href="#关于接入网络用户关心什么" class="headerlink" title="关于接入网络用户关心什么"></a>关于接入网络用户关心什么</h3><pre><code>- 带宽（bandwidth）(bps)(数据传输速率)
-- 接入方式是独占还是共享的</code></pre><h3 id="接入网络的代表"><a href="#接入网络的代表" class="headerlink" title="接入网络的代表"></a>接入网络的代表</h3><pre><code>- 数字用户线路（DSL）（独占）
+并且接入ISP必须进一步互连，这样才能让两台主机互相发送分组。</code></pre><h2 id="2、接入ISP是如何连在一起的"><a href="#2、接入ISP是如何连在一起的" class="headerlink" title="2、接入ISP是如何连在一起的"></a>2、接入ISP是如何连在一起的</h2><pre><code>可选方案：
 
-- 电缆网络（共享）
-    频分多路复用：在不同频带（载波）上传输不同频道。</code></pre><hr>
-<h2 id="4、-网络核心"><a href="#4、-网络核心" class="headerlink" title="4、 网络核心"></a>4、 网络核心</h2><h3 id="网络核心的关键"><a href="#网络核心的关键" class="headerlink" title="网络核心的关键"></a>网络核心的关键</h3><pre><code>路由+转发
+- 接入ISP直连（适合小规模网络）
 
-路由（routing）：确定分组从源主机到目的主机的传输路径（IP的寻址）。
+    如果我们把接入ISP直接互连到一起，肯定是不行，这样会有N的2次方的连接问题。
 
-转发（forwarding）：将分组从路由器输入端口交换到正确的输出端口。
+- 全球ISP
 
-从源主机到目的主机的实现就是通过：数据交换</code></pre>
+    构建一个全球的ISP，让我们所有的接入ISP网络和全球ISP连接在一起。
+
+- 由于不可能只有一个国家构建ISP，所以每个国家如果单独构建ISP也需要互相连接。国家ISP互连方式如下：
+
+    ·对等链路
+    ·IXP（Internet exchange point）
+
+- 区域ISP
+
+    先连接就近的ISP，再连接全球ISP或者顶级ISP
+
+- 网络内容提供商（Google、Microsoft）
+
+    就近为端用户提供网络服务</code></pre>
             </article>
             <hr>
             <div>
@@ -289,9 +283,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/18285ca5.html">
+                      <a href="/cxlittlecute/8696edf8.html">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">计算机网络系列（四）-Internet结构</span>
+                        <span class="hidden-mobile">JVM系列（五）-垃圾收集算法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -299,8 +293,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/d098b0dc.html">
-                        <span class="hidden-mobile">计算机网络系列（二）-什么是网络协议</span>
+                      <a href="/cxlittlecute/ff5d2028.html">
+                        <span class="hidden-mobile">计算机网络系列（三）-计算机网络的结构</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -620,7 +614,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/ff5d2028.html');
+          var target = decodeURI('/cxlittlecute/18285ca5.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -714,7 +708,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "计算机网络系列（三）-计算机网络的结构&nbsp;",
+        "计算机网络系列（四）-Internet结构&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
