@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>标签 - OYSL&#39;s blog</title>
+  <title>Java并发系列（九）-顺序一致性 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-12 20:35">
+      2020年9月12日 晚上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,24 +213,152 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
+      
 
-<div class="text-center tagcloud">
-  <a href="/tags/Docker/" style="font-size: 22.5px; color: #779bd3">Docker</a> <a href="/tags/Elasticsearch/" style="font-size: 24px; color: #6994cd">Elasticsearch</a> <a href="/tags/GateWay/" style="font-size: 15px; color: #bbe">GateWay</a> <a href="/tags/Hexo/" style="font-size: 16.5px; color: #adb5e9">Hexo</a> <a href="/tags/HikariCP/" style="font-size: 15px; color: #bbe">HikariCP</a> <a href="/tags/JVM/" style="font-size: 19.5px; color: #92a8de">JVM</a> <a href="/tags/Java8/" style="font-size: 30px; color: #337ab7">Java8</a> <a href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/" style="font-size: 25.5px; color: #5c8ec8">Java并发编程的艺术</a> <a href="/tags/Jenkins/" style="font-size: 15px; color: #bbe">Jenkins</a> <a href="/tags/Nignx/" style="font-size: 15px; color: #bbe">Nignx</a> <a href="/tags/Redis/" style="font-size: 28.5px; color: #4181bd">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 15px; color: #bbe">SpringBoot</a> <a href="/tags/SpringCloud/" style="font-size: 15px; color: #bbe">SpringCloud</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 15px; color: #bbe">总结</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 27px; color: #4e87c2">数据结构与算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 24px; color: #6994cd">计算机网络</a> <a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 18px; color: #a0aee3">阿里云</a> <a href="/tags/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" style="font-size: 21px; color: #85a1d8">集合源码分析</a>
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年9月13日 上午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="Java并发系列（九）-顺序一致性"><a href="#Java并发系列（九）-顺序一致性" class="headerlink" title="Java并发系列（九）-顺序一致性"></a>Java并发系列（九）-顺序一致性</h1><h2 id="1、数据竞争"><a href="#1、数据竞争" class="headerlink" title="1、数据竞争"></a>1、数据竞争</h2><h3 id="出现数据竞争的情况"><a href="#出现数据竞争的情况" class="headerlink" title="出现数据竞争的情况"></a>出现数据竞争的情况</h3><pre><code>当程序未正确同步时，就可能会存在数据竞争。</code></pre><h3 id="数据竞争的定义"><a href="#数据竞争的定义" class="headerlink" title="数据竞争的定义"></a>数据竞争的定义</h3><pre><code>在Java内存模型中对数据竞争的定义是：
+
+    在一个线程中写一个变量，
+    另一个线程中读同一个变量，
+    而且写和读没有通过同步排序，造成信息不同步，产生读写误差。</code></pre><hr>
+<h2 id="2、顺序一致性内存模型"><a href="#2、顺序一致性内存模型" class="headerlink" title="2、顺序一致性内存模型"></a>2、顺序一致性内存模型</h2><h3 id="顺序一致性内存模型是什么"><a href="#顺序一致性内存模型是什么" class="headerlink" title="顺序一致性内存模型是什么"></a>顺序一致性内存模型是什么</h3><pre><code>顺序一致性内存模型是一个理论参考模型，它提供了内存可见性保证。
+
+处理器和编译语言的内存模型都是参照顺序一致性模型的。</code></pre><h3 id="顺序一致性内存模型的特征"><a href="#顺序一致性内存模型的特征" class="headerlink" title="顺序一致性内存模型的特征"></a>顺序一致性内存模型的特征</h3><pre><code>1、顺序执行。一个线程中的所有操作，必须按照程序的顺序来执行。
+
+2、单一执行顺序。不管程序是否同步，所有线程都只能看到一个单一的操作执行顺序。
+
+3、原子执行线程可见。在顺序一致性内存模型中每个操作都必须是原子执行且立即对所有线程可见。</code></pre><hr>
+<h2 id="3、JMM在多线程中的表现"><a href="#3、JMM在多线程中的表现" class="headerlink" title="3、JMM在多线程中的表现"></a>3、JMM在多线程中的表现</h2><h3 id="JMM在正确同步多线程程序的内存一致性的保证"><a href="#JMM在正确同步多线程程序的内存一致性的保证" class="headerlink" title="JMM在正确同步多线程程序的内存一致性的保证"></a>JMM在正确同步多线程程序的内存一致性的保证</h3><pre><code>如果正确同步，程序的执行顺序与在顺序一致性内存模型中的执行结果相同。</code></pre><h3 id="JMM在未同步多线程程序中的表现情况"><a href="#JMM在未同步多线程程序中的表现情况" class="headerlink" title="JMM在未同步多线程程序中的表现情况"></a>JMM在未同步多线程程序中的表现情况</h3><pre><code>如果是未同步程序的话，在JMM中不仅整体的执行顺序是无序的，而且所有线程看到的操作执行顺序也可能是不一致的。
+
+造成当前线程和其他线程看到的操作执行顺序不一致的原因：
+
+    JMM只能通过主内存才能让写操作对其他线程可见，但是当前线程看到的执行顺序是不一致的。</code></pre><h3 id="JMM对同步程序顺序一致性结果实现的基本方针"><a href="#JMM对同步程序顺序一致性结果实现的基本方针" class="headerlink" title="JMM对同步程序顺序一致性结果实现的基本方针"></a>JMM对同步程序顺序一致性结果实现的基本方针</h3><pre><code>JMM在不改变程序执行结果的前提下，
+尽可能优化编译器和处理器的执行。</code></pre><h3 id="JMM对不同步程序执行的基本方针"><a href="#JMM对不同步程序执行的基本方针" class="headerlink" title="JMM对不同步程序执行的基本方针"></a>JMM对不同步程序执行的基本方针</h3><pre><code>JMM不保证未同步程序的执行结果与该程序在顺序一致性模型中的执行结果一致。
+（这样会禁止优化编译器和处理器的执行）</code></pre><h3 id="JMM最小安全性"><a href="#JMM最小安全性" class="headerlink" title="JMM最小安全性"></a>JMM最小安全性</h3><pre><code>JMM保证线程的读操作，读取到的值不会无中生有，
+要么是之前线程写入的值，要么是默认值（0，Null，False）
+
+JVM中的保证体现：
+
+    JVM在堆上分配对象时，首先对内存空间进行清零，然后才到上面分配对象（JVM内部同步这两个操作）。</code></pre><hr>
+<h2 id="4、在未同步程序中JMM和顺序一致性模型的区别"><a href="#4、在未同步程序中JMM和顺序一致性模型的区别" class="headerlink" title="4、在未同步程序中JMM和顺序一致性模型的区别"></a>4、在未同步程序中JMM和顺序一致性模型的区别</h2><pre><code>1、是否保证在单线程中程序按照顺序执行。（重排序）
+
+2、是否保证所有线程看到的操作执行顺序相同。（没有写入主存）
+
+3、是否保证对64位的long型和double型变量的写操作具有原子性。</code></pre><p>接下来我们来分析一下第三点的原因，它与处理器总线的工作机制有关。</p>
+<p>在计算机中，数据是通过总线在处理器和内存之间传递的。</p>
+<h3 id="总线事务"><a href="#总线事务" class="headerlink" title="总线事务"></a>总线事务</h3><h4 id="总线事务的分类"><a href="#总线事务的分类" class="headerlink" title="总线事务的分类"></a>总线事务的分类</h4><pre><code>- 读事务：内存-&gt;处理器
+- 写事务：处理器-&gt;内存</code></pre><h4 id="总线事务的含义"><a href="#总线事务的含义" class="headerlink" title="总线事务的含义"></a>总线事务的含义</h4><pre><code>总线事务指处理器和内存之间的数据传递的一系列步骤。总线会同步使用总线事务。</code></pre><h4 id="总线工作机制的特征"><a href="#总线工作机制的特征" class="headerlink" title="总线工作机制的特征"></a>总线工作机制的特征</h4><pre><code>总线把所有所有对内存的访问串行化执行。</code></pre><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200913100722.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="为什么无法保证long型和double型变量的写操作具有原子性"><a href="#为什么无法保证long型和double型变量的写操作具有原子性" class="headerlink" title="为什么无法保证long型和double型变量的写操作具有原子性"></a>为什么无法保证long型和double型变量的写操作具有原子性</h3><pre><code>因为在32位处理器上，会将64位的数据的写操作，拆分为两个32位的写操作执行，这样就无法对这个64位的写操作具有原子性。</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/c6c91905.html">
+                        <span class="hidden-mobile">Java并发系列（八）-重排序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    createObserver(loadValine, 'vcomments');
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -435,10 +614,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/tags/index.html');
+          var target = decodeURI('/cxlittlecute/f4d6c315.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -500,6 +679,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -507,7 +711,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "标签&nbsp;",
+        "Java并发系列（九）-顺序一致性&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -522,6 +726,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -535,6 +754,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
