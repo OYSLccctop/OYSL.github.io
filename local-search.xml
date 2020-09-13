@@ -154,6 +154,31 @@
   
   
   <entry>
+    <title>计算机网络系列（五）-数据交换-电路交换</title>
+    <link href="/cxlittlecute/9c8e3757.html"/>
+    <url>/cxlittlecute/9c8e3757.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（五）-数据交换-电路交换"><a href="#计算机网络系列（五）-数据交换-电路交换" class="headerlink" title="计算机网络系列（五）-数据交换-电路交换"></a>计算机网络系列（五）-数据交换-电路交换</h1><p>前一篇我们说到了，数据是通过【数据交换】的方式，从网络核心到达主机的。</p><h2 id="1、为什么需要数据交换"><a href="#1、为什么需要数据交换" class="headerlink" title="1、为什么需要数据交换"></a>1、为什么需要数据交换</h2><ul><li><p>没有数据交换的情况。</p><pre><code>直接使用链路连接，出现N的2次方问题。</code></pre></li><li><p>单一数据交换设备的问题</p><pre><code>需要大量交换设备端口</code></pre></li><li><p>交换网络</p><pre><code>让主机去连接交换网络中的设备</code></pre></li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200907195743.png" srcset="/img/loading.gif" alt=""></p><h2 id="2、什么是交换"><a href="#2、什么是交换" class="headerlink" title="2、什么是交换"></a>2、什么是交换</h2><p>一个时设备层面，另一个是网络层面</p><ul><li><p>交换设备动态转接</p><pre><code>在交换设备端口间，动态的建立端口之间的连接，将一个端口的数据转移到另一个端口。</code></pre></li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200907200207.png" srcset="/img/loading.gif" alt=""></p><ul><li>交换网络动态分配传输资源</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200907201034.png" srcset="/img/loading.gif" alt=""></p><h2 id="3、数据交换的类型"><a href="#3、数据交换的类型" class="headerlink" title="3、数据交换的类型"></a>3、数据交换的类型</h2><ul><li>电路交换</li><li>报文交换</li><li>分组交换</li></ul><h2 id="4、电路交换"><a href="#4、电路交换" class="headerlink" title="4、电路交换"></a>4、电路交换</h2><h3 id="电路交换的特点"><a href="#电路交换的特点" class="headerlink" title="电路交换的特点"></a>电路交换的特点</h3><pre><code>典型：电话网络</code></pre><h3 id="电路交换的三个阶段"><a href="#电路交换的三个阶段" class="headerlink" title="电路交换的三个阶段"></a>电路交换的三个阶段</h3><pre><code>- 建立连接（呼叫/电路建立）- 通信- 释放连接（拆除电路）</code></pre><h3 id="电路交换最显著的特点"><a href="#电路交换最显著的特点" class="headerlink" title="电路交换最显著的特点"></a>电路交换最显著的特点</h3><pre><code>资源独享</code></pre><h3 id="电路交换网络的链路共享问题"><a href="#电路交换网络的链路共享问题" class="headerlink" title="电路交换网络的链路共享问题"></a>电路交换网络的链路共享问题</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200907202228.png" srcset="/img/loading.gif" alt=""></p><pre><code>虽然电路交换是资源独享，但并不是这条链路就被其中通话占用的。这里就用到多路复用的知识，实现中继线被多路通信所共享。</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>JVM系列（五）-垃圾收集算法</title>
     <link href="/cxlittlecute/8696edf8.html"/>
     <url>/cxlittlecute/8696edf8.html</url>
