@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      625 字
+      724 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      7
        分钟
     </span>
   
@@ -230,7 +230,17 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（十一）-锁的内存语义"><a href="#Java并发系列（十一）-锁的内存语义" class="headerlink" title="Java并发系列（十一）-锁的内存语义"></a>Java并发系列（十一）-锁的内存语义</h1><h2 id="1、锁的作用"><a href="#1、锁的作用" class="headerlink" title="1、锁的作用"></a>1、锁的作用</h2><ul>
+              <h1 id="Java并发系列（十一）-锁的内存语义"><a href="#Java并发系列（十一）-锁的内存语义" class="headerlink" title="Java并发系列（十一）-锁的内存语义"></a>Java并发系列（十一）-锁的内存语义</h1><p>本篇主要包含以下内容：</p>
+<ul>
+<li>1、锁的作用</li>
+<li>2、锁的释放-获取建立的happens-before关系</li>
+<li>3、锁的释放和获取的内存语义</li>
+<li>4、锁的内存语义的实现</li>
+<li>5、CAS同时具有volatile读和volatile写内存语义的原因</li>
+<li>6、锁释放-获取的内存语义实现方式</li>
+<li>7、concurrent包的实现</li>
+</ul>
+<h2 id="1、锁的作用"><a href="#1、锁的作用" class="headerlink" title="1、锁的作用"></a>1、锁的作用</h2><ul>
 <li>让临界区互斥执行。</li>
 <li>释放锁的线程可以向获取同一个锁的线程发送消息。</li>
 </ul>
@@ -240,7 +250,7 @@
 - 传递性规则</code></pre><h2 id="3、锁的释放和获取的内存语义"><a href="#3、锁的释放和获取的内存语义" class="headerlink" title="3、锁的释放和获取的内存语义"></a>3、锁的释放和获取的内存语义</h2><pre><code>1.释放锁，JMM将该线程对应本地变量中的共享变量刷新到主内存中。
 2.获取锁，JMM将该线程对应本地内存置为无效，使监视器保护的临界区代码必须从主存中读取共享变量。
 
-同时也如同volatile写和读的内存语义：
+同时也如同volatile写和读的内存语义（锁释放==volatile写，所获取==volatile读）：
 
 释放锁就是线程A向线程B发送消息，获取锁就是线程B接收了某个线程发出的消息。
 仍然是通过主存向另一个线程发送消息。</code></pre><h2 id="4、锁的内存语义的实现"><a href="#4、锁的内存语义的实现" class="headerlink" title="4、锁的内存语义的实现"></a>4、锁的内存语义的实现</h2><p>关于锁的内存语义的实现，书中借助的是ReentrantLock。</p>
@@ -299,6 +309,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/cxlittlecute/2ede5693.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java并发系列（十二）-final域的内存语义</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
