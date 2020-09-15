@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      776 字
+      1k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      10
        分钟
     </span>
   
@@ -230,7 +230,17 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（十二）-final域的内存语义"><a href="#Java并发系列（十二）-final域的内存语义" class="headerlink" title="Java并发系列（十二）-final域的内存语义"></a>Java并发系列（十二）-final域的内存语义</h1><h2 id="1、final域的重排序规则"><a href="#1、final域的重排序规则" class="headerlink" title="1、final域的重排序规则"></a>1、final域的重排序规则</h2><pre><code>1.发生在构造函数中写final域。
+              <h1 id="Java并发系列（十二）-final域的内存语义"><a href="#Java并发系列（十二）-final域的内存语义" class="headerlink" title="Java并发系列（十二）-final域的内存语义"></a>Java并发系列（十二）-final域的内存语义</h1><p>本篇主要包含以下内容：</p>
+<ul>
+<li>1、final域的重排序规则</li>
+<li>2、写final域的重排序规则</li>
+<li>3、读final域的重排序规则</li>
+<li>4、final域为引用类型</li>
+<li>5、final引用不能从构造函数中“溢出”</li>
+<li>6、final引用的原则</li>
+<li>7、JSR-133为什么要增加final的语义</li>
+</ul>
+<h2 id="1、final域的重排序规则"><a href="#1、final域的重排序规则" class="headerlink" title="1、final域的重排序规则"></a>1、final域的重排序规则</h2><pre><code>1.发生在构造函数中写final域。
 
     在一个构造函数内对一个final域的写入，
     与随后把这个【被构造对象】（类对象）的引用复制给一个引用变量，
@@ -257,12 +267,25 @@
 这个操作之间不能发送重排序。</code></pre><h3 id="4-2、解决数据竞争内存可见性问题"><a href="#4-2、解决数据竞争内存可见性问题" class="headerlink" title="4.2、解决数据竞争内存可见性问题"></a>4.2、解决数据竞争内存可见性问题</h3><pre><code>通过在线程之间使用同步原语（lock或volatile）</code></pre><hr>
 <h2 id="5、final引用不能从构造函数中“溢出”"><a href="#5、final引用不能从构造函数中“溢出”" class="headerlink" title="5、final引用不能从构造函数中“溢出”"></a>5、final引用不能从构造函数中“溢出”</h2><pre><code>目的：可以进一步确保写final域的重排序规则。
 
-从构造函数中“溢出“指的是：
+不能让final引用从构造函数中“溢出“指的是：
 
 在构造函数内部，不能让这个被构造对象的引用为其他线程所见。</code></pre><hr>
 <h2 id="6、final引用的原则"><a href="#6、final引用的原则" class="headerlink" title="6、final引用的原则"></a>6、final引用的原则</h2><pre><code>在构造函数返回前，被构造对象的引用不能为其他线程所见，因为此时的final域可能还没有被初始化。
 
-在构造函数返回后，任意线程将保证能看到final域，正确初始化之后的值。</code></pre>
+在构造函数返回后，任意线程将保证能看到final域，正确初始化之后的值。</code></pre><h2 id="7、JSR-133为什么要增加final的语义"><a href="#7、JSR-133为什么要增加final的语义" class="headerlink" title="7、JSR-133为什么要增加final的语义"></a>7、JSR-133为什么要增加final的语义</h2><pre><code>原因：
+
+    在旧的Java内存模型中，一个最严重的缺陷就是线程可能看到final的值会改变。
+    （简单的说就是不同时刻看到的值是不一样的）
+
+解决：
+
+    通过增强final域的写和读的重排序规则，来增强final的语义。
+
+达到目的：
+
+    只要对象是正确构造的，那么不需要使用同步，
+    就能保证任意线程能看到这个final域，
+    在构造函数中被初始化之后的值。</code></pre>
             </article>
             <hr>
             <div>
@@ -291,6 +314,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/cxlittlecute/62bdf266.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java并发系列（十三）-happens-before</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
