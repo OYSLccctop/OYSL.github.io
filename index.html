@@ -180,6 +180,55 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/cxlittlecute/b8d23a45.html" target="_self">
+          <img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200916090957.png" srcset="/img/loading.gif" alt="Java并发系列（十四）-双重检查锁定与延迟初始化">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/cxlittlecute/b8d23a45.html">Java并发系列（十四）-双重检查锁定与延迟初始化</a>
+
+      <a href="/cxlittlecute/b8d23a45.html" class="index-excerpt">
+        
+        
+          
+        
+        <div>Java并发系列（十四）-双重检查锁定与延迟初始化1、延迟初始化1.1、目的降低初始化类和创建对象的开销。（只有用的时候才会对对象初始化）1.2、常见的实现方法双重检查锁定2、双重检查锁定的过程1.第一次检查
+2.加锁（防止在多线程环境下，只有一个线程创建对象）
+3.第二次检查
+4.初始化对象public class DoubleCheckedLocking &#123;             </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-09-16
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/cxlittlecute/62bdf266.html" target="_self">
           <img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200915215753.png" srcset="/img/loading.gif" alt="Java并发系列（十三）-happens-before">
         </a>
@@ -194,13 +243,16 @@
           
         
         <div>Java并发系列（十三）-happens-before首先我们需要认识到happens-before是JMM最核心的概念。
-1、JMM的设计1.1、JMM设计的两个关键因素1.程序员对内存模型的使用。
+本篇主要从以下几个方面展开：
 
-    要求内存模型简单理解、易于编程。（强内存模型）
+1、JMM的设计
+2、happens-before要求禁止的重排序
+3、JMM设计示意图
+4、happens-before的定义
+5、as-if-serial语义和happens-before关系对比
+6、happens-before规则
 
-2.编译器和处理器对内存模型的实现。
-
-    对编译器和处理器的约束越少越好，可以提高性能。（弱内存模型）1.2、JMM关键因素的平衡点</div>
+1</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -703,60 +755,6 @@ K=10^3、M=10^6、G=10^9
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>&nbsp;2020-09-11
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/cxlittlecute/29cecf1e.html" target="_self">
-          <img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200910082829.png" srcset="/img/loading.gif" alt="计算机网络系列（六）-报文交换与分组交换">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/cxlittlecute/29cecf1e.html">计算机网络系列（六）-报文交换与分组交换</a>
-
-      <a href="/cxlittlecute/29cecf1e.html" class="index-excerpt">
-        
-        
-          
-        
-        <div>计算机网络系列（六）-报文交换与分组交换1、报文交换什么是报文应用（源）发送信息的整体。报文发送过程发文交换是将报文一次性的发送到相邻节点，
-然后路由器决定怎么将这个报文转发出去，最后将报文送到目的地。
-2、分组交换什么是分组将报文拆分成一系列相对较小的数据包。
-
-分组交换的特点1、有报文的拆分和重组
-
-2、产生额外开销（源主机和目的主机进行的）
-分组交换中的统计多路复用
-分组交换的传输时延传输过</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-10
           </div>
         
         
