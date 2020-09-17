@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Java并发系列（十六）-Lock接口</title>
+    <link href="/cxlittlecute/20c427.html"/>
+    <url>/cxlittlecute/20c427.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Java并发系列（十六）-Lock接口"><a href="#Java并发系列（十六）-Lock接口" class="headerlink" title="Java并发系列（十六）-Lock接口"></a>Java并发系列（十六）-Lock接口</h1><h2 id="1、什么是Lock接口"><a href="#1、什么是Lock接口" class="headerlink" title="1、什么是Lock接口"></a>1、什么是Lock接口</h2><p>Lock接口是用来实现synchronized锁功能的。</p><p>它需要在使用的时候显示地获取和释放锁。</p><h2 id="2、Lock接口的优缺点"><a href="#2、Lock接口的优缺点" class="headerlink" title="2、Lock接口的优缺点"></a>2、Lock接口的优缺点</h2><pre><code>优点：    1.锁获取与释放的可操作性性    2.可中断的获取锁    3.超时获取锁    ...等新特性缺点：    缺少了隐式获取释放锁的便捷性。</code></pre><pre><code class="hljs java">Lock lock = <span class="hljs-keyword">new</span> ReetrantLock();lock.lock();<span class="hljs-keyword">try</span>&#123;&#125;<span class="hljs-keyword">finally</span> &#123;    lock.unlock();&#125;</code></pre><h2 id="3、为什么不在try块中获取锁"><a href="#3、为什么不在try块中获取锁" class="headerlink" title="3、为什么不在try块中获取锁"></a>3、为什么不在try块中获取锁</h2><p>获取锁时可能会发生异常（自定义锁），异常抛出的同时，也会导致锁的无故释放。</p><h2 id="4、Lock特征"><a href="#4、Lock特征" class="headerlink" title="4、Lock特征"></a>4、Lock特征</h2><pre><code>1.尝试非阻塞地获取锁    没有获取锁的时候可以去做其他事，    当锁没有其他线程获取时，则成功获取并持有锁。2.能被中断地获取锁    获取到的锁能响应中断，当获取到锁的线程被中断时，会抛出异常，同时锁会被释放。3.超时获取锁    在指定截止时间获取锁，如果超时则返回</code></pre><h2 id="5、Lock常用API"><a href="#5、Lock常用API" class="headerlink" title="5、Lock常用API"></a>5、Lock常用API</h2><pre><code>1.void lock()    获取锁，获取到锁后从该方法返回。2.void lcokInterruptibly() throws InterruptedException    可中断地获取锁，在锁的获取过程中可中断线程，这个方法可以响应中断。3、boolean tryLock    尝试非阻塞的获取锁，调用方法后立即返回，获取到了就返回true，否则返回false。4、boolean tryLock(long time.TimeUnit unit) throws InterruptedExceptions    超时获取锁的三种情况：    （1）当前线程在超时时间内获取了锁    （2）当前线程在超时时间内被中断    （3）超时时间结束，返回false5.void unlock()    释放锁6、Condition new Condition()    获取等待通知组件，该组件和当前的锁绑定，    当前线程只有获取到了锁，才能调用组件的wait（）方法，    而调用后，当前线程将释放锁。</code></pre><h2 id="6、Lock接口的如何使用"><a href="#6、Lock接口的如何使用" class="headerlink" title="6、Lock接口的如何使用"></a>6、Lock接口的如何使用</h2><p>Lock接口的实现基本都是通过聚合一个同步器的子类来完成线程的访问控制的。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java并发编程的艺术</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java并发编程的艺术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java并发系列（十五）-Java内存模型综述</title>
     <link href="/cxlittlecute/defe3a9c.html"/>
     <url>/cxlittlecute/defe3a9c.html</url>
