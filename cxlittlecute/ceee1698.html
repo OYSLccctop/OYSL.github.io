@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>计算机网络系列（九）-应用层 - OYSL&#39;s blog</title>
+  <title>计算机网络系列（九）-应用层（一） - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.2k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      13
        分钟
     </span>
   
@@ -225,12 +225,12 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月14日 晚上
+                  本文最后更新于：2020年9月17日 下午
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="计算机网络系列（九）-应用层"><a href="#计算机网络系列（九）-应用层" class="headerlink" title="计算机网络系列（九）-应用层"></a>计算机网络系列（九）-应用层</h1><ul>
+              <h1 id="计算机网络系列（九）-应用层（一）"><a href="#计算机网络系列（九）-应用层（一）" class="headerlink" title="计算机网络系列（九）-应用层（一）"></a>计算机网络系列（九）-应用层（一）</h1><ul>
 <li><p>1、网络应用的体系结构</p>
 <ul>
 <li>客户机/服务器</li>
@@ -267,38 +267,68 @@
 </li>
 </ul>
 <hr>
+<p>本篇的主要内容：</p>
+<ul>
+<li><p>1、网络应用的体系结构</p>
+<ul>
+<li>1.1、客户机/服务器结构<ul>
+<li>1.1.1、客户机</li>
+<li>1.1.2、服务器</li>
+<li>1.1.3、客户机/服务器结构举例</li>
+</ul>
+</li>
+<li>1.2、P2P结构<ul>
+<li>1.2.1、P2P结构的特点</li>
+<li>1.2.2、P2P结构的优缺点</li>
+</ul>
+</li>
+<li>1.3、混合结构</li>
+</ul>
+</li>
+<li><p>2、网络应用进程通信（网络应用的核心）</p>
+<ul>
+<li>2.1、网络应用的基础：进程间通信</li>
+<li>2.2、网络应用中进程的分类</li>
+<li>2.3、套接字：Socket（门）</li>
+<li>2.4、进程寻址</li>
+<li>2.5、应用层协议</li>
+<li>2.6、网络应用程序的要求分类</li>
+<li>2.7、Internet提供的传输服务</li>
+</ul>
+</li>
+</ul>
 <h2 id="1、网络应用的体系结构"><a href="#1、网络应用的体系结构" class="headerlink" title="1、网络应用的体系结构"></a>1、网络应用的体系结构</h2><ul>
 <li>客户机/服务器结构（Client-Server,C/S）</li>
 <li>点对点结构（Peer-to-peer，P2P）</li>
 <li>混合结构（Hybrid）</li>
 </ul>
 <hr>
-<h3 id="客户机-服务器结构"><a href="#客户机-服务器结构" class="headerlink" title="客户机/服务器结构"></a>客户机/服务器结构</h3><h4 id="客户机"><a href="#客户机" class="headerlink" title="客户机"></a>客户机</h4><ul>
+<h3 id="1-1、客户机-服务器结构"><a href="#1-1、客户机-服务器结构" class="headerlink" title="1.1、客户机/服务器结构"></a>1.1、客户机/服务器结构</h3><h4 id="1-1-1、客户机"><a href="#1-1-1、客户机" class="headerlink" title="1.1.1、客户机"></a>1.1.1、客户机</h4><ul>
 <li>与服务器通信，使用服务器提供的服务</li>
 <li>间歇性接入网络</li>
 <li>可能使用动态IP地址</li>
 <li>不会与其他客户机直接通信</li>
 </ul>
-<h4 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h4><ul>
+<h4 id="1-1-2、服务器"><a href="#1-1-2、服务器" class="headerlink" title="1.1.2、服务器"></a>1.1.2、服务器</h4><ul>
 <li>7*24小时提供服务</li>
 <li>永久性访问地址/域名</li>
 <li>利用大量服务器实现可扩展性</li>
 </ul>
-<h4 id="客户机-服务器结构举例"><a href="#客户机-服务器结构举例" class="headerlink" title="客户机/服务器结构举例"></a>客户机/服务器结构举例</h4><p>例子：web</p>
+<h4 id="1-1-3、客户机-服务器结构举例"><a href="#1-1-3、客户机-服务器结构举例" class="headerlink" title="1.1.3、客户机/服务器结构举例"></a>1.1.3、客户机/服务器结构举例</h4><p>例子：web</p>
 <p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200914160959.png" srcset="/img/loading.gif" alt=""></p>
 <hr>
-<h3 id="P2P结构"><a href="#P2P结构" class="headerlink" title="P2P结构"></a>P2P结构</h3><h4 id="P2P结构的特点"><a href="#P2P结构的特点" class="headerlink" title="P2P结构的特点"></a>P2P结构的特点</h4><ul>
+<h3 id="1-2、P2P结构"><a href="#1-2、P2P结构" class="headerlink" title="1.2、P2P结构"></a>1.2、P2P结构</h3><h4 id="1-2-1、P2P结构的特点"><a href="#1-2-1、P2P结构的特点" class="headerlink" title="1.2.1、P2P结构的特点"></a>1.2.1、P2P结构的特点</h4><ul>
 <li>没有永远在线的服务器</li>
 <li>任意端系统/节点之间可以直接通讯</li>
 <li>节点间歇性接入网络</li>
 <li>节点可能改变IP地址</li>
 </ul>
-<h4 id="P2P结构的优缺点"><a href="#P2P结构的优缺点" class="headerlink" title="P2P结构的优缺点"></a>P2P结构的优缺点</h4><ul>
+<h4 id="1-2-2、P2P结构的优缺点"><a href="#1-2-2、P2P结构的优缺点" class="headerlink" title="1.2.2、P2P结构的优缺点"></a>1.2.2、P2P结构的优缺点</h4><ul>
 <li>优点：高度可伸缩</li>
 <li>缺点：难于管理</li>
 </ul>
 <hr>
-<h3 id="混合结构"><a href="#混合结构" class="headerlink" title="混合结构"></a>混合结构</h3><p>Napster：</p>
+<h3 id="1-3、混合结构"><a href="#1-3、混合结构" class="headerlink" title="1.3、混合结构"></a>1.3、混合结构</h3><p>Napster：</p>
 <ul>
 <li>文件传输使用P2P结构</li>
 <li>文件的搜索采用C/S结构一 集中式<ul>
@@ -838,7 +868,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "计算机网络系列（九）-应用层&nbsp;",
+        "计算机网络系列（九）-应用层（一）&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
