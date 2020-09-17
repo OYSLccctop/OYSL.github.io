@@ -230,7 +230,13 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="Java并发系列（十四）-双重检查锁定与延迟初始化"><a href="#Java并发系列（十四）-双重检查锁定与延迟初始化" class="headerlink" title="Java并发系列（十四）-双重检查锁定与延迟初始化"></a>Java并发系列（十四）-双重检查锁定与延迟初始化</h1><h2 id="1、延迟初始化"><a href="#1、延迟初始化" class="headerlink" title="1、延迟初始化"></a>1、延迟初始化</h2><h3 id="1-1、目的"><a href="#1-1、目的" class="headerlink" title="1.1、目的"></a>1.1、目的</h3><pre><code>降低初始化类和创建对象的开销。（只有用的时候才会对对象初始化）</code></pre><h3 id="1-2、常见的实现方法"><a href="#1-2、常见的实现方法" class="headerlink" title="1.2、常见的实现方法"></a>1.2、常见的实现方法</h3><pre><code>双重检查锁定</code></pre><h2 id="2、双重检查锁定的过程"><a href="#2、双重检查锁定的过程" class="headerlink" title="2、双重检查锁定的过程"></a>2、双重检查锁定的过程</h2><pre><code>1.第一次检查
+              <h1 id="Java并发系列（十四）-双重检查锁定与延迟初始化"><a href="#Java并发系列（十四）-双重检查锁定与延迟初始化" class="headerlink" title="Java并发系列（十四）-双重检查锁定与延迟初始化"></a>Java并发系列（十四）-双重检查锁定与延迟初始化</h1><p>本篇的主要内容：</p>
+<ul>
+<li>1、延迟初始化</li>
+<li>2、双重检查锁定的过程</li>
+<li>3、线程安全的延迟初始化使用建议</li>
+</ul>
+<h2 id="1、延迟初始化"><a href="#1、延迟初始化" class="headerlink" title="1、延迟初始化"></a>1、延迟初始化</h2><h3 id="1-1、目的"><a href="#1-1、目的" class="headerlink" title="1.1、目的"></a>1.1、目的</h3><pre><code>降低初始化类和创建对象的开销。（只有用的时候才会对对象初始化）</code></pre><h3 id="1-2、常见的实现方法"><a href="#1-2、常见的实现方法" class="headerlink" title="1.2、常见的实现方法"></a>1.2、常见的实现方法</h3><pre><code>双重检查锁定</code></pre><h2 id="2、双重检查锁定的过程"><a href="#2、双重检查锁定的过程" class="headerlink" title="2、双重检查锁定的过程"></a>2、双重检查锁定的过程</h2><pre><code>1.第一次检查
 2.加锁（防止在多线程环境下，只有一个线程创建对象）
 3.第二次检查
 4.初始化对象</code></pre><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DoubleCheckedLocking</span> </span>&#123;                      <span class="hljs-comment">//1</span>
@@ -356,6 +362,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/cxlittlecute/defe3a9c.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java并发系列（十五）-Java内存模型综述</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
