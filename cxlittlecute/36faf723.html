@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>标签 - Java并发编程之美 - OYSL&#39;s blog</title>
+  <title>Java并发系列（十七）-队列同步器AQS（二） - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-18 15:21">
+      2020年9月18日 下午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      982 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,49 +213,196 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 3 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/6d3f05a4.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Java并发系列（六）-原子操作的实现原理</span>
-      <span style="float: right;">09-03</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/e2cf23c6.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Java并发系列（五）-对象头、锁的升级与对比</span>
-      <span style="float: right;">09-02</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/d8d06b9e.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Java并发系列（四）-线程间通信</span>
-      <span style="float: right;">09-01</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年9月21日 晚上
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析"><a href="#Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析" class="headerlink" title="Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析"></a>Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析</h1><p>本篇我们将从以下几个方面来分析同步器是如何完成线程同步的。</p>
+<ul>
+<li>同步队列</li>
+<li>独占式同步状态获取与释放</li>
+<li>共享式同步状态获取与释放</li>
+<li>超时获取同步状态</li>
+</ul>
+<p>等核心数据结构与模板方法。</p>
+<p>本篇我们将从以下几个方面展开：</p>
+<ul>
+<li>1、同步队列<ul>
+<li>1.1、同步器的原理</li>
+<li>1.2、同步队列的使用过程</li>
+<li>1.3、同步队列中的节点信息</li>
+<li>1.4、节点的属性类型与名称</li>
+</ul>
+</li>
+</ul>
+<h2 id="1、同步队列"><a href="#1、同步队列" class="headerlink" title="1、同步队列"></a>1、同步队列</h2><h3 id="1-1、同步器的原理"><a href="#1-1、同步器的原理" class="headerlink" title="1.1、同步器的原理"></a>1.1、同步器的原理</h3><pre><code>同步器依赖内部的同步队列（一个FIFO双向队列）来完成同步状态的管理。</code></pre><h3 id="1-2、同步队列的使用过程"><a href="#1-2、同步队列的使用过程" class="headerlink" title="1.2、同步队列的使用过程"></a>1.2、同步队列的使用过程</h3><pre><code>1.线程获取同步状态失败：
+
+    同步器会将【当前线程】以及【等待状态等信息】构造成一个节点（Node）,
+    并将其加入同步队列，同时阻塞当前线程。
+
+2.当同步状态释放时：
+
+    会把同步队列中的首节点的线程唤醒，然后再次获取同步状态。</code></pre><h3 id="1-3、同步队列中的节点信息"><a href="#1-3、同步队列中的节点信息" class="headerlink" title="1.3、同步队列中的节点信息"></a>1.3、同步队列中的节点信息</h3><pre><code>用来保存获取同步状态失败的线程引用、等待状态以及前驱和后继节点。</code></pre><h3 id="1-4、节点的属性类型与名称"><a href="#1-4、节点的属性类型与名称" class="headerlink" title="1.4、节点的属性类型与名称"></a>1.4、节点的属性类型与名称</h3><pre><code>1.int waitStatus(等待状态)
+
+    其中等待状态包含以下五种状态：
+
+    (1)CANCELLED,设置值为1。
+
+    发生情况：由于在同步队列中等待的线程，【等待超时】或者【终端】。
+
+    结果：从同步队列中取消等待，节点进入该状态不会改变。
+
+    (2)SIGNAL,设置值为-1。
+
+    发生情况：后继节点的线程处于等待状态，当前节点的线程释放同步状态或者取消。
+
+    结果：后继节点将被通知，使后继节点的线程运行。
+
+    (3)CONDITION,设置值为-2。
+
+    发生情况：节点在等待队列中，节点线程等待在Condition上，其他线程对Condition调用signal()方法.
+
+    结果：该节点会从等待队列中转移到同步队列中，加入到对同步状态的获取中。
+
+    (4)PROPAGATE.设置值为-3。
+
+    结果：下一次共享式同步状态获取将会无条件地被传播下去。
+
+    (5)INITIAL，设置值为0.(初始化状态)
+
+2.Node prev（前驱结点）
+
+    发生时机：当节点被加入同步队列时（尾部添加）
+
+3.Node next（后继节点）
+
+4.Node nextWaiter（等待队列中的后继节点）
+
+    情况：如果当前节点是共享的。
+
+    结果：这个字段将变成SHARED常量（节点类型（独占和共享）和等待队列中的后继节点共用同一个字段）
+
+5.Thread thread（获取同步状态的线程）</code></pre><h3 id="1-5、同步队列的基本结构图"><a href="#1-5、同步队列的基本结构图" class="headerlink" title="1.5、同步队列的基本结构图"></a>1.5、同步队列的基本结构图</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200921210311.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="1-5-1、同步器"><a href="#1-5-1、同步器" class="headerlink" title="1.5.1、同步器"></a>1.5.1、同步器</h4><pre><code>结构：拥有首节点和尾结点。
+
+引用指向：一个指向头结点，另一个指向尾结点。</code></pre><h4 id="1-5-2、设置尾结点的方法"><a href="#1-5-2、设置尾结点的方法" class="headerlink" title="1.5.2、设置尾结点的方法"></a>1.5.2、设置尾结点的方法</h4><pre><code>方式：通过CAS设置尾结点的方法。compareAndSetTail(Node expect,Node update)
+
+CAS过程：传递当前线程认为的尾结点和当前结点。</code></pre><h4 id="1-5-3、设置头结点的方法"><a href="#1-5-3、设置头结点的方法" class="headerlink" title="1.5.3、设置头结点的方法"></a>1.5.3、设置头结点的方法</h4><pre><code>过程：
+    首节点（首节点是获取同步状态成功的结点）的线程在释放同步状态时，将会唤醒后继结点。
+
+    然后将首节点设置成为原首节点的后继节点，并断开元首节点的next引用即可。
+
+结果：后继节点将会在获取同步状态成功时，将自己设置为首节点。</code></pre><h4 id="1-5-4、设置头结点为什么不需要使用CAS"><a href="#1-5-4、设置头结点为什么不需要使用CAS" class="headerlink" title="1.5.4、设置头结点为什么不需要使用CAS"></a>1.5.4、设置头结点为什么不需要使用CAS</h4><pre><code>因为设置首节点是通过【获取同步状态成功的线程】来完成的，
+只有一个线程能够成功获取同步状态。</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/">Java并发编程的艺术</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/94207bbd.html">
+                        <span class="hidden-mobile">Java并发系列（十七）-队列同步器AQS（一）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    createObserver(loadValine, 'vcomments');
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -460,10 +658,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/tags/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B9%8B%E7%BE%8E/index.html');
+          var target = decodeURI('/cxlittlecute/36faf723.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -525,6 +723,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -532,7 +755,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "标签 - Java并发编程之美&nbsp;",
+        "Java并发系列（十七）-队列同步器AQS（二）&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -547,6 +770,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -560,6 +798,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
