@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>阿里云RocketMQ - OYSL&#39;s blog</title>
+  <title>RocketMQ(二) - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-27 10:11">
-      2020年9月27日 上午
+    <time datetime="2020-09-27 14:37">
+      2020年9月27日 下午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      829 字
+      1.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      15
        分钟
     </span>
   
@@ -225,89 +225,155 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月27日 上午
+                  本文最后更新于：2020年9月27日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="阿里云RocketMQ"><a href="#阿里云RocketMQ" class="headerlink" title="阿里云RocketMQ"></a>阿里云RocketMQ</h1><p>最近开始玩一玩RocketMQ，那么我们首先来说一说这么多类型的消息队列我为什么会选择RocketMQ去进行学习。</p>
-<h2 id="1、为什么学习RocketMQ"><a href="#1、为什么学习RocketMQ" class="headerlink" title="1、为什么学习RocketMQ?"></a>1、为什么学习RocketMQ?</h2><h3 id="1-1、消息队列的优点"><a href="#1-1、消息队列的优点" class="headerlink" title="1.1、消息队列的优点"></a>1.1、消息队列的优点</h3><ul>
-<li>应用解耦</li>
-</ul>
-<p>好比说如果一个订单系统与后面的物流、支付系统所耦合在一起，那么如果一个地方出现了问题，整个系统就崩溃了。</p>
+              <h1 id="RocketMQ-二-消息发送样例"><a href="#RocketMQ-二-消息发送样例" class="headerlink" title="RocketMQ(二)-消息发送样例"></a>RocketMQ(二)-消息发送样例</h1><p>我们在上一章主要讲解了RocketMQ的安装，那么这一节我们来看看RocketMQ的其他方面。</p>
 <ul>
-<li>流量削峰</li>
+<li>基本样例</li>
+<li>顺序消息</li>
+<li>延时消息</li>
+<li>批量消息</li>
+<li>过滤消息</li>
+<li>事务消息</li>
 </ul>
-<p>如果系统的负载超过了阈值就会造成系统崩溃，那么我们可以通过消息队列来限制用户的请求，将用户的请求使用消息队列缓存起来。</p>
-<ul>
-<li>数据分发</li>
+<h2 id="1、简单消息发送的分类"><a href="#1、简单消息发送的分类" class="headerlink" title="1、简单消息发送的分类"></a>1、简单消息发送的分类</h2><h3 id="1-1、同步发送消息"><a href="#1-1、同步发送消息" class="headerlink" title="1.1、同步发送消息"></a>1.1、同步发送消息</h3><p>等待服务器响应消息，在没有收到消息回复之前，不会发送另一条消息。</p>
+<h3 id="1-2、异步发送消息"><a href="#1-2、异步发送消息" class="headerlink" title="1.2、异步发送消息"></a>1.2、异步发送消息</h3><p>不等待服务器响应消息，发消息的线程不阻塞，成功和失败的回调会在一个新的线程中完成。</p>
+<h3 id="1-3、单向发送消息"><a href="#1-3、单向发送消息" class="headerlink" title="1.3、单向发送消息"></a>1.3、单向发送消息</h3><p>直接发送，没有返回消息。</p>
+<h2 id="2、消费模式的分类"><a href="#2、消费模式的分类" class="headerlink" title="2、消费模式的分类"></a>2、消费模式的分类</h2><p>RocketMQ默认消费模式是负载均衡。</p>
+<h3 id="2-1、负载均衡"><a href="#2-1、负载均衡" class="headerlink" title="2.1、负载均衡"></a>2.1、负载均衡</h3><p>共同承担消息队列中的消息处理。</p>
+<h3 id="2-2、广播模式"><a href="#2-2、广播模式" class="headerlink" title="2.2、广播模式"></a>2.2、广播模式</h3><p>当前的消费者都去消费一遍消息队列中的消息。</p>
+<h3 id="2-3、设置方法"><a href="#2-3、设置方法" class="headerlink" title="2.3、设置方法"></a>2.3、设置方法</h3><pre><code class="hljs java"><span class="hljs-comment">//设定消费模式：负载均衡|广播模式</span>
+consumer.setMessageModel(MessageModel.BROADCASTING);</code></pre>
+<h2 id="3、发送者和消费者步骤分析"><a href="#3、发送者和消费者步骤分析" class="headerlink" title="3、发送者和消费者步骤分析"></a>3、发送者和消费者步骤分析</h2><h3 id="3-1、消息发送者步骤分析"><a href="#3-1、消息发送者步骤分析" class="headerlink" title="3.1、消息发送者步骤分析"></a>3.1、消息发送者步骤分析</h3><pre><code>1.创建消息生产者producer，并制定生产者组名
+2.指定Nameserver地址
+3.启动producer
+4.创建消息对象，指定主题Topic、Tag和消息体
+5.发送消息
+6.关闭生产者producer</code></pre><h3 id="3-2、消息消费者步骤分析"><a href="#3-2、消息消费者步骤分析" class="headerlink" title="3.2、消息消费者步骤分析"></a>3.2、消息消费者步骤分析</h3><pre><code>1.创建消费者Consumer，制定消费者组名
+2.指定Nameserver地址
+3.订阅主题Topic和Tag
+4.设置回调函数，处理消息
+5.启动消费者consumer</code></pre><hr>
+<h2 id="2、顺序消息"><a href="#2、顺序消息" class="headerlink" title="2、顺序消息"></a>2、顺序消息</h2><p>消费者消费消息的顺序，与生产者生产消息的顺序是一致的。</p>
+<p>RocketMQ可以严格的保证消息有序，可以分为分区有序或者全局有序。</p>
+<h3 id="2-1、为什么还有顺序消息？"><a href="#2-1、为什么还有顺序消息？" class="headerlink" title="2.1、为什么还有顺序消息？"></a>2.1、为什么还有顺序消息？</h3><p>我们可能会想，我们的消息队列不是应该遵循FIFO吗，为什么还会顺序消息的说法。</p>
+<p>要想理解这一点，我们需要理解到，我们主要是将消息发送给Broker，但是Broker中是不止，只有一个消息队列的而是多个消息队列。</p>
+<h3 id="2-2、消费顺序"><a href="#2-2、消费顺序" class="headerlink" title="2.2、消费顺序"></a>2.2、消费顺序</h3><ul>
+<li>全局消息顺序</li>
+<li>局部消息顺序</li>
 </ul>
-<p>让数据在多系统中进行分发，数据生产者只需要把数据发给消息队列，数据使用方只需要去消息队列中直接获取数据就行。</p>
-<h3 id="1-2、消息队列的缺点"><a href="#1-2、消息队列的缺点" class="headerlink" title="1.2、消息队列的缺点"></a>1.2、消息队列的缺点</h3><ul>
-<li>系统可用性降低</li>
-</ul>
-<p>MQ宕机系统就会出现很大的问题。</p>
-<ul>
-<li>系统复杂度提高</li>
-</ul>
-<p>需要保证消息没有被重复消费，怎么处理消息丢失情况？如何保证消息传递的顺序性？</p>
-<ul>
-<li>一致性问题</li>
-</ul>
-<h3 id="1-3、消息队列分类对比"><a href="#1-3、消息队列分类对比" class="headerlink" title="1.3、消息队列分类对比"></a>1.3、消息队列分类对比</h3><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200927105515.png" srcset="/img/loading.gif" alt=""></p>
-<h2 id="2、RocketMQ安装"><a href="#2、RocketMQ安装" class="headerlink" title="2、RocketMQ安装"></a>2、RocketMQ安装</h2><p>我们可以使用官网的zip压缩包或者docker进行安装。</p>
-<p><a href="https://rocketmq.apache.org/docs/quick-start/" target="_blank" rel="noopener">RocketMQ官网</a></p>
-<p>使用压缩包安装的话，可以根据官网上的文档进行安装，每一步都是比较详细的。</p>
-<h3 id="2-1、ZIP"><a href="#2-1、ZIP" class="headerlink" title="2.1、ZIP"></a>2.1、ZIP</h3><h4 id="2-1-1、修改文件"><a href="#2-1-1、修改文件" class="headerlink" title="2.1.1、修改文件"></a>2.1.1、修改文件</h4><p>需要注意的是，需要提前修改bin目录下的runserver.sh和runbroker.sh两个文件。</p>
-<pre><code class="hljs shell">- namesrv:
-
-    #这是RocketMQ默认值
-    JAVA_OPT="$&#123;JAVA_OPT&#125; -server -Xms4g -Xmx4g -Xmn2g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m"
-
-    #这是修改后的值
-    JAVA_OPT="$&#123;JAVA_OPT&#125; -server -Xms1g -Xmx1g -Xmn512g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m"
-
-
-broker:
-
-    #这是默认值
-    JAVA_OPT="$&#123;JAVA_OPT&#125; -server -Xms8g -Xmx8g -Xmn4g"
-
-    #这是修改后的值
-    JAVA_OPT="$&#123;JAVA_OPT&#125; -server -Xms1g -Xmx1g -Xmn512g"</code></pre>
-
-<h4 id="2-2-1、启动方式"><a href="#2-2-1、启动方式" class="headerlink" title="2.2.1、启动方式"></a>2.2.1、启动方式</h4><p>按照官网的启动方式可以会出现一个.out文件的警告，下面的这种启动方式就可以避免这种情况。</p>
-<pre><code class="hljs shell">- namesrv:
-
-    nohup sh mqnamesrv &gt; /dev/null 2&gt;&amp;1 &amp;
-
-- broker:
-
-    nohup sh mqbroker -c broker.conf&gt; /dev/null 2&gt;&amp;1 &amp;</code></pre>
-
-<p>如果可以通过jps命令查看到你运行的程序名那么就没有什么问题了。</p>
-<h3 id="2-2、阿里云"><a href="#2-2、阿里云" class="headerlink" title="2.2、阿里云"></a>2.2、阿里云</h3><p>阿里云使用的步骤(开通服务、创建实例、创建topic、创建Group)就不赘述了，文档都讲的很清楚了。</p>
-<p><a href="https://help.aliyun.com/document_detail/142406.html?spm=a2c4g.11186623.6.628.23685627FuGJhe" target="_blank" rel="noopener">RocketMQ阿里云文档</a></p>
-<h4 id="2-2-1、依赖"><a href="#2-2-1、依赖" class="headerlink" title="2.2.1、依赖"></a>2.2.1、依赖</h4><p>主要说一下这个依赖，在官网的案列中（快速入门），分为了TCP和HTTP发送消息和接收消息。</p>
-<p>刚开始我使用的SDK不对导致依赖一直没有导入进去。</p>
-<p>我的解决就是可以找官网给的案例，点击进去会由一个代码管理的仓库，然后就可以找到这个案例对应的POM文件这样就可以找到对应的依赖了。</p>
-<p>最后再附上快速入门中的POM依赖。</p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200927152006.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="2-3、顺序消费的原理"><a href="#2-3、顺序消费的原理" class="headerlink" title="2.3、顺序消费的原理"></a>2.3、顺序消费的原理</h3><h4 id="2-3-1、分区队列"><a href="#2-3-1、分区队列" class="headerlink" title="2.3.1、分区队列"></a>2.3.1、分区队列</h4><p>在默认的情况下消息发送会采取Round Robin轮询方式把消息发送到不同的queue(分区队列)；</p>
+<p>而消费消息的时候从多个queue上拉取消息，这种情况发送和消费是不能保证顺序。</p>
+<h4 id="2-3-2、同一队列"><a href="#2-3-2、同一队列" class="headerlink" title="2.3.2、同一队列"></a>2.3.2、同一队列</h4><p>如果控制发送的顺序消息只依次发送到同一个queue中，消费的时候只从这个queue上依次拉取，则就保证了顺序。</p>
+<h4 id="2-3-3、特点"><a href="#2-3-3、特点" class="headerlink" title="2.3.3、特点"></a>2.3.3、特点</h4><p>当发送和消费参与的queue只有一个，则是全局有序；</p>
+<p>如果多个queue参与，则为分区有序，即相对每个queue，消息都是有序的。</p>
+<h3 id="2-3、实际开发"><a href="#2-3、实际开发" class="headerlink" title="2.3、实际开发"></a>2.3、实际开发</h3><p>在实际的开发中，我们是将同一个业务中的消息发送到同一个消息队列中，来保证消费的顺序的。</p>
 <pre><code class="hljs java">
-- TCP:
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.aliyun.openservices&lt;/groupId&gt;
-            &lt;artifactId&gt;ons-client&lt;/artifactId&gt;
-            &lt;version&gt;1.8.0.Final&lt;/version&gt;
-        &lt;/dependency&gt;
+</code></pre>
+
+<h3 id="2-4、生产者创建步骤"><a href="#2-4、生产者创建步骤" class="headerlink" title="2.4、生产者创建步骤"></a>2.4、生产者创建步骤</h3><ul>
+<li><p>1、创建消息生产者producer，并制定生产者组名</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 1.创建消息生产者producer，并制定生产者组名</span>
+DefaultMQProducer producer = <span class="hljs-keyword">new</span> DefaultMQProducer(<span class="hljs-string">"group1"</span>);</code></pre></li>
+<li><p>2、指定Nameserver地址</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 2.指定Nameserver地址</span>
+producer.setNamesrvAddr(<span class="hljs-string">"192.168.25.135:9876;192.168.25.138:9876"</span>);</code></pre>
+</li>
+<li><p>3、启动producer</p>
+<pre><code class="hljs java">producer.start();</code></pre>
+</li>
+<li><p>4、构建消息集合</p>
+<pre><code class="hljs java">List&lt;OrderStep&gt; orderSteps = OrderStep.buildOrders();</code></pre>
+</li>
+<li><p>5、发起消息</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 构建消息集合</span>
+List&lt;OrderStep&gt; orderSteps = OrderStep.buildOrders();
+<span class="hljs-comment">// 发送消息</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; orderSteps.size(); i++) &#123;
+    String body = orderSteps.get(i) + <span class="hljs-string">""</span>;
+    Message message = <span class="hljs-keyword">new</span> Message(<span class="hljs-string">"OrderTopic"</span>, <span class="hljs-string">"Order"</span>, <span class="hljs-string">"i"</span> + i, body.getBytes());
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">        * 参数一：消息对象</span>
+<span class="hljs-comment">        * 参数二：消息队列的选择器</span>
+<span class="hljs-comment">        * 参数三：选择队列的业务标识（订单ID）</span>
+<span class="hljs-comment">        */</span>
+    SendResult sendResult = producer.send(message, <span class="hljs-keyword">new</span> MessageQueueSelector() &#123;
+        <span class="hljs-comment">/**</span>
+<span class="hljs-comment">            *</span>
+<span class="hljs-comment">            * <span class="hljs-doctag">@param</span> mqs：队列集合</span>
+<span class="hljs-comment">            * <span class="hljs-doctag">@param</span> msg：消息对象</span>
+<span class="hljs-comment">            * <span class="hljs-doctag">@param</span> arg：业务标识的参数</span>
+<span class="hljs-comment">            * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">            */</span>
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> MessageQueue <span class="hljs-title">select</span><span class="hljs-params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;
+            <span class="hljs-keyword">long</span> orderId = (<span class="hljs-keyword">long</span>) arg;
+            <span class="hljs-keyword">long</span> index = orderId % mqs.size();
+            <span class="hljs-keyword">return</span> mqs.get((<span class="hljs-keyword">int</span>) index);
+        &#125;
+    &#125;, orderSteps.get(i).getOrderId());
+    System.out.println(<span class="hljs-string">"发送结果："</span> + sendResult);
+&#125;</code></pre></li>
+<li><p>6.关闭生产者</p>
+</li>
+</ul>
+<pre><code class="hljs java">producer.shutdown();</code></pre>
+
+<h3 id="2-5、消费者创建步骤"><a href="#2-5、消费者创建步骤" class="headerlink" title="2.5、消费者创建步骤"></a>2.5、消费者创建步骤</h3><ul>
+<li><p>1、创建消费者Consumer，制定消费者组名</p>
+<pre><code class="hljs java">
+<span class="hljs-comment">// 1、创建消费者Consumer，制定消费者组名</span>
+DefaultMQPushConsumer consumer = <span class="hljs-keyword">new</span> DefaultMQPushConsumer(<span class="hljs-string">"group1"</span>);</code></pre>
+</li>
+<li><p>2、指定Nameserver地址</p>
+</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 2、指定Nameserver地址</span>
+consumer.setNamesrvAddr(<span class="hljs-string">"192.168.25.135:9876;192.168.25.138:9876"</span>);</code></pre>
+
+<ul>
+<li>3、订阅主题Topic和Tag</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 3、订阅主题Topic和Tag</span>
+consumer.subscribe(<span class="hljs-string">"base"</span>, <span class="hljs-string">"Tag1"</span>);</code></pre>
+
+<ul>
+<li>4、设定消费模式：负载均衡|广播模式</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 4、设定消费模式：负载均衡 | 广播模式</span>
+consumer.setMessageModel(MessageModel.BROADCASTING);</code></pre>
+
+<ul>
+<li>5、设置回调函数，处理消息</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 为了同一个队列的消息，采用单线程执行（一个队列只采用一个线程，保证消息执行的顺序性）</span>
+consumer.registerMessageListener(<span class="hljs-keyword">new</span> MessageListenerConcurrently() &#123;
+
+    <span class="hljs-comment">//接受消息内容</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ConsumeConcurrentlyStatus <span class="hljs-title">consumeMessage</span><span class="hljs-params">(List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context)</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (MessageExt msg : msgs) &#123;
+            System.out.println(<span class="hljs-string">"consumeThread="</span> + Thread.currentThread().getName() + <span class="hljs-string">","</span> + <span class="hljs-keyword">new</span> String(msg.getBody()));
+        &#125;
+        <span class="hljs-keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+    &#125;
+&#125;);</code></pre>
+
+<ul>
+<li>6、启动消费者</li>
+</ul>
+<pre><code class="hljs java"><span class="hljs-comment">// 6、启动消费者</span>
+consumer.start();</code></pre>
 
 
-- HTTP:
 
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.aliyun.mq&lt;/groupId&gt;
-            &lt;artifactId&gt;mq-http-sdk&lt;/artifactId&gt;
-            &lt;version&gt;1.0.0&lt;/version&gt;
-        &lt;/dependency&gt;</code></pre>
+
+
+
 
 
             </article>
@@ -318,7 +384,7 @@ broker:
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
+                      <a class="hover-with-bg" href="/categories/RocketMQ/">RocketMQ</a>
                     
                   </div>
                 
@@ -326,7 +392,7 @@ broker:
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
+                      <a class="hover-with-bg" href="/tags/RocketMQ/">RocketMQ</a>
                     
                   </div>
                 
@@ -343,8 +409,8 @@ broker:
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/7be45471.html">
-                        <span class="hidden-mobile">Java并发系列（十七）-队列同步器AQS（三）</span>
+                      <a href="/cxlittlecute/eeed4ed8.html">
+                        <span class="hidden-mobile">RocketMQ（一）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -664,7 +730,7 @@ broker:
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/b86f50d1.html');
+          var target = decodeURI('/cxlittlecute/b5542a52.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -758,7 +824,7 @@ broker:
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "阿里云RocketMQ&nbsp;",
+        "RocketMQ(二)&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
