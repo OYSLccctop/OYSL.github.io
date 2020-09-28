@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      16
        分钟
     </span>
   
@@ -225,12 +225,12 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2020年9月27日 晚上
+                  本文最后更新于：2020年9月28日 晚上
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="RocketMQ-二-消息发送样例"><a href="#RocketMQ-二-消息发送样例" class="headerlink" title="RocketMQ(二)-消息发送样例"></a>RocketMQ(二)-消息发送样例</h1><p>我们在上一章主要讲解了RocketMQ的安装，那么这一节我们来看看RocketMQ的其他方面。</p>
+              <h1 id="RocketMQ-二-消息发送样例和顺序消息"><a href="#RocketMQ-二-消息发送样例和顺序消息" class="headerlink" title="RocketMQ(二)-消息发送样例和顺序消息"></a>RocketMQ(二)-消息发送样例和顺序消息</h1><p>我们在上一章主要讲解了RocketMQ的安装，那么这一节我们来看看RocketMQ的其他方面。</p>
 <ul>
 <li>基本样例</li>
 <li>顺序消息</li>
@@ -269,7 +269,7 @@ consumer.setMessageModel(MessageModel.BROADCASTING);</code></pre>
 <h3 id="2-3、顺序消费的原理"><a href="#2-3、顺序消费的原理" class="headerlink" title="2.3、顺序消费的原理"></a>2.3、顺序消费的原理</h3><h4 id="2-3-1、分区队列"><a href="#2-3-1、分区队列" class="headerlink" title="2.3.1、分区队列"></a>2.3.1、分区队列</h4><p>在默认的情况下消息发送会采取Round Robin轮询方式把消息发送到不同的queue(分区队列)；</p>
 <p>而消费消息的时候从多个queue上拉取消息，这种情况发送和消费是不能保证顺序。</p>
 <h4 id="2-3-2、同一队列"><a href="#2-3-2、同一队列" class="headerlink" title="2.3.2、同一队列"></a>2.3.2、同一队列</h4><p>如果控制发送的顺序消息只依次发送到同一个queue中，消费的时候只从这个queue上依次拉取，则就保证了顺序。</p>
-<h4 id="2-3-3、特点"><a href="#2-3-3、特点" class="headerlink" title="2.3.3、特点"></a>2.3.3、特点</h4><p>当发送和消费参与的queue只有一个，则是全局有序；</p>
+<h4 id="2-3-3、特点"><a href="#2-3-3、特点" class="headerlink" title="2.3.3、特点"></a>2.3.3、特点</h4><p>当发送和消费参与的queue只有一个，则是全局有序(一个Topic内所有的消息都发布到同一个queue，按照先进先出的顺序发布和消费)；</p>
 <p>如果多个queue参与，则为分区有序，即相对每个queue，消息都是有序的。</p>
 <h3 id="2-3、实际开发"><a href="#2-3、实际开发" class="headerlink" title="2.3、实际开发"></a>2.3、实际开发</h3><p>在实际的开发中，我们是将同一个业务中的消息发送到同一个消息队列中，来保证消费的顺序的。</p>
 <pre><code class="hljs java">
