@@ -17,10 +17,19 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>归档 - OYSL&#39;s blog</title>
+  <title>SpringMVC工作执行流程 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -42,7 +51,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,6 +161,48 @@
             </span>
 
             
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-29 08:15">
+      2020年9月29日 早上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      590 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      6
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -162,85 +213,170 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 123 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/cxlittlecute/4e6c6273.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Springboot出现Possibly consider using a shorter maxLifetime value警告问题</span>
-      <span style="float: right;">07-16</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/1d5383b1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云oss上传报错Invalid according to Policy Policy expired</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/8ce042f1.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo消除中文路径</span>
-      <span style="float: right;">07-15</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/61702.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Jenkins执行shell命令，提示command not found解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/10754.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云全站加速HTTPS证书无法开启问题解决</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/202.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">阿里云域名配置</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-    
-    <a href="/cxlittlecute/19858.html" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo博客搭建与部署</span>
-      <span style="float: right;">07-13</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/07/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/07/">1</a><a class="page-number" href="/archives/2020/07/page/2/">2</a><a class="page-number" href="/archives/2020/07/page/3/">3</a><span class="page-number current">4</span>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020年9月29日 上午
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="SpringMVC工作执行流程"><a href="#SpringMVC工作执行流程" class="headerlink" title="SpringMVC工作执行流程"></a>SpringMVC工作执行流程</h1><p>SpringMVC已经学习很长一段时间了，对于他的流程有些遗忘了，今天准备重新将它梳理一遍。</p>
+<p>参考：<a href="https://www.cnblogs.com/hamawep789/p/10840774.html" target="_blank" rel="noopener">springmvc工作流程</a></p>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200929091246.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="1、工作流程"><a href="#1、工作流程" class="headerlink" title="1、工作流程"></a>1、工作流程</h2><ul>
+<li><p>1、用户发送HTTP请求，DispatcherServlet会拦截请求。</p>
+</li>
+<li><p>2、DispatcherServlet首先会将请求发送给HandlerMapping(处理器映射器)。</p>
+</li>
+<li><p>3、处理器映射器会根据配置或注解找到想要的Handler（Controller），这样就准备运行【处理器】和【拦截器】组成的执行链了（还不能运行），并将处理器返回给前端控制器。</p>
+</li>
+<li><p>4、运行Handler需要对应的环境，于是DispatcherServlet又去找HandlerAdapter。</p>
+</li>
+<li><p>5、通过处理器适配器去运行对应的处理器和拦截器。</p>
+</li>
+<li><p>6、处理器执行完毕后，会返回模型和视图给处理器适配器。</p>
+</li>
+<li><p>7、处理器适配器再将模型和视图转发给DispatcherServlet。</p>
+</li>
+<li><p>8、前端控制器接收到模型和视图后，会将视图信息传递给ViewResolver（视图解析器）。</p>
+</li>
+<li><p>9、视图解析器接收到视图后，会判断是否使用逻辑视图。</p>
+<pre><code>逻辑视图：
+
+    如果是逻辑视图，那么视图解析器就会解析它，返回真正视图给DispatcherServlet。
+
+    在控制器方法返回一个字符串，或者是通过 ModelAndView.setViewName(String viewName) 方法设置视图名
+非逻辑视图（物理视图）：
+
+    不会解析，直接通过视图渲染数据模型。
+
+    在控制器方法中直接通过 ModelAndView.setView(View v)方法设置视图对象</code></pre></li>
+<li><p>10、前端控制器再将模型发送给View，View将模型渲染到视图上。</p>
+</li>
+<li><p>11、响应结果给用户</p>
+</li>
+</ul>
+<h2 id="2、补充：三层架构和MVC的区别"><a href="#2、补充：三层架构和MVC的区别" class="headerlink" title="2、补充：三层架构和MVC的区别"></a>2、补充：三层架构和MVC的区别</h2><p>看到SpringMVC我就想到了这个问题，因为很多人都会把这个给弄混。于是这里就转发借鉴别人的描述来总结这个问题。</p>
+<p>参考：<a href="https://blog.csdn.net/elice_/article/details/84105125" target="_blank" rel="noopener">三层架构和MVC的区别</a></p>
+<pre><code>区别：
+
+    1、三层是体系结构模式，MVC是设计模式。
+    2、
+        三层：
+            表现层：controller层，展现给用户的界面。
+            业务逻辑层：service层，针对问题的操作，也是对数据层的操作处理。
+            数据访问层：dao层，直接操作数据库信息。
+
+        MVC：
+            模型：提供数据。
+            视图：页面显示交互。
+            控制器：将视图和模型对应起来。</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/SpringMVC/">SpringMVC</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SpringMVC/">SpringMVC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！博客中转载文章会注明出处，若有版权问题，请及时与我联系！谢谢！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/cxlittlecute/31e4e576.html">
+                        <span class="hidden-mobile">RocketMQ(四)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "F9tdOzRnVGCpkte3129pDX38-gzGzoHsz",
+          app_key: "1MIOqgQA8sdYyo77nd6uOXlD",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: true,
+          serverURLs: "https://f9tdozrn.lc-cn-n1-shared.com",
+        });
+      });
     }
+    createObserver(loadValine, 'vcomments');
   </script>
-
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -496,10 +632,10 @@
       }
 
       // 如果是文章，请求文章的浏览数，并自增
-      if ('false' === 'true') {
+      if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/archives/2020/07/page/4/index.html');
+          var target = decodeURI('/cxlittlecute/cf8a3b76.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -561,6 +697,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -568,7 +729,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "SpringMVC工作执行流程&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -583,6 +744,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -596,6 +772,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 

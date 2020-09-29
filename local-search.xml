@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>SpringMVC工作执行流程</title>
+    <link href="/cxlittlecute/cf8a3b76.html"/>
+    <url>/cxlittlecute/cf8a3b76.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="SpringMVC工作执行流程"><a href="#SpringMVC工作执行流程" class="headerlink" title="SpringMVC工作执行流程"></a>SpringMVC工作执行流程</h1><p>SpringMVC已经学习很长一段时间了，对于他的流程有些遗忘了，今天准备重新将它梳理一遍。</p><p>参考：<a href="https://www.cnblogs.com/hamawep789/p/10840774.html" target="_blank" rel="noopener">springmvc工作流程</a></p><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20200929091246.png" srcset="/img/loading.gif" alt=""></p><h2 id="1、工作流程"><a href="#1、工作流程" class="headerlink" title="1、工作流程"></a>1、工作流程</h2><ul><li><p>1、用户发送HTTP请求，DispatcherServlet会拦截请求。</p></li><li><p>2、DispatcherServlet首先会将请求发送给HandlerMapping(处理器映射器)。</p></li><li><p>3、处理器映射器会根据配置或注解找到想要的Handler（Controller），这样就准备运行【处理器】和【拦截器】组成的执行链了（还不能运行），并将处理器返回给前端控制器。</p></li><li><p>4、运行Handler需要对应的环境，于是DispatcherServlet又去找HandlerAdapter。</p></li><li><p>5、通过处理器适配器去运行对应的处理器和拦截器。</p></li><li><p>6、处理器执行完毕后，会返回模型和视图给处理器适配器。</p></li><li><p>7、处理器适配器再将模型和视图转发给DispatcherServlet。</p></li><li><p>8、前端控制器接收到模型和视图后，会将视图信息传递给ViewResolver（视图解析器）。</p></li><li><p>9、视图解析器接收到视图后，会判断是否使用逻辑视图。</p><pre><code>逻辑视图：    如果是逻辑视图，那么视图解析器就会解析它，返回真正视图给DispatcherServlet。    在控制器方法返回一个字符串，或者是通过 ModelAndView.setViewName(String viewName) 方法设置视图名非逻辑视图（物理视图）：    不会解析，直接通过视图渲染数据模型。    在控制器方法中直接通过 ModelAndView.setView(View v)方法设置视图对象</code></pre></li><li><p>10、前端控制器再将模型发送给View，View将模型渲染到视图上。</p></li><li><p>11、响应结果给用户</p></li></ul><h2 id="2、补充：三层架构和MVC的区别"><a href="#2、补充：三层架构和MVC的区别" class="headerlink" title="2、补充：三层架构和MVC的区别"></a>2、补充：三层架构和MVC的区别</h2><p>看到SpringMVC我就想到了这个问题，因为很多人都会把这个给弄混。于是这里就转发借鉴别人的描述来总结这个问题。</p><p>参考：<a href="https://blog.csdn.net/elice_/article/details/84105125" target="_blank" rel="noopener">三层架构和MVC的区别</a></p><pre><code>区别：    1、三层是体系结构模式，MVC是设计模式。    2、        三层：            表现层：controller层，展现给用户的界面。            业务逻辑层：service层，针对问题的操作，也是对数据层的操作处理。            数据访问层：dao层，直接操作数据库信息。        MVC：            模型：提供数据。            视图：页面显示交互。            控制器：将视图和模型对应起来。</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>SpringMVC</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>SpringMVC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>RocketMQ(四)</title>
     <link href="/cxlittlecute/31e4e576.html"/>
     <url>/cxlittlecute/31e4e576.html</url>
