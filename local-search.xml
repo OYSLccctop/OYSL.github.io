@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Netty(一)</title>
+    <link href="/cxlittlecute/73cdb1f0.html"/>
+    <url>/cxlittlecute/73cdb1f0.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Netty-一"><a href="#Netty-一" class="headerlink" title="Netty(一)"></a>Netty(一)</h1><h2 id="1、Netty的特点"><a href="#1、Netty的特点" class="headerlink" title="1、Netty的特点"></a>1、Netty的特点</h2><ul><li>1、高性能 事件驱动、异步非阻塞</li><li>2、基于NIO的客户端和服务器端的编程框架</li><li>3、稳定性和伸缩性</li></ul><h2 id="2、Netty的应用领域"><a href="#2、Netty的应用领域" class="headerlink" title="2、Netty的应用领域"></a>2、Netty的应用领域</h2><ul><li><p>1、高性能领域</p></li><li><p>2、多线程并发领域  </p><pre><code>react模型（多路复用器、事件分发器、事件处理器）    （1）单线程模型（所有IO都由一个线程完成，多路复用）    （2）多线程模型    （3）主从多线程模型（多个reactor线程，每个reactor都在自己单独的线程中执行，如果是多核就可以同时响应多个客户端的请求）</code></pre></li><li><p>3、异步通信领域</p></li></ul><h2 id="3、Java中的IO通信"><a href="#3、Java中的IO通信" class="headerlink" title="3、Java中的IO通信"></a>3、Java中的IO通信</h2><h3 id="3-1、BIO通信（阻塞同步IO）"><a href="#3-1、BIO通信（阻塞同步IO）" class="headerlink" title="3.1、BIO通信（阻塞同步IO）"></a>3.1、BIO通信（阻塞同步IO）</h3><h4 id="3-1-1、BIO通信特点"><a href="#3-1-1、BIO通信特点" class="headerlink" title="3.1.1、BIO通信特点"></a>3.1.1、BIO通信特点</h4><ul><li><p>1、由一个acceptor线程负责监听客户端的连接，收到请求连接之后，为每个客户端创建一个新的线程进行链路处理，处理完成后通过输出流，返回应答给客户端。</p></li><li><p>2、一请求一应答</p></li><li><p>3、缺乏弹性伸缩能力。</p></li><li><p>4、M请求M应答</p><pre><code>当客户端并发访问量增加后，服务端的线程数也同步增加。线程是宝贵的资源，当线程数过多后，系统的性能将极具下降。就会导致创建新线程失败、进程宕机，</code></pre></li></ul><h4 id="3-1-1、BIO通信模型图"><a href="#3-1-1、BIO通信模型图" class="headerlink" title="3.1.1、BIO通信模型图"></a>3.1.1、BIO通信模型图</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201006215431.png" srcset="/img/loading.gif" alt=""></p><h3 id="3-2、伪异步IO通信（阻塞同步IO）"><a href="#3-2、伪异步IO通信（阻塞同步IO）" class="headerlink" title="3.2、伪异步IO通信（阻塞同步IO）"></a>3.2、伪异步IO通信（阻塞同步IO）</h3><h4 id="3-2-1、伪异步IO通信特点"><a href="#3-2-1、伪异步IO通信特点" class="headerlink" title="3.2.1、伪异步IO通信特点"></a>3.2.1、伪异步IO通信特点</h4><ul><li><p>1、线程池负责连接处理</p></li><li><p>2、M请求N应答</p><pre><code>M个客户端接入，会创建有N个线程的线程池进行处理。</code></pre></li><li><p>3、线程池阻塞</p><pre><code>大量客户端访问时，可能会造成线程池阻塞。</code></pre></li></ul><h5 id="3-2-2、伪异步IO通信模型图"><a href="#3-2-2、伪异步IO通信模型图" class="headerlink" title="3.2.2、伪异步IO通信模型图"></a>3.2.2、伪异步IO通信模型图</h5><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201006215925.png" srcset="/img/loading.gif" alt=""></p><p>将客户端的socket封装为一个Run Task投递到后端的线程池中进行处理。（由线程池统一处理客户端的请求）</p><p>JDK中的线程池负责维护一个消息队列和N个活跃的线程，服务端不再为了每一个客户端创建一个独立的线程。</p><h3 id="3-3、NIO通信（非阻塞同步IO）"><a href="#3-3、NIO通信（非阻塞同步IO）" class="headerlink" title="3.3、NIO通信（非阻塞同步IO）"></a>3.3、NIO通信（非阻塞同步IO）</h3><h4 id="3-3-1、NIO通信特点"><a href="#3-3-1、NIO通信特点" class="headerlink" title="3.3.1、NIO通信特点"></a>3.3.1、NIO通信特点</h4><ul><li><p>1、缓冲区Buffer</p><pre><code>任何时候访问NIO中的数据都是通过缓冲区进行操作。</code></pre></li><li><p>2、通道Channel</p><pre><code>通道是双向的，类比自来水管道。</code></pre></li><li><p>3、多路复用器Selector</p><pre><code>Java NIO通信的基础，不断轮训，注册在它上面的Channel，如果某个Channel上发生读或者写事件，这个Channel就会被轮询出来，通过SelectKey获取就绪Channel的集合，进行后续的IO操作。JDK使用epoll代替传统Selector，所以没有传统连接数的限制。</code></pre></li><li><p>4、M请求1应答</p></li></ul><h3 id="3-4、AIO通信（非阻塞非同步IO）"><a href="#3-4、AIO通信（非阻塞非同步IO）" class="headerlink" title="3.4、AIO通信（非阻塞非同步IO）"></a>3.4、AIO通信（非阻塞非同步IO）</h3><h4 id="3-4-1、AIO通信特点"><a href="#3-4-1、AIO通信特点" class="headerlink" title="3.4.1、AIO通信特点"></a>3.4.1、AIO通信特点</h4><ul><li><p>1、连接注册读写事件和回调函数</p></li><li><p>2、读写方法异步</p></li><li><p>3、主动通知程序</p></li><li><p>4、M请求0应答</p><p>  AIO的异步套接字通道是真正的异步非阻塞IO，不需要多路复用器对通道进行轮询操作，<br>  就可以实现异步读写，简化了NIO的编程模型。</p></li></ul><h4 id="3-4-2、AIO获取操作结果的方式"><a href="#3-4-2、AIO获取操作结果的方式" class="headerlink" title="3.4.2、AIO获取操作结果的方式"></a>3.4.2、AIO获取操作结果的方式</h4><ul><li>1、java.util.concurrent.Future类表示异步操作的结果。</li><li>2、执行异步操作的时候，传入java.nio.channels.CompletionHandler接口的实现类，作为操作完成回调。</li></ul><h2 id="4、四种IO对比"><a href="#4、四种IO对比" class="headerlink" title="4、四种IO对比"></a>4、四种IO对比</h2><p>可以从以下几个方面进行对比：</p><ul><li><p>1、客户端个数</p></li><li><p>2、IO类型</p></li><li><p>3、API使用难度</p></li><li><p>4、调试难度</p></li><li><p>5、可靠性</p></li><li><p>6、吞吐量</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Netty</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Netty</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>SpringMVC工作执行流程</title>
     <link href="/cxlittlecute/cf8a3b76.html"/>
     <url>/cxlittlecute/cf8a3b76.html</url>
