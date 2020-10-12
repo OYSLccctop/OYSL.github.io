@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>计算机网络系列（十）-传输层（三）</title>
+    <link href="/cxlittlecute/43d83980.html"/>
+    <url>/cxlittlecute/43d83980.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（十）-传输层（三）-可靠数据传输"><a href="#计算机网络系列（十）-传输层（三）-可靠数据传输" class="headerlink" title="计算机网络系列（十）-传输层（三）-可靠数据传输"></a>计算机网络系列（十）-传输层（三）-可靠数据传输</h1><p>可靠指的是不错位、不丢失、不乱序数据的传输。</p><p>信道的不可靠特性决定了可靠数据传输（rdt）的复杂性。</p><p>从提供服务角度：可靠数据传输是依赖于一个可靠的信道进行传输。</p><p>从服务实现角度：底层是一个不可靠信道，发送端和接收端通过可靠数据传输协议共同实现可靠数据传输。</p><h2 id="1、可靠数据传输协议的基本结构：接口"><a href="#1、可靠数据传输协议的基本结构：接口" class="headerlink" title="1、可靠数据传输协议的基本结构：接口"></a>1、可靠数据传输协议的基本结构：接口</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012081414.png" srcset="/img/loading.gif" alt=""></p><ul><li><p>rdt_send():被上层应用调用，并将数据交给rdt，以发送给对方。</p><pre><code>注意：这里是单向箭头，表明上层应用调用一次就不管了，数据已经交给TCP了）</code></pre></li><li><p>udt_send():被rdt调用，使数据能够在不可靠信道（IP协议）上进行传输。</p></li><li><p>rdt_rcv():当数据包到达接收方信道时，被调用。</p></li><li><p>deliver_data():被rdt调用，向上层应用交付数据。</p><pre><code>注意：这里也是单向箭头，就是说底层的传输层协议把所有事情都做好后，才把数据正确的交付给上层应用。</code></pre></li></ul><p>也是就是说数据的传输是单向的，而控制信息是双向的。</p><hr><h2 id="2、Rdt1-0：可靠信道上的可靠数据传输"><a href="#2、Rdt1-0：可靠信道上的可靠数据传输" class="headerlink" title="2、Rdt1.0：可靠信道上的可靠数据传输"></a>2、Rdt1.0：可靠信道上的可靠数据传输</h2><p>特点：</p><ul><li>1、底层的信道是完全可靠的。<ul><li>不会发生错误</li><li>不会丢弃分组</li><li>不会乱序</li></ul></li><li>2、发送方和接收方的状态机（FSM，刻画网络协议）独立。</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012085319.png" srcset="/img/loading.gif" alt=""></p><hr><h2 id="3、Rdt2-0-产生位错误的信道"><a href="#3、Rdt2-0-产生位错误的信道" class="headerlink" title="3、Rdt2.0:产生位错误的信道"></a>3、Rdt2.0:产生位错误的信道</h2><p>特点：</p><ul><li>1、可能信道错误。底层信道可能会翻转，分组中的位(bit)<ul><li>前面我们讲到了，可以利用【校验和】检测位错误。</li></ul></li></ul><h3 id="3-1、思考：如何从错误中恢复？"><a href="#3-1、思考：如何从错误中恢复？" class="headerlink" title="3.1、思考：如何从错误中恢复？"></a>3.1、思考：如何从错误中恢复？</h3><p>之前发送方发送数据后，并不知道接收方是否正确接收到了数据。<br>所以我们需要引入一种机制来显示确认自己已经收到了。</p><ul><li><p>1、确认机制（Acknowledgements,ACK）：接收方显示地告知发送方分组已正确接收。</p></li><li><p>2、NAK：接收方显式地告知发送方分组有错误。</p></li><li><p>3、发送方收到NAK后，【重传】分组。</p></li></ul><pre><code>注意：基于这种重传机制的rdt协议称为ARQ(Automatic Repeat reQuest)协议。</code></pre><h3 id="3-2、Rdt2-0中新引入的机制"><a href="#3-2、Rdt2-0中新引入的机制" class="headerlink" title="3.2、Rdt2.0中新引入的机制"></a>3.2、Rdt2.0中新引入的机制</h3><ul><li>1、差错检测</li><li>2、接收方反馈控制信息：ACK/NAK</li><li>3、重传</li></ul><h3 id="3-3、FSM规约"><a href="#3-3、FSM规约" class="headerlink" title="3.3、FSM规约"></a>3.3、FSM规约</h3><ul><li>发送方状态机</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012092121.png" srcset="/img/loading.gif" alt=""></p><ul><li>接收方状态机</li></ul><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012131120.png" srcset="/img/loading.gif" alt=""></p><hr><h2 id="4、Rdt2-1和2-2"><a href="#4、Rdt2-1和2-2" class="headerlink" title="4、Rdt2.1和2.2"></a>4、Rdt2.1和2.2</h2><h3 id="4-1、回顾Rdt2-0的缺陷"><a href="#4-1、回顾Rdt2-0的缺陷" class="headerlink" title="4.1、回顾Rdt2.0的缺陷"></a>4.1、回顾Rdt2.0的缺陷</h3><ul><li>ACK或者NAK消息发生错误或者被破坏。</li></ul><p>解决：</p><p>如果ACK/NAK坏掉就让发送方重传，但是会产生【重复分组】的问题，为了解决这个问题，那么就可以使用【序列号】，使发送方给每个分组增加序列号。（接收方会丢掉重复的分组）</p><p>依然使用停等机制，发一个分组，要等到接收方的回应。</p><h3 id="4-2、Rdt2-1"><a href="#4-2、Rdt2-1" class="headerlink" title="4.2、Rdt2.1"></a>4.2、Rdt2.1</h3><h4 id="4-2-1、Rdt2-1：发送方，应对ACK-NAK破坏"><a href="#4-2-1、Rdt2-1：发送方，应对ACK-NAK破坏" class="headerlink" title="4.2.1、Rdt2.1：发送方，应对ACK/NAK破坏"></a>4.2.1、Rdt2.1：发送方，应对ACK/NAK破坏</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012141124.png" srcset="/img/loading.gif" alt=""></p><h4 id="4-2-2、Rdt2-1：接收方，应对ACK-NAK破坏"><a href="#4-2-2、Rdt2-1：接收方，应对ACK-NAK破坏" class="headerlink" title="4.2.2、Rdt2.1：接收方，应对ACK/NAK破坏"></a>4.2.2、Rdt2.1：接收方，应对ACK/NAK破坏</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012184231.png" srcset="/img/loading.gif" alt=""></p><h4 id="4-2-3、Rtd2-1-vs-Rdt2-0"><a href="#4-2-3、Rtd2-1-vs-Rdt2-0" class="headerlink" title="4.2.3、Rtd2.1 vs Rdt2.0"></a>4.2.3、Rtd2.1 vs Rdt2.0</h4><ul><li><p>发送方：</p><ul><li>为每个分组增加序列号</li><li>由于是停等协议，所以两个序列号（0，1）就足够了。</li><li>需要校验ACK/NAK消息是否发生错误。</li><li>状态数量翻倍。</li></ul></li><li><p>接收方：</p><ul><li>需要判断分组是否重复，同时是否是期望收到的分组序列号。</li></ul></li></ul><hr><h3 id="4-3、Rdt2-2：无NAK消息协议"><a href="#4-3、Rdt2-2：无NAK消息协议" class="headerlink" title="4.3、Rdt2.2：无NAK消息协议"></a>4.3、Rdt2.2：无NAK消息协议</h3><h4 id="4-3-1、实现方式"><a href="#4-3-1、实现方式" class="headerlink" title="4.3.1、实现方式"></a>4.3.1、实现方式</h4><p>接收方永远通过ACK告知【最后一个被正确接收的分组】，在ACK消息中显示地加入被确认分组的序列号。</p><p>发送方收到重复ACK后，采取与收到NAK一样的动作，也就是重传当前分组。</p><h4 id="4-3-2、FSM片段"><a href="#4-3-2、FSM片段" class="headerlink" title="4.3.2、FSM片段"></a>4.3.2、FSM片段</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012185854.png" srcset="/img/loading.gif" alt=""></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>计算机网络系列（十）-传输层（二）</title>
+    <link href="/cxlittlecute/ec69ad2.html"/>
+    <url>/cxlittlecute/ec69ad2.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机网络系列（十）-传输层（二）-UDP"><a href="#计算机网络系列（十）-传输层（二）-UDP" class="headerlink" title="计算机网络系列（十）-传输层（二）- UDP"></a>计算机网络系列（十）-传输层（二）- UDP</h1><p>User Datagram Protocol用户数据报协议。将IP层服务暴露给应用层。</p><h2 id="1、UDP协议的特点"><a href="#1、UDP协议的特点" class="headerlink" title="1、UDP协议的特点"></a>1、UDP协议的特点</h2><ul><li><p>1、它是基于Internet IP协议。（没有做太多的扩展）</p><ul><li>它做了多路复用和分用</li><li>简单的错误校验（校验和，没有错误恢复）</li></ul></li><li><p>2、它提供的是一个”Best effort”（尽力而为）的服务模型，因为UDP段可能会</p><ul><li>丢失</li><li>非排序到达</li></ul></li><li><p>3、无连接</p><ul><li>UDP发送方和接收方之间不需要握手</li><li>每个UDP段的处理独立于其他段</li></ul></li></ul><h2 id="2、UDP的价值"><a href="#2、UDP的价值" class="headerlink" title="2、UDP的价值"></a>2、UDP的价值</h2><ul><li>1、无需建立连接（减少延迟）</li><li>2、实现简单，不需要维护连接的状态</li><li>3、头部开销小（8个字节）</li><li>4、没有拥塞控制，上层应用可以更好地控制发送时间和速率。</li></ul><h2 id="3、UDP的应用"><a href="#3、UDP的应用" class="headerlink" title="3、UDP的应用"></a>3、UDP的应用</h2><ul><li>1、常用语流媒体应用<ul><li>容忍丢失</li><li>速率敏感要求高</li></ul></li><li>2、DNS</li><li>3、SNMP</li></ul><h2 id="4、能否使UDP变得可靠？"><a href="#4、能否使UDP变得可靠？" class="headerlink" title="4、能否使UDP变得可靠？"></a>4、能否使UDP变得可靠？</h2><ul><li>1、在应用层增加可靠性机制</li><li>2、使用特定的错误恢复机制</li></ul><h2 id="5、UDP报文段结构"><a href="#5、UDP报文段结构" class="headerlink" title="5、UDP报文段结构"></a>5、UDP报文段结构</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012072249.png" srcset="/img/loading.gif" alt=""></p><h3 id="5-1、UDP校验和（checksum）"><a href="#5-1、UDP校验和（checksum）" class="headerlink" title="5.1、UDP校验和（checksum）"></a>5.1、UDP校验和（checksum）</h3><p>目的：检测UDP段在传输中是否发生错误（如位翻转）</p><p>过程：</p><ul><li><p>发送方（计算校验和）</p><pre><code>1、将段的内容视为16-bit整数。2、进行校验和计算：计算所有整数的和，进位加在和的后面，将得到的值按位求反，得到校验和。（如果有溢出进位，就加到和的最后，也就是说最高位的进位必须要加进去）3、发送方将校验和放入校验和字段中。</code></pre></li><li><p>接收方（利用校验和）</p><pre><code>1、计算所收到的段的校验和。2、将其与校验和字段进行对比。    - 不相等：检测出错误。    - 相等：只是单纯的没有检测出错误，但是可能有错误。          （有两个位翻转，可能无法检测出来）</code></pre></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>计算机网络系列（十）-传输层（一）</title>
     <link href="/cxlittlecute/3ed0760a.html"/>
     <url>/cxlittlecute/3ed0760a.html</url>
