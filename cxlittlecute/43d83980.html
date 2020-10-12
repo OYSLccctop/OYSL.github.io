@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      958 字
+      1k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      11
        分钟
     </span>
   
@@ -317,6 +317,17 @@
 <h3 id="4-3、Rdt2-2：无NAK消息协议"><a href="#4-3、Rdt2-2：无NAK消息协议" class="headerlink" title="4.3、Rdt2.2：无NAK消息协议"></a>4.3、Rdt2.2：无NAK消息协议</h3><h4 id="4-3-1、实现方式"><a href="#4-3-1、实现方式" class="headerlink" title="4.3.1、实现方式"></a>4.3.1、实现方式</h4><p>接收方永远通过ACK告知【最后一个被正确接收的分组】，在ACK消息中显示地加入被确认分组的序列号。</p>
 <p>发送方收到重复ACK后，采取与收到NAK一样的动作，也就是重传当前分组。</p>
 <h4 id="4-3-2、FSM片段"><a href="#4-3-2、FSM片段" class="headerlink" title="4.3.2、FSM片段"></a>4.3.2、FSM片段</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012185854.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h3 id="4-4、Rdt3-0"><a href="#4-4、Rdt3-0" class="headerlink" title="4.4、Rdt3.0"></a>4.4、Rdt3.0</h3><p>实际中不仅可能发生位错误，也可能发生丢失分组（发送中途丢失ACK或者分组）。</p>
+<h4 id="4-4-1、过程"><a href="#4-4-1、过程" class="headerlink" title="4.4.1、过程"></a>4.4.1、过程</h4><ul>
+<li>发送方：定时器</li>
+</ul>
+<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012191323.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="4-4-2、缺点"><a href="#4-4-2、缺点" class="headerlink" title="4.4.2、缺点"></a>4.4.2、缺点</h4><ul>
+<li>性能差</li>
+<li>网络协议可能限制物理资源的利用</li>
+</ul>
+<h4 id="4-4-3、Rdt3-0：停等操作"><a href="#4-4-3、Rdt3-0：停等操作" class="headerlink" title="4.4.3、Rdt3.0：停等操作"></a>4.4.3、Rdt3.0：停等操作</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012203237.png" srcset="/img/loading.gif" alt=""></p>
 
             </article>
             <hr>
