@@ -17,7 +17,7 @@
   <meta name="description" content="OYSL&#39;s blog">
   <meta name="author" content="OYSL">
   <meta name="keywords" content="">
-  <title>计算机网络系列（十）-传输层（三） - OYSL&#39;s blog</title>
+  <title>Java代理模式 - OYSL&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -164,8 +164,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-10-12 07:56">
-      2020年10月12日 早上
+    <time datetime="2020-10-13 11:02">
+      2020年10月13日 上午
     </time>
   </div>
 
@@ -175,7 +175,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.3k 字
     </span>
   
 
@@ -185,7 +185,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      17
        分钟
     </span>
   
@@ -230,104 +230,201 @@
               </p>
             
             <article class="markdown-body">
-              <h1 id="计算机网络系列（十）-传输层（三）-可靠数据传输"><a href="#计算机网络系列（十）-传输层（三）-可靠数据传输" class="headerlink" title="计算机网络系列（十）-传输层（三）-可靠数据传输"></a>计算机网络系列（十）-传输层（三）-可靠数据传输</h1><p>可靠指的是不错位、不丢失、不乱序数据的传输。</p>
-<p>信道的不可靠特性决定了可靠数据传输（rdt）的复杂性。</p>
-<p>从提供服务角度：可靠数据传输是依赖于一个可靠的信道进行传输。</p>
-<p>从服务实现角度：底层是一个不可靠信道，发送端和接收端通过可靠数据传输协议共同实现可靠数据传输。</p>
-<h2 id="1、可靠数据传输协议的基本结构：接口"><a href="#1、可靠数据传输协议的基本结构：接口" class="headerlink" title="1、可靠数据传输协议的基本结构：接口"></a>1、可靠数据传输协议的基本结构：接口</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012081414.png" srcset="/img/loading.gif" alt=""></p>
+              <h1 id="Java代理模式"><a href="#Java代理模式" class="headerlink" title="Java代理模式"></a>Java代理模式</h1><p>本篇开始回顾总结Java中常见的三种代理模式：</p>
 <ul>
-<li><p>rdt_send():被上层应用调用，并将数据交给rdt，以发送给对方。</p>
-<pre><code>注意：这里是单向箭头，表明上层应用调用一次就不管了，数据已经交给TCP了）</code></pre></li>
-<li><p>udt_send():被rdt调用，使数据能够在不可靠信道（IP协议）上进行传输。</p>
-</li>
-<li><p>rdt_rcv():当数据包到达接收方信道时，被调用。</p>
-</li>
-<li><p>deliver_data():被rdt调用，向上层应用交付数据。</p>
-<pre><code>注意：这里也是单向箭头，就是说底层的传输层协议把所有事情都做好后，
-才把数据正确的交付给上层应用。</code></pre></li>
+<li>正向代理</li>
+<li>动态代理</li>
+<li>CGLib代理</li>
 </ul>
-<p>也是就是说数据的传输是单向的，而控制信息是双向的。</p>
+<h2 id="1、代理"><a href="#1、代理" class="headerlink" title="1、代理"></a>1、代理</h2><p>首先我们来理解一下代理是什么意思，代理就通过另一个入口的方式对一个目标对象进行访问。</p>
+<p>我们可以编写一个代理类，代理目标对象，这样做的目的就是在不修改目标对象的前提下，增强目标对象的功能。</p>
+<h2 id="2、关键点"><a href="#2、关键点" class="headerlink" title="2、关键点"></a>2、关键点</h2><p>用户调用代理对象，代理对象进行目标对象的扩展，并且会调用目标对象。</p>
+<h2 id="3、静态代理"><a href="#3、静态代理" class="headerlink" title="3、静态代理"></a>3、静态代理</h2><h3 id="3-1、静态代理是什么"><a href="#3-1、静态代理是什么" class="headerlink" title="3.1、静态代理是什么"></a>3.1、静态代理是什么</h3><p>静态代理指的是我们在使用时，需要定义接口或者父类，并且让代理对象和被代理对象共同实现相同的接口或者继承相同的父类。</p>
+<h3 id="3-2、举例"><a href="#3-2、举例" class="headerlink" title="3.2、举例"></a>3.2、举例</h3><p>我们通过静态代理来，增加一个人吃事件发生的前后动作。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Humen</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">eat</span><span class="hljs-params">(String food)</span></span>;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HumenImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Humen</span> </span>&#123;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">eat</span><span class="hljs-params">(String food)</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"eat---"</span>+food);
+    &#125;
+&#125;</code></pre>
+
+<p>编写静态代理类，增强HumenImpl功能。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HumenProxy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Humen</span></span>&#123;
+    <span class="hljs-keyword">private</span> Humen humen;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HumenProxy</span><span class="hljs-params">()</span></span>&#123;
+        humen = <span class="hljs-keyword">new</span> HumenImpl(); <span class="hljs-comment">// 被代理类的实例化语句</span>
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">eat</span><span class="hljs-params">(String food)</span> </span>&#123;
+        before();
+        humen.eat(food);
+        after();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">after</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"swap"</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">before</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"cook"</span>);
+    &#125;
+
+    <span class="hljs-comment">// 测试</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        Humen humen = <span class="hljs-keyword">new</span> HumenProxy();
+        humen.eat(<span class="hljs-string">"rice"</span>);
+    &#125;
+&#125;</code></pre>
+
+<h3 id="3-3、静态代理优缺点"><a href="#3-3、静态代理优缺点" class="headerlink" title="3.3、静态代理优缺点"></a>3.3、静态代理优缺点</h3><p>优点：在不改变，被代理对象的前提下，增加了被代理的功能。</p>
+<p>缺点：总是需要通过一个代理类去实现接口，但是调用类的调用逻辑是相似的。同时接口改变时，我们被代理类也需要改变。</p>
 <hr>
-<h2 id="2、Rdt1-0：可靠信道上的可靠数据传输"><a href="#2、Rdt1-0：可靠信道上的可靠数据传输" class="headerlink" title="2、Rdt1.0：可靠信道上的可靠数据传输"></a>2、Rdt1.0：可靠信道上的可靠数据传输</h2><p>特点：</p>
+<h2 id="4、动态代理"><a href="#4、动态代理" class="headerlink" title="4、动态代理"></a>4、动态代理</h2><p>动态代理的提出是为了解决静态代理对象必须实现接口中的所有方法的问题。</p>
+<h3 id="4-1、动态代理是什么"><a href="#4-1、动态代理是什么" class="headerlink" title="4.1、动态代理是什么"></a>4.1、动态代理是什么</h3><p>JDK动态代理是JDK中生成代理对象的API,代理类所在的包为:java.lang.reflect.Proxy。</p>
+<p>代理类只需要实现使用newProxyInstance():</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Object <span class="hljs-title">newProxyInstance</span><span class="hljs-params">(ClassLoader loader, Class&lt;?&gt;[] interfaces,InvocationHandler h)</span></span></code></pre>
 <ul>
-<li>1、底层的信道是完全可靠的。<ul>
-<li>不会发生错误</li>
-<li>不会丢弃分组</li>
-<li>不会乱序</li>
-</ul>
+<li><p>ClassLoader loader:指目标对象使用类加载器,获取加载器的方法是固定的:</p>
+<pre><code>target.getClass().getClassLoader()</code></pre></li>
+<li><p>Class&lt;?&gt;[] interfaces:指的是目标对象的接口类型,获取加载器的方式也是固定的：</p>
+<pre><code>target.getClass().getInterfaces()</code></pre></li>
+<li><p>InvocationHandler h:事件处理。会触发时间处理器的方法，将执行目标对象的方法作为参数传入。</p>
 </li>
-<li>2、发送方和接收方的状态机（FSM，刻画网络协议）独立。</li>
 </ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012085319.png" srcset="/img/loading.gif" alt=""></p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProxyFactory</span> </span>&#123;
+    <span class="hljs-comment">//维护一个目标对象</span>
+    <span class="hljs-keyword">private</span> Object target;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProxyFactory</span><span class="hljs-params">(Object target)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.target = target;
+    &#125;
+
+    <span class="hljs-comment">//给目标对象生成代理对象</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getProxyInstance</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> Proxy.newProxyInstance(
+                target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(),
+                <span class="hljs-keyword">new</span> InvocationHandler() &#123;
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">invoke</span><span class="hljs-params">(Object proxy, Method method, Object[] args)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+                        System.out.println(<span class="hljs-string">"开始事务"</span>);
+                        <span class="hljs-comment">//执行目标对象方法</span>
+                        Object returnValue = method.invoke(target, args);
+                        System.out.println(<span class="hljs-string">"提交事务"</span>);
+                        <span class="hljs-keyword">return</span> returnValue;
+                    &#125;
+                &#125;
+        );
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-comment">// 目标对象</span>
+        Humen target = <span class="hljs-keyword">new</span> HumenImpl();
+        <span class="hljs-comment">// 代理对象</span>
+        Humen proxy = (Humen) <span class="hljs-keyword">new</span> ProxyFactory(target).getProxyInstance();
+        <span class="hljs-comment">// 执行方法</span>
+        proxy.eat(<span class="hljs-string">"rice"</span>);
+    &#125;
+&#125;</code></pre>
+
+<h3 id="4-2、动态代理优缺点"><a href="#4-2、动态代理优缺点" class="headerlink" title="4.2、动态代理优缺点"></a>4.2、动态代理优缺点</h3><p>优点：代理对象不需要事先接口，接口改变时，代理类不用改变。</p>
+<p>缺点：接口改变时，被代理类需要改变。被代理类必须实现一个接口。</p>
 <hr>
-<h2 id="3、Rdt2-0-产生位错误的信道"><a href="#3、Rdt2-0-产生位错误的信道" class="headerlink" title="3、Rdt2.0:产生位错误的信道"></a>3、Rdt2.0:产生位错误的信道</h2><p>特点：</p>
+<h2 id="5、CGLib动态代理"><a href="#5、CGLib动态代理" class="headerlink" title="5、CGLib动态代理"></a>5、CGLib动态代理</h2><p>CGLib动态代理也称为子类代理，它是在内存中构建一个子类对象，从而实现对目标对象功能的扩展。并且他也是一个强大高性能的代码生成包。</p>
+<h3 id="5-1、CGLib应用"><a href="#5-1、CGLib应用" class="headerlink" title="5.1、CGLib应用"></a>5.1、CGLib应用</h3><ul>
+<li>1、对于想代理而没有实现接口的类。可以使用CGLib。</li>
+<li>2、由于它可以在运行期扩展Java类或者实现Java接口，它广泛的应用于Spring AOP等AOP框架中。</li>
+</ul>
+<h3 id="5-2、CGLib举例"><a href="#5-2、CGLib举例" class="headerlink" title="5.2、CGLib举例"></a>5.2、CGLib举例</h3><ul>
+<li>1、引入Jar包</li>
+</ul>
+<pre><code class="hljs java">&lt;dependency&gt;
+    &lt;groupId&gt;cglib&lt;/groupId&gt;
+    &lt;artifactId&gt;cglib&lt;/artifactId&gt;
+    &lt;version&gt;2.2.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
 <ul>
-<li>1、可能信道错误。底层信道可能会翻转，分组中的位(bit)<ul>
-<li>前面我们讲到了，可以利用【校验和】检测位错误。</li>
+<li>2、构建CGlib子类工厂</li>
 </ul>
-</li>
-</ul>
-<h3 id="3-1、思考：如何从错误中恢复？"><a href="#3-1、思考：如何从错误中恢复？" class="headerlink" title="3.1、思考：如何从错误中恢复？"></a>3.1、思考：如何从错误中恢复？</h3><p>之前发送方发送数据后，并不知道接收方是否正确接收到了数据。<br>所以我们需要引入一种机制来显示确认自己已经收到了。</p>
-<ul>
-<li><p>1、确认机制（Acknowledgements,ACK）：接收方显示地告知发送方分组已正确接收。</p>
-</li>
-<li><p>2、NAK：接收方显式地告知发送方分组有错误。</p>
-</li>
-<li><p>3、发送方收到NAK后，【重传】分组。</p>
-</li>
-</ul>
-<pre><code>注意：基于这种重传机制的rdt协议称为ARQ(Automatic Repeat reQuest)协议。</code></pre><h3 id="3-2、Rdt2-0中新引入的机制"><a href="#3-2、Rdt2-0中新引入的机制" class="headerlink" title="3.2、Rdt2.0中新引入的机制"></a>3.2、Rdt2.0中新引入的机制</h3><ul>
-<li>1、差错检测</li>
-<li>2、接收方反馈控制信息：ACK/NAK</li>
-<li>3、重传</li>
-</ul>
-<h3 id="3-3、FSM规约"><a href="#3-3、FSM规约" class="headerlink" title="3.3、FSM规约"></a>3.3、FSM规约</h3><ul>
-<li>发送方状态机</li>
-</ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012092121.png" srcset="/img/loading.gif" alt=""></p>
-<ul>
-<li>接收方状态机</li>
-</ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012131120.png" srcset="/img/loading.gif" alt=""></p>
-<hr>
-<h2 id="4、Rdt2-1和2-2"><a href="#4、Rdt2-1和2-2" class="headerlink" title="4、Rdt2.1和2.2"></a>4、Rdt2.1和2.2</h2><h3 id="4-1、回顾Rdt2-0的缺陷"><a href="#4-1、回顾Rdt2-0的缺陷" class="headerlink" title="4.1、回顾Rdt2.0的缺陷"></a>4.1、回顾Rdt2.0的缺陷</h3><ul>
-<li>ACK或者NAK消息发生错误或者被破坏。</li>
-</ul>
-<p>解决：</p>
-<p>如果ACK/NAK坏掉就让发送方重传，但是会产生【重复分组】的问题，为了解决这个问题，那么就可以使用【序列号】，使发送方给每个分组增加序列号。（接收方会丢掉重复的分组）</p>
-<p>依然使用停等机制，发一个分组，要等到接收方的回应。</p>
-<h3 id="4-2、Rdt2-1"><a href="#4-2、Rdt2-1" class="headerlink" title="4.2、Rdt2.1"></a>4.2、Rdt2.1</h3><h4 id="4-2-1、Rdt2-1：发送方，应对ACK-NAK破坏"><a href="#4-2-1、Rdt2-1：发送方，应对ACK-NAK破坏" class="headerlink" title="4.2.1、Rdt2.1：发送方，应对ACK/NAK破坏"></a>4.2.1、Rdt2.1：发送方，应对ACK/NAK破坏</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012141124.png" srcset="/img/loading.gif" alt=""></p>
-<h4 id="4-2-2、Rdt2-1：接收方，应对ACK-NAK破坏"><a href="#4-2-2、Rdt2-1：接收方，应对ACK-NAK破坏" class="headerlink" title="4.2.2、Rdt2.1：接收方，应对ACK/NAK破坏"></a>4.2.2、Rdt2.1：接收方，应对ACK/NAK破坏</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012184231.png" srcset="/img/loading.gif" alt=""></p>
-<h4 id="4-2-3、Rtd2-1-vs-Rdt2-0"><a href="#4-2-3、Rtd2-1-vs-Rdt2-0" class="headerlink" title="4.2.3、Rtd2.1 vs Rdt2.0"></a>4.2.3、Rtd2.1 vs Rdt2.0</h4><ul>
-<li><p>发送方：</p>
-<ul>
-<li>为每个分组增加序列号</li>
-<li>由于是停等协议，所以两个序列号（0，1）就足够了。</li>
-<li>需要校验ACK/NAK消息是否发生错误。</li>
-<li>状态数量翻倍。</li>
-</ul>
-</li>
-<li><p>接收方：</p>
-<ul>
-<li>需要判断分组是否重复，同时是否是期望收到的分组序列号。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="4-3、Rdt2-2：无NAK消息协议"><a href="#4-3、Rdt2-2：无NAK消息协议" class="headerlink" title="4.3、Rdt2.2：无NAK消息协议"></a>4.3、Rdt2.2：无NAK消息协议</h3><h4 id="4-3-1、实现方式"><a href="#4-3-1、实现方式" class="headerlink" title="4.3.1、实现方式"></a>4.3.1、实现方式</h4><p>接收方永远通过ACK告知【最后一个被正确接收的分组】，在ACK消息中显示地加入被确认分组的序列号。</p>
-<p>发送方收到重复ACK后，采取与收到NAK一样的动作，也就是重传当前分组。</p>
-<h4 id="4-3-2、FSM片段"><a href="#4-3-2、FSM片段" class="headerlink" title="4.3.2、FSM片段"></a>4.3.2、FSM片段</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012185854.png" srcset="/img/loading.gif" alt=""></p>
-<hr>
-<h3 id="4-4、Rdt3-0"><a href="#4-4、Rdt3-0" class="headerlink" title="4.4、Rdt3.0"></a>4.4、Rdt3.0</h3><p>实际中不仅可能发生位错误，也可能发生丢失分组（发送中途丢失ACK或者分组）。</p>
-<h4 id="4-4-1、过程"><a href="#4-4-1、过程" class="headerlink" title="4.4.1、过程"></a>4.4.1、过程</h4><ul>
-<li>发送方：定时器</li>
-</ul>
-<p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012191323.png" srcset="/img/loading.gif" alt=""></p>
-<h4 id="4-4-2、缺点"><a href="#4-4-2、缺点" class="headerlink" title="4.4.2、缺点"></a>4.4.2、缺点</h4><ul>
-<li>性能差</li>
-<li>网络协议可能限制物理资源的利用</li>
-</ul>
-<h4 id="4-4-3、Rdt3-0：停等操作"><a href="#4-4-3、Rdt3-0：停等操作" class="headerlink" title="4.4.3、Rdt3.0：停等操作"></a>4.4.3、Rdt3.0：停等操作</h4><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201012203237.png" srcset="/img/loading.gif" alt=""></p>
+<p>实现方式一：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CGLibProxy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">MethodInterceptor</span> </span>&#123;
+    <span class="hljs-comment">// 给目标对象创建代理对象</span>
+    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">getProxy</span><span class="hljs-params">(Class&lt;T&gt; cls)</span></span>&#123;
+        <span class="hljs-keyword">return</span> (T) Enhancer.create(cls,<span class="hljs-keyword">this</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">intercept</span><span class="hljs-params">(Object o, Method method, Object[] objects, MethodProxy methodProxy)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+
+        before();
+        methodProxy.invokeSuper(o,objects);
+        after();
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">after</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"cook"</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">before</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"swap"</span>);
+    &#125;
+
+    <span class="hljs-comment">// 测试</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        CGLibProxy cgLibProxy = <span class="hljs-keyword">new</span> CGLibProxy();
+        HumenImpl proxy = cgLibProxy.getProxy(HumenImpl<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        proxy.eat(<span class="hljs-string">"rice"</span>);
+
+    &#125;
+&#125;</code></pre>
+
+<p>实现方式二：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProxyFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">MethodInterceptor</span> </span>&#123;
+    <span class="hljs-comment">// 目标对象</span>
+    <span class="hljs-keyword">private</span> Object target;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProxyFactory</span><span class="hljs-params">(Object target)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.target = target;
+    &#125;
+
+    <span class="hljs-comment">//给目标对象创建一个代理对象</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getProxyInstance</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-comment">//1.创建工具类，类似动态代理的Proxy类</span>
+        Enhancer en = <span class="hljs-keyword">new</span> Enhancer();
+        <span class="hljs-comment">//2.设置目标类的字节码文件</span>
+        en.setSuperclass(target.getClass());
+        <span class="hljs-comment">//3.设置回调函数</span>
+        en.setCallback(<span class="hljs-keyword">this</span>);
+        <span class="hljs-comment">//4.创建子类(代理对象)</span>
+        <span class="hljs-keyword">return</span> en.create();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">intercept</span><span class="hljs-params">(Object obj, Method method, Object[] args, MethodProxy proxy)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        System.out.println(<span class="hljs-string">"开始事务..."</span>);
+        <span class="hljs-comment">//执行目标对象的方法</span>
+        Object returnValue = method.invoke(target, args);
+        System.out.println(<span class="hljs-string">"提交事务..."</span>);
+        <span class="hljs-keyword">return</span> returnValue;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        HumenImpl target = <span class="hljs-keyword">new</span> HumenImpl();
+        HumenImpl proxy = (HumenImpl) <span class="hljs-keyword">new</span> ProxyFactory(target).getProxyInstance();
+        proxy.eat(<span class="hljs-string">"rice"</span>);
+    &#125;
+&#125;</code></pre>
+
+<h3 id="5-3、CGLib优缺点"><a href="#5-3、CGLib优缺点" class="headerlink" title="5.3、CGLib优缺点"></a>5.3、CGLib优缺点</h3><p>优点：没有了接口的约束，变得很灵活。</p>
+<p>缺点：也正是没有了接口，无法根据接口信息拦截特定的方法，它拦截并包装被代理类的所有方法。</p>
 
             </article>
             <hr>
@@ -337,7 +434,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                      <a class="hover-with-bg" href="/categories/Java8/">Java8</a>
                     
                   </div>
                 
@@ -345,7 +442,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                      <a class="hover-with-bg" href="/tags/Java8/">Java8</a>
                     
                   </div>
                 
@@ -358,18 +455,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/cxlittlecute/cffaadf.html">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java代理模式</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/cxlittlecute/ec69ad2.html">
-                        <span class="hidden-mobile">计算机网络系列（十）-传输层（二）</span>
+                      <a href="/cxlittlecute/43d83980.html">
+                        <span class="hidden-mobile">计算机网络系列（十）-传输层（三）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -689,7 +780,7 @@
       if ('true' === 'true') {
         var viewCtn = document.querySelector('#leancloud-post-views-container');
         if (viewCtn || enableIncr) {
-          var target = decodeURI('/cxlittlecute/43d83980.html');
+          var target = decodeURI('/cxlittlecute/cffaadf.html');
           var viewGetter = getRecord(Counter, target).then((record) => {
             incrArr.push(buildIncrement(record.objectId))
             if (viewCtn) {
@@ -783,7 +874,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "计算机网络系列（十）-传输层（三）&nbsp;",
+        "Java代理模式&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
