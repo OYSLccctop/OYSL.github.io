@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>理解类加载机制</title>
+    <link href="/cxlittlecute/a6c77903.html"/>
+    <url>/cxlittlecute/a6c77903.html</url>
+    
+    <content type="html"><![CDATA[<p>关于类的加载机制大部分我们只是了解到的是loadClass加载对应类的过程也就是我们熟知的：加载-&gt;连接（验证、猪呢比、解析-&gt;初始化-&gt;使用-&gt;卸载过程。</p><p>我们知道类的加载需要依靠类加载器，那么类加载器是怎么来的嘞？</p><p>首先我们需要知道类加载器的本质就是一个类。那么接下来我用我画的几个图来表现整个类加载的过程。图中我对每一个细节都有详细的描述。</p><h1 id="1、简单描述类的加载过程"><a href="#1、简单描述类的加载过程" class="headerlink" title="1、简单描述类的加载过程"></a>1、简单描述类的加载过程</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201108130912.png" srcset="/img/loading.gif" alt=""></p><h1 id="2、Java指令描述类加载的全过程"><a href="#2、Java指令描述类加载的全过程" class="headerlink" title="2、Java指令描述类加载的全过程"></a>2、Java指令描述类加载的全过程</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201108131020.png" srcset="/img/loading.gif" alt=""></p><h1 id="3、类加载过程中ClassLoad的过程"><a href="#3、类加载过程中ClassLoad的过程" class="headerlink" title="3、类加载过程中ClassLoad的过程"></a>3、类加载过程中ClassLoad的过程</h1><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201108131238.png" srcset="/img/loading.gif" alt=""></p><hr><p>看完了类的加载过程我们肯定想问类的加载时机是什么时候。</p><hr><h1 id="4、类的加载时机"><a href="#4、类的加载时机" class="headerlink" title="4、类的加载时机"></a>4、类的加载时机</h1><p>什么时候一个类会被初始化，分为以下几种情况：</p><ul><li>1、遇到new、getstatic、putstatic(读取静态字段)、invokestatic(调用静态方法)</li><li>2、对类进行relect反射调用</li><li>3、初始化一个类时，同时初始化它的父类。</li><li>4、JVM调用主类main（）</li></ul><hr><p>接下来我们再来看看类加载过程中类加载器的双亲委派机制（JDK9前后的变化）</p><hr><h1 id="5、双亲委派机制"><a href="#5、双亲委派机制" class="headerlink" title="5、双亲委派机制"></a>5、双亲委派机制</h1><h2 id="1、双亲委派机制JDK9前后流程图"><a href="#1、双亲委派机制JDK9前后流程图" class="headerlink" title="1、双亲委派机制JDK9前后流程图"></a>1、双亲委派机制JDK9前后流程图</h2><p><img src="https://gitee.com/ouyang_shenglin/blogImage/raw/master/img/20201108131721.png" srcset="/img/loading.gif" alt=""></p><p>关于双亲委派机制我们提出以下几个问题：</p><h2 id="2、为什么要设计双亲委派机制？"><a href="#2、为什么要设计双亲委派机制？" class="headerlink" title="2、为什么要设计双亲委派机制？"></a>2、为什么要设计双亲委派机制？</h2><ul><li>1、沙箱安全机制:保证核心API库不会被随意修改</li><li>2、避免类的重复加载：父亲加载后，儿子就不用加载了。保证唯一性。</li></ul><h1 id="3、什么是全盘负责委托机制（当前类加载器负责机制）？"><a href="#3、什么是全盘负责委托机制（当前类加载器负责机制）？" class="headerlink" title="3、什么是全盘负责委托机制（当前类加载器负责机制）？"></a>3、什么是全盘负责委托机制（当前类加载器负责机制）？</h1><p>指当一个ClassLoader装载一个类时，除非显示地使用另一个ClassLoader，该类所依赖及引用的类也由这个ClassLoader载入。</p><h1 id="4、什么是双亲委派机制？"><a href="#4、什么是双亲委派机制？" class="headerlink" title="4、什么是双亲委派机制？"></a>4、什么是双亲委派机制？</h1><p>“双亲委派”是指子类加载器如果没有加载过该目标类，就先委托父类加载器加载该目标类，只有在父类加载器找不到字节码文件的情况下才从自己的类路径中查找并装载目标类。</p><h1 id="5、自定义类加载器的方式？"><a href="#5、自定义类加载器的方式？" class="headerlink" title="5、自定义类加载器的方式？"></a>5、自定义类加载器的方式？</h1><p>继承java.lang.ClassLoader类。</p><ul><li>1、重写loadClass(String,boolean)</li><li>2、重写findClass</li></ul><h1 id="6、破坏双亲委派模型的方式？"><a href="#6、破坏双亲委派模型的方式？" class="headerlink" title="6、破坏双亲委派模型的方式？"></a>6、破坏双亲委派模型的方式？</h1><ul><li>1、引入线程上下文类加载器</li><li>2、自定义classLoader<ul><li>不破坏，重写findClass</li><li>破坏，重写loadClass</li></ul></li><li>3、JDK9模块化</li></ul><h1 id="7、JDK9的双亲委派的变化？"><a href="#7、JDK9的双亲委派的变化？" class="headerlink" title="7、JDK9的双亲委派的变化？"></a>7、JDK9的双亲委派的变化？</h1><ul><li>1、扩展类加载器被平台类加载器取代。（由于模块化的构建，Java类库已经天然满足可扩展的变化）</li><li>2、JDK9的三种类加载器全部继承于一个新的ClassLoader。</li><li>3、启动类加载器实现改变。启动类加载器现在是在 Java 虚拟机内部和 Java 类库共同协作实现的类加载器（以前是 C++实现）。</li><li>4、类加载的委派关闭发生变化。<br>(当平台及应用程序类加载器收到类加载请求，在委派给父加载器加载前，要先判断该类是否能够归属到某一个系统模块中，如果可以找到这样的归属关系，就要优先委派给负责那个模块的加载器完成加载。)</li></ul><pre><code>以上是自己复习过程中的一些总结点，如果有理解不正确的地方，希望各位看官老爷手下留情，及时联系我，万分感谢。</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>JVM</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>JVM</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>计算机网络系列（十）-传输层（四）</title>
     <link href="/cxlittlecute/f4f520e5.html"/>
     <url>/cxlittlecute/f4f520e5.html</url>
