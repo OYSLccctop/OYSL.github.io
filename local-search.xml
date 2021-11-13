@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Java并发系列（十七）-队列同步器AQS（二）</title>
+    <link href="/cxlittlecute/36faf723.html"/>
+    <url>/cxlittlecute/36faf723.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析"><a href="#Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析" class="headerlink" title="Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析"></a>Java并发系列（十七）-队列同步器AQS（二）-队列同步器的实现分析</h1><p>本篇我们将从以下几个方面来分析同步器是如何完成线程同步的。</p><ul><li>同步队列</li><li>独占式同步状态获取与释放</li><li>共享式同步状态获取与释放</li><li>超时获取同步状态</li></ul><p>等核心数据结构与模板方法。</p><h2 id="1、同步队列"><a href="#1、同步队列" class="headerlink" title="1、同步队列"></a>1、同步队列</h2><h3 id="1-1、同步器的原理"><a href="#1-1、同步器的原理" class="headerlink" title="1.1、同步器的原理"></a>1.1、同步器的原理</h3><pre><code>同步器依赖内部的同步队列（一个FIFO双向队列）来完成同步状态的管理。</code></pre><h3 id="1-2、同步队列的使用过程"><a href="#1-2、同步队列的使用过程" class="headerlink" title="1.2、同步队列的使用过程"></a>1.2、同步队列的使用过程</h3><pre><code>1.线程获取同步状态失败：    同步器会将【当前线程】以及【等待状态等信息】构造成一个节点（Node）,    并将其加入同步队列，同时阻塞当前线程。2.当同步状态释放时：    会把同步队列中的首节点的线程唤醒，然后再次获取同步状态。</code></pre><h3 id="1-3、同步队列中的节点信息"><a href="#1-3、同步队列中的节点信息" class="headerlink" title="1.3、同步队列中的节点信息"></a>1.3、同步队列中的节点信息</h3><pre><code>用来保存获取同步状态失败的线程引用、等待状态以及前驱和后继节点。</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java并发编程的艺术</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java并发编程的艺术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Java并发系列（十七）-队列同步器AQS（一）</title>
     <link href="/cxlittlecute/94207bbd.html"/>
     <url>/cxlittlecute/94207bbd.html</url>
